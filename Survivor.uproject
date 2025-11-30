@@ -7,7 +7,10 @@
 		{
 			"Name": "Survivor",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"GameplayAbilities"
+			]
 		}
 	],
 	"Plugins": [
@@ -24,6 +27,10 @@
 		},
 		{
 			"Name": "MotionWarping",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
 			"Enabled": true
 		}
 	]
