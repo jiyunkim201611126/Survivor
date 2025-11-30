@@ -15,7 +15,9 @@ public class Survivor : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
+			"GameplayTags",
 			"GameplayAbilities",
+			"GameplayTasks",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]

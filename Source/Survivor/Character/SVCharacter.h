@@ -6,10 +6,9 @@
 #include "GameFramework/Character.h"
 #include "SVCharacter.generated.h"
 
-class USpringArmComponent;
 class UInputAction;
 class UInputMappingContext;
-class UCameraComponent;
+class USVCameraComponent;
 struct FInputActionValue;
 
 UENUM(BlueprintType)
@@ -55,11 +54,8 @@ private:
 	void Walk();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<USpringArmComponent> SpringArmComponent;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UCameraComponent> CameraComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
+	TObjectPtr<USVCameraComponent> CameraComponent;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;

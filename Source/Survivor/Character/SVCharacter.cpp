@@ -5,10 +5,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "KismetAnimationLibrary.h"
-#include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Survivor/Camera/SVCameraComponent.h"
 
 ASVCharacter::ASVCharacter()
 {
@@ -18,10 +17,8 @@ ASVCharacter::ASVCharacter()
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
-	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
-	SpringArmComponent->SetupAttachment(RootComponent);
-	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-	CameraComponent->SetupAttachment(SpringArmComponent);
+	CameraComponent = CreateDefaultSubobject<USVCameraComponent>("SVCameraComponent");
+	CameraComponent->SetupAttachment(GetRootComponent());
 }
 
 void ASVCharacter::BeginPlay()
@@ -82,7 +79,7 @@ void ASVCharacter::UpdateMovement()
 	{
 		SelectedSpeeds = RunSpeeds;
 	}
-	else if (MovementType == EMovementType::Sprint)
+	if (bWantsToSprint)
 	{
 		SelectedSpeeds = SprintSpeeds;
 	}
@@ -127,8 +124,8 @@ void ASVCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ThisClass::Jump);
 	EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ThisClass::Sprint);
-	EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Triggered, this, &ThisClass::Walk);
-	EnhancedInputComponent->BindAction(StrafeAction, ETriggerEvent::Triggered, this, &ThisClass::Strafe);
+	EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Started, this, &ThisClass::Walk);
+	EnhancedInputComponent->BindAction(StrafeAction, ETriggerEvent::Started, this, &ThisClass::Strafe);
 }
 
 void ASVCharacter::Move(const FInputActionValue& InputActionValue)
