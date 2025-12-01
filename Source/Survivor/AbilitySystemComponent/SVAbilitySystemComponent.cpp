@@ -1,4 +1,0 @@
-// KJY
-
-#include "SVAbilitySystemComponent.h"
-

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "SVCharacterBase.h"
 #include "SVCharacter.generated.h"
 
 class UInputAction;
@@ -20,7 +20,7 @@ enum class EMovementType : uint8
 };
 
 UCLASS()
-class SURVIVOR_API ASVCharacter : public ACharacter
+class SURVIVOR_API ASVCharacter : public ASVCharacterBase
 {
 	GENERATED_BODY()
 
@@ -42,16 +42,20 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	//~ End of ACharacter Interface
 	
+	//~ Begin ACharacter Interface
+	virtual void InitAbilityActorInfo() override;
+	//~ End of ACharacter Interface
+	
 private:
 	void UpdateMovement();
-	void UpdateRotation();
+	void UpdateRotation() const;
 	
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 	virtual void Jump() override;
 	void Sprint(const FInputActionValue& InputActionValue);
-	void Strafe();
 	void Walk();
+	void Strafe();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
@@ -71,9 +75,6 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> WalkAction;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	TObjectPtr<UInputAction> InteractAction;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> StrafeAction;

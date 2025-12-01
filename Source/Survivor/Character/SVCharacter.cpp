@@ -2,17 +2,20 @@
 
 #include "SVCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "KismetAnimationLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 #include "Survivor/Camera/SVCameraComponent.h"
+#include "Survivor/Player/SVPlayerController.h"
+#include "Survivor/Player/SVPlayerState.h"
+#include "Survivor/UI/HUD/SVHUD.h"
 
 ASVCharacter::ASVCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -100,7 +103,7 @@ void ASVCharacter::UpdateMovement()
 	MovementComponent->MaxWalkSpeedCrouched = ResultSpeed;
 }
 
-void ASVCharacter::UpdateRotation()
+void ASVCharacter::UpdateRotation() const
 {
 	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
 
@@ -126,6 +129,28 @@ void ASVCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ThisClass::Sprint);
 	EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Started, this, &ThisClass::Walk);
 	EnhancedInputComponent->BindAction(StrafeAction, ETriggerEvent::Started, this, &ThisClass::Strafe);
+}
+
+void ASVCharacter::InitAbilityActorInfo()
+{
+	ASVPlayerState* SVPlayerState = Cast<ASVPlayerState>(GetPlayerState());
+	check(SVPlayerState);
+
+	AbilitySystemComponent = SVPlayerState->GetAbilitySystemComponent();
+	AbilitySystemComponent->InitAbilityActorInfo(SVPlayerState, this);
+	Cast<USVAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	AttributeSet = SVPlayerState->GetAttributeSet();
+	OnASCRegistered.Broadcast(AbilitySystemComponent);
+
+	if (ASVPlayerController* SVPlayerController = GetController<ASVPlayerController>())
+	{
+		if (ASVHUD* SVHUD = Cast<ASVHUD>(SVPlayerController->GetHUD()))
+		{
+			SVHUD->InitHUD(SVPlayerController, SVPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
+	
+	Super::InitAbilityActorInfo();
 }
 
 void ASVCharacter::Move(const FInputActionValue& InputActionValue)
@@ -163,6 +188,14 @@ void ASVCharacter::Sprint(const FInputActionValue& InputActionValue)
 	bWantsToWalk = false;
 }
 
+void ASVCharacter::Walk()
+{
+	if (!bWantsToSprint)
+	{
+		bWantsToWalk = !bWantsToWalk;
+	}
+}
+
 void ASVCharacter::Strafe()
 {
 	//bWantsToStrafe = !bWantsToStrafe;
@@ -177,13 +210,5 @@ void ASVCharacter::Strafe()
 	{
 		MovementComponent->bUseControllerDesiredRotation = false;
 		MovementComponent->bOrientRotationToMovement = true;
-	}
-}
-
-void ASVCharacter::Walk()
-{
-	if (!bWantsToSprint)
-	{
-		bWantsToWalk = !bWantsToWalk;
 	}
 }

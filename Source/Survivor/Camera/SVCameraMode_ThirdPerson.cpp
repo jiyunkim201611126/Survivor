@@ -72,12 +72,6 @@ void USVCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 	CapsuleToCameraDirection.Normalize();
 	SafeLocation -= CapsuleToCameraDirection * 20.f;
 
-	if (PenetrationAvoidanceFeelers.Num() > 0)
-	{
-		// 계산된 SafeLocation을 CapsuleComponent 바깥쪽으로 지정된 거리만큼 밀어냅니다.
-		SafeLocation += (SafeLocation - ClosestPointOnLineToCapsuleCenter).GetSafeNormal() * PushInDistance;
-	}
-
 	// 최종 SafeLocation을 사용해 Ray를 수행, 실제 카메라 위치를 계산합니다.
 	const bool bSingleRayPenetrationCheck = !bDoPredictiveAvoidance;
 	PreventCameraPenetration(*TargetActor, SafeLocation, View.Location, View.Rotation, DeltaTime, AimLineToDesiredPosBlockedPercent, bSingleRayPenetrationCheck);
