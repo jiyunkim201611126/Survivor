@@ -47,41 +47,50 @@ void USVCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 	AActor* TargetActor = GetTargetActor();
 	const APawn* TargetPawn = Cast<APawn>(TargetActor);
 	AController* TargetController = TargetPawn ? TargetPawn->GetController() : nullptr;
-
-	/**
-	 * 1. 실제 카메라는 (대부분의 경우)캐릭터로부터 꽤 멀리 떨어져있습니다.
-	 * 2. 카메라로부터 뻗어져나온 직선위에 위치하며 TargetActor의 Location과 가장 가까운 Vector를 계산합니다.
-	 * 3. 해당 Vector가 캐릭터의 Z축 길이를 벗어나지 않도록 Z축 값을 Clamp합니다.
-	 * 4. 해당 Vector가 정확히 CapsuleComponent의 표면에 위치하도록 조정합니다.
-	 * 5. 해당 Vector를 지정된 길이만큼 CapsuleComponent 바깥쪽으로 밀어냅니다.
-	 */
 	
-	// View.Location으로부터 View.Rotation.Vector() 방향으로 뻗은 직선과
-	// 해당 직선에서 SafeLocation과 가장 거리가 가까운 Vector를 구하는 과정입니다.
-	FVector ClosestPointOnLineToCapsuleCenter;
-	FVector SafeLocation = TargetActor->GetActorLocation();
-	FMath::PointDistToLine(SafeLocation, View.Rotation.Vector(), View.Location, ClosestPointOnLineToCapsuleCenter);
-
-	// Z 위치가 캐릭터의 CapsuleComponent 최대/최소 Z 지점을 벗어나지 않도록 합니다.
-	const float PushInDistance = PenetrationAvoidanceFeelers[0].Extent + CollisionPushOutDistance;
-	const float MaxHalfHeight = TargetActor->GetSimpleCollisionHalfHeight() - PushInDistance;
-	SafeLocation.Z = FMath::Clamp(ClosestPointOnLineToCapsuleCenter.Z, SafeLocation.Z - MaxHalfHeight, SafeLocation.Z + MaxHalfHeight);
-
-	// Ray 수행 시작 위치가 캐릭터 앞에 존재하는 경우를 방지하기 위해 SafeLocation을 카메라쪽으로 살짝 당겨줍니다.
-	FVector CapsuleToCameraDirection = SafeLocation - View.Location;
-	CapsuleToCameraDirection.Normalize();
-	SafeLocation -= CapsuleToCameraDirection * 20.f;
-
-	// 최종 SafeLocation을 사용해 Ray를 수행, 실제 카메라 위치를 계산합니다.
-	const bool bSingleRayPenetrationCheck = !bDoPredictiveAvoidance;
-	PreventCameraPenetration(*TargetActor, SafeLocation, View.Location, View.Rotation, DeltaTime, AimLineToDesiredPosBlockedPercent, bSingleRayPenetrationCheck);
-
-	// Hiding 임계점에 도달하면 PlayerController의 함수를 호출합니다.
-	if (AimLineToDesiredPosBlockedPercent < ReportPenetrationPercent)
+	if (const UPrimitiveComponent* TargetRootComponent = Cast<UPrimitiveComponent>(TargetPawn->GetRootComponent()))
 	{
-		if (ISVCameraAssistInterface* TargetControllerAssist = Cast<ISVCameraAssistInterface>(TargetController))
+		/**
+		 * 1. 실제 카메라는 (대부분의 경우)캐릭터로부터 꽤 멀리 떨어져있습니다.
+		 * 2. 카메라로부터 뻗어져나온 직선위에 위치하며 TargetActor의 Location과 가장 가까운 Vector를 계산합니다.
+		 * 3. 해당 Vector가 캐릭터의 Z축 길이를 벗어나지 않도록 Z축 값을 Clamp합니다.
+		 * 4. 해당 Vector가 정확히 CapsuleComponent의 표면에 위치하도록 조정합니다.
+		 * 5. 해당 Vector를 지정된 길이만큼 CapsuleComponent 바깥쪽으로 밀어냅니다.
+		 */
+		
+		// View.Location으로부터 View.Rotation.Vector() 방향으로 뻗은 직선과
+		// 해당 직선에서 TargetActor의 중심과 가장 거리가 가까운 Vector를 구하는 과정입니다.
+		const FVector ActorLocation = TargetActor->GetActorLocation();
+		FVector ClosestPointOnLineToCapsuleCenter;
+		FVector SafeLocation = ActorLocation;
+		FMath::PointDistToLine(SafeLocation, View.Rotation.Vector(), View.Location, ClosestPointOnLineToCapsuleCenter);
+
+		// Z축 위치가 캐릭터의 CapsuleComponent 최대/최소 Z 지점을 벗어나지 않도록 합니다.
+		const float PushInDistance = PenetrationAvoidanceFeelers[0].Extent + CollisionPushOutDistance;
+		const float MaxHalfHeight = TargetActor->GetSimpleCollisionHalfHeight() - PushInDistance;
+		SafeLocation.Z = FMath::Clamp(ClosestPointOnLineToCapsuleCenter.Z, SafeLocation.Z - MaxHalfHeight, SafeLocation.Z + MaxHalfHeight);
+	
+		// 아래 함수를 통해 SafeLocation이 정확하게 CapsuleComponent의 표면에 위치하도록 조정합니다.
+		float DistanceSqr;
+		TargetRootComponent->GetSquaredDistanceToCollision(ClosestPointOnLineToCapsuleCenter, DistanceSqr, SafeLocation);
+		
+		if (PenetrationAvoidanceFeelers.Num() > 0)
 		{
-			TargetControllerAssist->OnCameraPenetratingTarget();
+			// 계산된 SafeLocation을 CapsuleComponent 바깥쪽으로 지정된 거리만큼 밀어냅니다.
+			SafeLocation += (SafeLocation - ClosestPointOnLineToCapsuleCenter).GetSafeNormal() * PushInDistance;
+		}
+
+		// 최종 SafeLocation을 사용해 Ray를 수행, 실제 카메라 위치를 계산합니다.
+		const bool bSingleRayPenetrationCheck = !bDoPredictiveAvoidance;
+		PreventCameraPenetration(*TargetActor, SafeLocation, View.Location, View.Rotation, DeltaTime, AimLineToDesiredPosBlockedPercent, bSingleRayPenetrationCheck);
+
+		// Hiding 임계점에 도달하면 PlayerController의 함수를 호출합니다.
+		if (AimLineToDesiredPosBlockedPercent < ReportPenetrationPercent)
+		{
+			if (ISVCameraAssistInterface* TargetControllerAssist = Cast<ISVCameraAssistInterface>(TargetController))
+			{
+				TargetControllerAssist->OnCameraPenetratingTarget();
+			}
 		}
 	}
 }

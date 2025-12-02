@@ -91,7 +91,7 @@ protected:
 	FVector RunSpeeds = FVector(500.f, 350.f, 300.f);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	FVector SprintSpeeds = FVector(700.f, 700.f, 700.f);
+	FVector SprintSpeeds = FVector(700.f, 550.f, 500.f);
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 	TObjectPtr<UCurveFloat> StrafeSpeedMapCurve; 

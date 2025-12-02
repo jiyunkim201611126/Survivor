@@ -74,17 +74,20 @@ void ASVCharacter::UpdateMovement()
 
 	// 현재 상태에 따라 Speed 집합을 선택합니다.
 	FVector SelectedSpeeds;
-	if (MovementType == EMovementType::Walk)
-	{
-		SelectedSpeeds = WalkSpeeds;
-	}
-	else if (MovementType == EMovementType::Run)
-	{
-		SelectedSpeeds = RunSpeeds;
-	}
 	if (bWantsToSprint)
 	{
 		SelectedSpeeds = SprintSpeeds;
+	}
+	else
+	{
+		if (MovementType == EMovementType::Walk)
+		{
+			SelectedSpeeds = WalkSpeeds;
+		}
+		else if (MovementType == EMovementType::Run)
+		{
+			SelectedSpeeds = RunSpeeds;
+		}
 	}
 
 	// StrafeSpeedMap 값이 2에 가까울수록 느려지도록 보간합니다.
@@ -198,7 +201,7 @@ void ASVCharacter::Walk()
 
 void ASVCharacter::Strafe()
 {
-	//bWantsToStrafe = !bWantsToStrafe;
+	bWantsToStrafe = !bWantsToStrafe;
 	
 	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
 	if (bWantsToStrafe)
