@@ -29,9 +29,18 @@ void ASVCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ASVCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	InitAbilityActorInfo();
+}
+
 void ASVCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
+	InitAbilityActorInfo();
 
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Cast<APlayerController>(NewController)->GetLocalPlayer()))
 	{
@@ -84,7 +93,7 @@ void ASVCharacter::UpdateMovement()
 		{
 			SelectedSpeeds = WalkSpeeds;
 		}
-		else if (MovementType == EMovementType::Run)
+		else // if (MovementType == EMovementType::Run)
 		{
 			SelectedSpeeds = RunSpeeds;
 		}
@@ -136,7 +145,7 @@ void ASVCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void ASVCharacter::InitAbilityActorInfo()
 {
-	ASVPlayerState* SVPlayerState = Cast<ASVPlayerState>(GetPlayerState());
+	ASVPlayerState* SVPlayerState = GetPlayerState<ASVPlayerState>();
 	check(SVPlayerState);
 
 	AbilitySystemComponent = SVPlayerState->GetAbilitySystemComponent();

@@ -4,9 +4,16 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Survivor/Manager/SVGameplayTags.h"
 
 USVAttributeSet::USVAttributeSet()
 {
+	const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
+	
+	TagsToAttributes.Add(GameplayTags.Attributes_Vital_Health, GetHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Vital_MaxHealth, GetMaxHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Stat_Attack, GetAttackAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Stat_Armor, GetArmorAttribute);
 }
 
 void USVAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

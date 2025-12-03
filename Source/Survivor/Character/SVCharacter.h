@@ -35,6 +35,7 @@ protected:
 	//~ End of AActor Interface
 
 	//~ Begin APawn Interface
+	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End of APawn Interface
 
@@ -82,6 +83,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputMappingContext> InputContext;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Movement")
+	EMovementType MovementType;
+
 	// 아래 Speed들은 축에 따른 이동 속도가 아닌, 해당 상태일 때 속도를 여러 개로 지정한 것입니다.
 	// X == Sprint, Y == Run, Z == Walk
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
@@ -105,9 +109,6 @@ protected:
 	// true일 때 캐릭터가 카메라 방향을 바라봅니다.
 	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	bool bWantsToStrafe = true;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Movement")
-	EMovementType MovementType;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Movement")
 	bool bJustLanded = false;

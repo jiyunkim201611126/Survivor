@@ -15,14 +15,21 @@ public class Survivor : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
-			"GameplayTags",
+			
+			"UMG",
+			"Slate",
+			"SlateCore",
+			
 			"GameplayAbilities",
-			"GameplayTasks",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"AnimGraphRuntime"
+			"GameplayTags",
+			"GameplayTasks",
+			"AnimGraphRuntime",
+			"Niagara",
+			"AIModule",
 		});
 
 		// Uncomment if you are using Slate UI

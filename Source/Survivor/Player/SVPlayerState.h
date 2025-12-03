@@ -10,6 +10,9 @@
 class UAttributeSet;
 class UAbilitySystemComponent;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, int32 /* StatValue */);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged, int32 /* NewLevel */, bool /* bLevelUp */);
+
 UCLASS()
 class SURVIVOR_API ASVPlayerState : public APlayerState, public IAbilitySystemInterface
 {
@@ -26,6 +29,10 @@ public:
 	void SetXP(const int32 InXP);
 	void AddToLevel(int32 InLevel);
 	void AddToXP(const int32 InXP);
+
+public:
+	FOnPlayerStatChanged OnXPChangedDelegate;
+	FOnLevelChanged OnLevelChangedDelegate;
 
 protected:
 	UPROPERTY()
