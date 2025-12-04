@@ -21,7 +21,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::BroadcastInitialValue()
 {
-	// 반드시 모든 바인드가 끝난 뒤에 호출할 것
+	// 반드시 모든 바인드가 끝난 뒤에 호출해야 합니다.
 	check(AttributeInfo);
 
 	for (auto& Pair : SVAttributeSet->TagsToAttributes)

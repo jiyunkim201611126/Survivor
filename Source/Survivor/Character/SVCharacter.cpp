@@ -154,6 +154,8 @@ void ASVCharacter::InitAbilityActorInfo()
 	AttributeSet = SVPlayerState->GetAttributeSet();
 	OnASCRegistered.Broadcast(AbilitySystemComponent);
 
+	ApplyEffectToSelf(DefaultAttributes, SVPlayerState->GetPlayerLevel());
+
 	if (ASVPlayerController* SVPlayerController = GetController<ASVPlayerController>())
 	{
 		if (ASVHUD* SVHUD = Cast<ASVHUD>(SVPlayerController->GetHUD()))
@@ -161,8 +163,6 @@ void ASVCharacter::InitAbilityActorInfo()
 			SVHUD->InitHUD(SVPlayerController, SVPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	
-	Super::InitAbilityActorInfo();
 }
 
 void ASVCharacter::Move(const FInputActionValue& InputActionValue)

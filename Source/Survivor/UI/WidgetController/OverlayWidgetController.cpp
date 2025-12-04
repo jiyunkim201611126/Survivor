@@ -27,6 +27,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		{
 			OnMaxHealthChanged.Broadcast(Data.NewValue);
 		});
+
+	SVAbilitySystemComponent->EffectAssetTags.AddUObject(this, &ThisClass::OnEffectHasMessageTagApplied);
 }
 
 void UOverlayWidgetController::BroadcastInitialValue()
@@ -40,4 +42,17 @@ void UOverlayWidgetController::OnXPChanged(int32 InXP)
 	// 임시
 	const float XPBarPercent = 0.5f;
 	OnXPBarPercentChangedDelegate.Broadcast(XPBarPercent);
+}
+
+void UOverlayWidgetController::OnEffectHasMessageTagApplied(const FGameplayTagContainer& GameplayTags) const
+{
+	const FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+	for (const FGameplayTag& Tag : GameplayTags)
+	{
+		if (Tag.MatchesTag(MessageTag))
+		{
+			const FUIWidgetRow* Row = MessageWidgetDataTable->FindRow<FUIWidgetRow>(Tag.GetTagName(), TEXT(""));
+			MessageWidgetRowDelegate.Broadcast(*Row);
+		}
+	}
 }

@@ -23,7 +23,10 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	UAttributeSet* GetAttributeSet() const;
+
+	int32 GetPlayerLevel() const;
+	int32 GetXP() const;
 	
 	void SetLevel(int32 InLevel);
 	void SetXP(const int32 InXP);
@@ -43,7 +46,7 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Level)
-	int32 Level = 0;
+	int32 PlayerLevel = 0;
 
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);

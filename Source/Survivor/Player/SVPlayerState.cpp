@@ -21,7 +21,7 @@ void ASVPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(ASVPlayerState, Level);
+	DOREPLIFETIME(ASVPlayerState, PlayerLevel);
 	DOREPLIFETIME(ASVPlayerState, XP);
 }
 
@@ -30,10 +30,25 @@ UAbilitySystemComponent* ASVPlayerState::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+UAttributeSet* ASVPlayerState::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
+int32 ASVPlayerState::GetPlayerLevel() const
+{
+	return PlayerLevel;
+}
+
+int32 ASVPlayerState::GetXP() const
+{
+	return XP;
+}
+
 void ASVPlayerState::SetLevel(int32 InLevel)
 {
-	Level = InLevel;
-	OnLevelChangedDelegate.Broadcast(Level, false);
+	PlayerLevel = InLevel;
+	OnLevelChangedDelegate.Broadcast(PlayerLevel, false);
 }
 
 void ASVPlayerState::SetXP(const int32 InXP)
@@ -44,8 +59,8 @@ void ASVPlayerState::SetXP(const int32 InXP)
 
 void ASVPlayerState::AddToLevel(int32 InLevel)
 {
-	Level += InLevel;
-	OnLevelChangedDelegate.Broadcast(Level, true);
+	PlayerLevel += InLevel;
+	OnLevelChangedDelegate.Broadcast(PlayerLevel, true);
 }
 
 void ASVPlayerState::AddToXP(const int32 InXP)
@@ -56,7 +71,7 @@ void ASVPlayerState::AddToXP(const int32 InXP)
 
 void ASVPlayerState::OnRep_Level(int32 OldLevel)
 {
-	OnLevelChangedDelegate.Broadcast(Level, OldLevel != 0);
+	OnLevelChangedDelegate.Broadcast(PlayerLevel, OldLevel != 0);
 }
 
 void ASVPlayerState::OnRep_XP(int32 OldXP)
