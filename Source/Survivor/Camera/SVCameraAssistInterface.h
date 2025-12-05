@@ -13,9 +13,9 @@ class USVCameraAssistInterface : public UInterface
 };
 
 /**
- * 해당 인터페이스는 PlayerController와 'Attach된 Actor 중 렌더링을 끌 Actor를 가진 Actor'가 상속받습니다.
- * 예시로 캐릭터가 무기를 쥐고 있다면, 무기 Actor를 Hide Target 목록에 추가하기 위해 해당 인터페이스를 캐릭터가 상속받아야 합니다.
- * CameraMode에 의해 PlayerController의 해당 인터페이스의 함수가 호출되면, PlayerController는 숨길 액터 목록을 Pawn으로부터 가져와 화면에서 숨깁니다. 
+ * 해당 인터페이스는 PlayerController와 카메라가 가까워졌을 때 Hide될 Actor가 상속받습니다.
+ * Attach된 Actor를 Hide Target 목록에 추가하기 위해 해당 인터페이스를 Pawn 등이 상속받아야 합니다.
+ * CameraMode에 의해 PlayerController의 해당 인터페이스의 함수가 호출되면, PlayerController는 숨길 액터들의 StartHide 및 EndHide를 호출해줍니다.
  */
 class SURVIVOR_API ISVCameraAssistInterface
 {
@@ -29,6 +29,9 @@ public:
 		return TArray<AActor*>();
 	}
 
-	// PlayerController가 오버라이드해 Actor들을 숨기는 트리거 함수입니다.
-	virtual void OnCameraPenetratingTarget() { }
+	// Actor들을 숨기는 트리거 함수입니다.
+	UFUNCTION(BlueprintNativeEvent)
+	void StartHide();
+	UFUNCTION(BlueprintNativeEvent)
+	void EndHide();
 };

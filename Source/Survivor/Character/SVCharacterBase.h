@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "Survivor/Interface/CombatInterface.h"
 #include "SVCharacterBase.generated.h"
 
@@ -14,7 +15,7 @@ class UAttributeSet;
 class UAbilitySystemComponent;
 
 UCLASS()
-class SURVIVOR_API ASVCharacterBase : public ACharacter, public ICombatInterface, public IAbilitySystemInterface
+class SURVIVOR_API ASVCharacterBase : public ACharacter, public ICombatInterface, public IAbilitySystemInterface, public ISVCameraAssistInterface
 {
 	GENERATED_BODY()
 
@@ -22,7 +23,7 @@ public:
 	ASVCharacterBase();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
+	
 protected:
 	virtual void InitAbilityActorInfo();
 
@@ -47,4 +48,13 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Materials")
+	TArray<TObjectPtr<UMaterialInstance>> FadeMaterials;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Materials")
+	TArray<TObjectPtr<UMaterialInstanceDynamic>> OriginalMaterialInstances;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Materials")
+	TArray<TObjectPtr<UMaterialInstanceDynamic>> FadeMaterialInstances;
 };

@@ -85,12 +85,9 @@ void USVCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 		PreventCameraPenetration(*TargetActor, SafeLocation, View.Location, View.Rotation, DeltaTime, AimLineToDesiredPosBlockedPercent, bSingleRayPenetrationCheck);
 
 		// Hiding 임계점에 도달하면 PlayerController의 함수를 호출합니다.
-		if (AimLineToDesiredPosBlockedPercent < ReportPenetrationPercent)
+		if (TargetController->Implements<USVCameraAssistInterface>())
 		{
-			if (ISVCameraAssistInterface* TargetControllerAssist = Cast<ISVCameraAssistInterface>(TargetController))
-			{
-				TargetControllerAssist->OnCameraPenetratingTarget();
-			}
+			AimLineToDesiredPosBlockedPercent < ReportPenetrationPercent ? ISVCameraAssistInterface::Execute_StartHide(TargetController) : ISVCameraAssistInterface::Execute_EndHide(TargetController);
 		}
 	}
 }

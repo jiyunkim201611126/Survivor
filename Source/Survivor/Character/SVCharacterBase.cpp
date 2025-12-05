@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectTypes.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMaterialLibrary.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 
 ASVCharacterBase::ASVCharacterBase()
