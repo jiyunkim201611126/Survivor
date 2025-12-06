@@ -6,14 +6,14 @@
 #include "Survivor/Player/SVPlayerController.h"
 #include "Survivor/Player/SVPlayerState.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
-#include "Survivor/AbilitySystem/SVAttributeSet.h"
+#include "Survivor/AbilitySystem/AttributeSet/PlayerAttributeSet.h"
 
 void USVWidgetController::SetWidgetControllerParams(const FWidgetControllerParams& WidgetControllerParams)
 {
 	SVPlayerController = Cast<ASVPlayerController>(WidgetControllerParams.PlayerController);
 	SVPlayerState = Cast<ASVPlayerState>(WidgetControllerParams.PlayerState);
 	SVAbilitySystemComponent = Cast<USVAbilitySystemComponent>(WidgetControllerParams.AbilitySystemComponent);
-	SVAttributeSet = Cast<USVAttributeSet>(WidgetControllerParams.AttributeSet);
+	SVAttributeSet = Cast<UPlayerAttributeSet>(WidgetControllerParams.AttributeSet);
 }
 
 void USVWidgetController::BindCallbacksToDependencies()
@@ -39,7 +39,7 @@ USVAbilitySystemComponent* USVWidgetController::GetSVASC()
 	return SVAbilitySystemComponent;
 }
 
-USVAttributeSet* USVWidgetController::GetSVAS()
+UPlayerAttributeSet* USVWidgetController::GetSVPlayerAS()
 {
 	return SVAttributeSet;
 }

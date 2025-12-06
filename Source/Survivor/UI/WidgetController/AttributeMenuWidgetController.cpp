@@ -3,7 +3,7 @@
 #include "AttributeMenuWidgetController.h"
 
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
-#include "Survivor/AbilitySystem/SVAttributeSet.h"
+#include "Survivor/AbilitySystem/AttributeSet/PlayerAttributeSet.h"
 #include "Survivor/AbilitySystem/Data/AttributeInfo.h"
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()

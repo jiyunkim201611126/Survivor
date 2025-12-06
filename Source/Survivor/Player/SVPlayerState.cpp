@@ -4,7 +4,7 @@
 
 #include "Net/UnrealNetwork.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
-#include "Survivor/AbilitySystem/SVAttributeSet.h"
+#include "Survivor/AbilitySystem/AttributeSet/PlayerAttributeSet.h"
 
 ASVPlayerState::ASVPlayerState()
 {
@@ -12,7 +12,7 @@ ASVPlayerState::ASVPlayerState()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-	AttributeSet = CreateDefaultSubobject<USVAttributeSet>("AttributeSet");
+	AttributeSet = CreateDefaultSubobject<UPlayerAttributeSet>("AttributeSet");
 
 	SetNetUpdateFrequency(100.f);
 }

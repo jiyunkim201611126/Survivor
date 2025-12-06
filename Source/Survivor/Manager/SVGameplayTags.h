@@ -16,6 +16,7 @@ struct FSVGameplayTags
 	
 	FGameplayTag Attributes_Stat_Attack;
 	FGameplayTag Attributes_Stat_Armor;
+	FGameplayTag Attributes_Stat_AdditionalSpeed;
 	//~ End of Attributes
 	
 	//~ Begin Damage Types

@@ -7,7 +7,7 @@
 #include "UObject/Object.h"
 #include "SVWidgetController.generated.h"
 
-class USVAttributeSet;
+class UPlayerAttributeSet;
 class USVAbilitySystemComponent;
 class ASVPlayerState;
 class ASVPlayerController;
@@ -66,7 +66,7 @@ public:
 	ASVPlayerController* GetSVPC();
 	ASVPlayerState* GetSVPS();
 	USVAbilitySystemComponent* GetSVASC();
-	USVAttributeSet* GetSVAS();
+	UPlayerAttributeSet* GetSVPlayerAS();
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
@@ -79,5 +79,5 @@ protected:
 	TObjectPtr<USVAbilitySystemComponent> SVAbilitySystemComponent;
 
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
-	TObjectPtr<USVAttributeSet> SVAttributeSet;
+	TObjectPtr<UPlayerAttributeSet> SVAttributeSet;
 };

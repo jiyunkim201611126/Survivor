@@ -49,12 +49,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Materials")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Hide")
 	TArray<TObjectPtr<UMaterialInstance>> FadeMaterials;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Materials")
+	UPROPERTY(BlueprintReadOnly, Category = "Hide")
 	TArray<TObjectPtr<UMaterialInstanceDynamic>> OriginalMaterialInstances;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Materials")
+	UPROPERTY(BlueprintReadOnly, Category = "Hide")
 	TArray<TObjectPtr<UMaterialInstanceDynamic>> FadeMaterialInstances;
 };

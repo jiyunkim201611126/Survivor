@@ -193,6 +193,39 @@ void USVCameraMode_ThirdPerson::PreventCameraPenetration(const AActor& ViewTarge
 				// 주변 Ray가 아닌, 카메라 방향 그대로 나오는 Ray입니다.
 				// 따라서 Snap이 발생하더라도 즉시 카메라를 이동시켜야 합니다.
 				HardBlockedPercent = DistBlockedPercentThisFrame;
+
+				// 이전 프레임에서 Hide했던 Pawn을 다시 렌더링되도록 합니다.
+				for (AActor* HidedOtherPawn : HidedOtherPawns)
+				{
+					ISVCameraAssistInterface::Execute_EndHide(HidedOtherPawn);
+				}
+				HidedOtherPawns.Empty();
+
+				// 카메라 방향 그대로 나오는 Ray에선 Pawn에 대한 충돌 여부도 검사합니다.
+				// 단, 이 때는 Ray 방향을 바꿔 카메라에서 SafeLocation을 향해 수행합니다.
+				TArray<FHitResult> PawnHitResults;
+				const bool bPawnHit = World->SweepMultiByChannel(PawnHitResults, RayTarget, SafeLocation, FQuat::Identity, ECC_Pawn, SphereShape, SphereParams);
+				if (bPawnHit)
+				{
+					for (const FHitResult& PawnHitResult : PawnHitResults)
+					{
+						AActor* HitPawnActor = PawnHitResult.GetActor();
+						if (HitPawnActor->Implements<USVCameraAssistInterface>())
+						{
+							// 충돌한 Pawn이 CameraAssist인 경우 들어오는 분기입니다.
+							// 마찬가지로 Pawn의 위치를 0.0 ~ 1.0으로 계산합니다. 
+							float PawnBlockPercent = ((PawnHitResult.Location - RayTarget).Size() - CollisionPushOutDistance) / (RayTarget - SafeLocation).Size();
+							
+							// Hiding 임계점에 도달하면 Pawn의 함수를 호출합니다.
+							if (PawnBlockPercent < ReportPenetrationPercent)
+							{
+								// 숨김과 동시에 다음 프레임에서 다시 렌더링되도록 하기 위해 캐싱합니다.
+								ISVCameraAssistInterface::Execute_StartHide(HitPawnActor);
+								HidedOtherPawns.Emplace(HitPawnActor);
+							}
+						}
+					}
+				}
 			}
 			else
 			{

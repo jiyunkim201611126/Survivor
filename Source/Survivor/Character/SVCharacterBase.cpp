@@ -14,11 +14,11 @@ ASVCharacterBase::ASVCharacterBase()
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
-	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
-	GetMesh()->SetGenerateOverlapEvents(true);
+	GetMesh()->SetGenerateOverlapEvents(false);
 }
 
 UAbilitySystemComponent* ASVCharacterBase::GetAbilitySystemComponent() const
@@ -28,7 +28,6 @@ UAbilitySystemComponent* ASVCharacterBase::GetAbilitySystemComponent() const
 
 void ASVCharacterBase::InitAbilityActorInfo()
 {
-	ApplyEffectToSelf(DefaultAttributes, 1.f);
 }
 
 void ASVCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const

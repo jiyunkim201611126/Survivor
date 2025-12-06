@@ -4,7 +4,7 @@
 
 #include "Survivor/Player/SVPlayerState.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
-#include "Survivor/AbilitySystem/SVAttributeSet.h"
+#include "Survivor/AbilitySystem/AttributeSet/PlayerAttributeSet.h"
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
@@ -18,12 +18,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	}
 
 	// 선언된 Attribute들에게 변동사항이 있는 경우 Widget Controller가 알 수 있도록 각 Attribute에게 함수를 바인드합니다.
-	SVAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSVAS()->GetHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	SVAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSVPlayerAS()->GetHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
 		{
 			OnHealthChanged.Broadcast(Data.NewValue);
 		});
 	
-	SVAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSVAS()->GetMaxHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	SVAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSVPlayerAS()->GetMaxHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
 		{
 			OnMaxHealthChanged.Broadcast(Data.NewValue);
 		});
@@ -40,7 +40,7 @@ void UOverlayWidgetController::BroadcastInitialValue()
 void UOverlayWidgetController::OnXPChanged(int32 InXP)
 {
 	// 임시
-	const float XPBarPercent = 0.5f;
+	const float XPBarPercent = 0.2f;
 	OnXPBarPercentChangedDelegate.Broadcast(XPBarPercent);
 }
 

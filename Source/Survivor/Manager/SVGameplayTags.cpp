@@ -16,6 +16,8 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Stat.Attack"), FString(""));
 	GameplayTags.Attributes_Stat_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Stat.Armor"), FString(""));
+	GameplayTags.Attributes_Stat_AdditionalSpeed = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Stat.AdditionalSpeed"), FString(""));
 
 	
 	GameplayTags.Damage_Normal = UGameplayTagsManager::Get().AddNativeGameplayTag(

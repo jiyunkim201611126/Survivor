@@ -69,4 +69,9 @@ public:
 	// 현재 카메라 위치 보정 상태를 나타냅니다. (캐릭터 위치 0.0 ~ 충돌이 없는 경우 카메라 위치 1.0)
 	UPROPERTY(Transient)
 	float AimLineToDesiredPosBlockedPercent = 1.f;
+
+private:
+	// 플레이어의 캐릭터가 아닌, 현재 Hide된 다른 Pawn입니다.
+	UPROPERTY()
+	TArray<TObjectPtr<AActor>> HidedOtherPawns;
 };

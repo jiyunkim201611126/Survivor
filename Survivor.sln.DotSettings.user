@@ -4,6 +4,9 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AHupebun_002Easm_002Fl_003AC_0021_003FUsers_003Fsolt0_003FAppData_003FLocal_003FTemp_003FSandboxFiles_003FKuhoved_003FHupebun_002Easm/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AWocagir_002Easm_002Fl_003AC_0021_003FUsers_003Fsolt0_003FAppData_003FLocal_003FTemp_003FSandboxFiles_003FPikotel_003FWocagir_002Easm/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AWuqelac_002Easm_002Fl_003AC_0021_003FUsers_003Fsolt0_003FAppData_003FLocal_003FTemp_003FSandboxFiles_003FVatoset_003FWuqelac_002Easm/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=SVAI/@EntryIndexedValue">SVAI</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=asvai/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=svai/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=svas/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=svasc/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=svpc/@EntryIndexedValue">True</s:Boolean>
