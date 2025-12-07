@@ -21,7 +21,7 @@ protected:
 	 * 주로 자신이 참조하고 있는 다른 위젯에 WidgetController를 할당하거나
 	 * WidgetController의 델리게이트에 자신의 함수를 바인드하는 데에 사용합니다.
 	 */
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent)
 	void WidgetControllerSet();
 
 public:

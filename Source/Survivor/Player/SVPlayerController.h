@@ -7,6 +7,9 @@
 #include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVPlayerController.generated.h"
 
+class UInputAction;
+class UInputMappingContext;
+
 UCLASS()
 class SURVIVOR_API ASVPlayerController : public APlayerController, public ISVCameraAssistInterface
 {
@@ -18,9 +21,27 @@ public:
 	virtual void EndHide_Implementation() override;
 	//~ End of ISVCameraAssistInterface
 
+	void PlayOrStopGame();
+
+protected:
+	//~ Begin AActor Interface
+	virtual void BeginPlay() override;
+	//~ End of AActor Interface
+	
+	//~ Begin AController Interface
+	virtual void SetupInputComponent() override;
+	//~ End of AController Interface
+
 private:
 	void ToggleHideActor(AActor* ActorToHide, bool bShouldHide) const;
 
 private:
 	bool bNowHiding = false;
+	bool bNowPlaying = true;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> ESCAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputMappingContext> InputMappingContext;
 };

@@ -7,11 +7,16 @@
 UPlayerAttributeSet::UPlayerAttributeSet()
 {
 	const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
+
+	TagsToAttributes.Reserve(7);
 	
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Vital_Health, GetHealthAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Vital_MaxHealth, GetMaxHealthAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Attack, GetAttackAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Armor, GetArmorAttribute);
+	
+	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Shield, GetShieldAttribute);
+	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_MaxShield, GetMaxShieldAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_AdditionalSpeed, GetAdditionalSpeedAttribute);
 }
 
@@ -20,12 +25,17 @@ void UPlayerAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
-void UPlayerAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+void UPlayerAttributeSet::OnRep_Shield(const FGameplayAttributeData& OldShield) const
 {
-	Super::PostGameplayEffectExecute(Data);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UPlayerAttributeSet, Shield, OldShield);
 }
 
-void UPlayerAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UPlayerAttributeSet::OnRep_MaxShield(const FGameplayAttributeData& OldMaxShield) const
 {
-	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UPlayerAttributeSet, MaxShield, OldMaxShield);
+}
+
+void UPlayerAttributeSet::OnRep_AdditionalSpeed(const FGameplayAttributeData& OldAdditionalSpeed) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UPlayerAttributeSet, AdditionalSpeed, OldAdditionalSpeed);
 }

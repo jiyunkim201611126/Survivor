@@ -9,7 +9,7 @@
 struct FWidgetControllerParams;
 class UAttributeMenuWidgetController;
 class UOverlayWidgetController;
-class USVUserWidget;
+class UOverlayWidget;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -23,13 +23,15 @@ public:
 	
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WidgetControllerParams);
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& WidgetControllerParams);
+
+	void SetOverlayVisibleState(bool bNowPlaying) const;
 	
 private:
 	UPROPERTY()
-	TObjectPtr<USVUserWidget> OverlayWidget;
+	TObjectPtr<UOverlayWidget> OverlayWidget;
 	
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<USVUserWidget> OverlayWidgetClass;
+	TSubclassOf<UOverlayWidget> OverlayWidgetClass;
 
 	UPROPERTY()
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;

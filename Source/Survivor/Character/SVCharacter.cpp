@@ -210,7 +210,7 @@ void ASVCharacter::Walk()
 
 void ASVCharacter::Strafe()
 {
-	bWantsToStrafe = !bWantsToStrafe;
+	//bWantsToStrafe = !bWantsToStrafe;
 	
 	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
 	if (bWantsToStrafe)

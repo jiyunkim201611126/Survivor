@@ -116,12 +116,6 @@ public:
 	ATTRIBUTE_ACCESSORS(USVAttributeSet, Armor);
 	UFUNCTION()
 	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
-	
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_AdditionalSpeed, Category = "Stat Attributes")
-	FGameplayAttributeData AdditionalSpeed;
-	ATTRIBUTE_ACCESSORS(USVAttributeSet, AdditionalSpeed);
-	UFUNCTION()
-	void OnRep_AdditionalSpeed(const FGameplayAttributeData& OldAdditionalSpeed) const;
 
 	/**
 	 * Meta Attributes

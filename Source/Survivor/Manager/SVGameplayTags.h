@@ -16,6 +16,9 @@ struct FSVGameplayTags
 	
 	FGameplayTag Attributes_Stat_Attack;
 	FGameplayTag Attributes_Stat_Armor;
+
+	FGameplayTag Attributes_Stat_Shield;
+	FGameplayTag Attributes_Stat_MaxShield;
 	FGameplayTag Attributes_Stat_AdditionalSpeed;
 	//~ End of Attributes
 	

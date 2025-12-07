@@ -9,12 +9,13 @@
 USVAttributeSet::USVAttributeSet()
 {
 	const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
+
+	TagsToAttributes.Reserve(4);
 	
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Vital_Health, GetHealthAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Vital_MaxHealth, GetMaxHealthAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Attack, GetAttackAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Armor, GetArmorAttribute);
-	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_AdditionalSpeed, GetAdditionalSpeedAttribute);
 }
 
 void USVAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -82,9 +83,4 @@ void USVAttributeSet::OnRep_Attack(const FGameplayAttributeData& OldAttack) cons
 void USVAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USVAttributeSet, Armor, OldArmor);
-}
-
-void USVAttributeSet::OnRep_AdditionalSpeed(const FGameplayAttributeData& OldAdditionalSpeed) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(USVAttributeSet, AdditionalSpeed, OldAdditionalSpeed);
 }

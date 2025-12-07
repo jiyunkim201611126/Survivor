@@ -2,6 +2,11 @@
 
 #include "SVPlayerController.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
+#include "Survivor/UI/HUD/SVHUD.h"
+
 void ASVPlayerController::StartHide_Implementation()
 {
 	if (bNowHiding)
@@ -50,5 +55,52 @@ void ASVPlayerController::ToggleHideActor(AActor* ActorToHide, const bool bShoul
 		}
 
 		bShouldHide ? Execute_StartHide(ActorToHide) : Execute_EndHide(ActorToHide);
+	}
+}
+
+void ASVPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		Subsystem->AddMappingContext(InputMappingContext, 0);
+	}
+}
+
+void ASVPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	
+	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+
+	EnhancedInputComponent->BindAction(ESCAction, ETriggerEvent::Started, this, &ThisClass::PlayOrStopGame);
+}
+
+void ASVPlayerController::PlayOrStopGame()
+{
+	// 게임을 일시정지하고, OverlayWidget 요소들의 표시 상태를 변경합니다.
+	if (const ASVHUD* SVHUD = Cast<ASVHUD>(GetHUD()))
+	{
+		const float TimeDilation = bNowPlaying ? 0.f : 1.f;
+	
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), TimeDilation);
+		SVHUD->SetOverlayVisibleState(!bNowPlaying);
+
+		bShowMouseCursor = bNowPlaying;
+		bNowPlaying = !bNowPlaying;
+
+		if (bShowMouseCursor)
+		{
+			FInputModeGameAndUI InputModeData;
+			InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+			InputModeData.SetHideCursorDuringCapture(false);
+			SetInputMode(InputModeData);
+		}
+		else
+		{
+			FInputModeGameOnly InputModeData;
+			SetInputMode(InputModeData);
+		}
 	}
 }

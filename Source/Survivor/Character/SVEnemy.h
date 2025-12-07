@@ -41,4 +41,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Character | Movement")
+	float BaseWalkSpeed = 300.f;
 };
