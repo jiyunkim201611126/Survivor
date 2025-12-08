@@ -21,7 +21,7 @@ public:
 	virtual void EndHide_Implementation() override;
 	//~ End of ISVCameraAssistInterface
 
-	void PlayOrStopGame();
+	void PauseOrRestartGame();
 
 protected:
 	//~ Begin AActor Interface

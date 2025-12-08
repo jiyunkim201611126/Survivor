@@ -74,12 +74,11 @@ void ASVPlayerController::SetupInputComponent()
 	
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
-	EnhancedInputComponent->BindAction(ESCAction, ETriggerEvent::Started, this, &ThisClass::PlayOrStopGame);
+	EnhancedInputComponent->BindAction(ESCAction, ETriggerEvent::Started, this, &ThisClass::PauseOrRestartGame);
 }
 
-void ASVPlayerController::PlayOrStopGame()
+void ASVPlayerController::PauseOrRestartGame()
 {
-	// 게임을 일시정지하고, OverlayWidget 요소들의 표시 상태를 변경합니다.
 	if (const ASVHUD* SVHUD = Cast<ASVHUD>(GetHUD()))
 	{
 		const float TimeDilation = bNowPlaying ? 0.f : 1.f;

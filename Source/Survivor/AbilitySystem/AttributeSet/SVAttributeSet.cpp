@@ -4,6 +4,9 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Net/UnrealNetwork.h"
+#include "Survivor/SVAbilityTypes.h"
+#include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
 USVAttributeSet::USVAttributeSet()
@@ -21,11 +24,30 @@ USVAttributeSet::USVAttributeSet()
 void USVAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, Attack, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, Armor, COND_None, REPNOTIFY_Always);
 }
 
 void USVAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+
+	// TODO: Source가 사망한 경우 return
+
+	FEffectProperties Props;
+	SetEffectProperties(Data, Props);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	{
+		ApplyIncomingDamage(Props, Data);
+	}
 }
 
 void USVAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
@@ -62,6 +84,42 @@ void USVAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& 
 		EffectProperties.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
 		EffectProperties.TargetCharacter = Cast<ACharacter>(EffectProperties.TargetAvatarActor);
 		EffectProperties.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(EffectProperties.TargetAvatarActor);
+	}
+}
+
+void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const FGameplayEffectModCallbackData& Data)
+{
+	const float LocalIncomingDamage = GetIncomingDamage();
+	SetIncomingDamage(0.f);
+
+	if (LocalIncomingDamage > 0.01f)
+	{
+		const float NewHealth = GetHealth() - LocalIncomingDamage;
+		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+		const bool bFatal = NewHealth <= 0.f;
+
+		const FDamageDataContext DamageData = USVAbilitySystemLibrary::GetDamageData(Props.EffectContextHandle);
+
+		if (bFatal)
+		{
+			// TODO: 사망 처리 및 XP Event 송신
+		}
+		else
+		{
+			if (!DamageData.KnockbackForce.IsNearlyZero(1.f))
+			{
+				// TODO: 넉백 적용
+			}
+		}
+
+		// TODO: 데미지 표시, ProgressBar Slate 사용
+	}
+	else
+	{
+		// 데미지가 0.01보다 작으면 체력 감소를 적용하지 않습니다.
+		SetIncomingDamage(0.f);
+		// TODO: NoDamage 문구 표시
 	}
 }
 

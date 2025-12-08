@@ -53,3 +53,12 @@ UAttributeMenuWidgetController* USVAbilitySystemLibrary::GetAttributeMenuWidgetC
 
 	return nullptr;
 }
+
+FDamageDataContext USVAbilitySystemLibrary::GetDamageData(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSVGameplayEffectContext* AuraEffectContext = static_cast<const FSVGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return AuraEffectContext->GetDamageData();
+	}
+	return FDamageDataContext();
+}

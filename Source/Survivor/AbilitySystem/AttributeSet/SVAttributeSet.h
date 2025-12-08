@@ -68,7 +68,7 @@ public:
 	// 어떤 변수들이 Replicate될지, 어떻게 Replicate될지 지정하는 함수입니다.
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	//~ End UObject Interface
-	
+
 	//~ Begin UAttributeSet Interface
 	// GameplayEffect의 적용으로 인해 Attribute에 변동사항이 있으면 호출되는 함수입니다.
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
@@ -79,6 +79,8 @@ public:
 private:
 	// GE 적용 시점에 Source와 Target을 편리하게 추적하기 위해 구조체에 그 정보를 채워주는 함수입니다.
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& EffectProperties) const;
+	
+	void ApplyIncomingDamage(const FEffectProperties& Props, const FGameplayEffectModCallbackData& Data);
 
 public:
 	// 델리게이트가 아닌 함수 포인터를 직접 Value로 선언한 TMap.

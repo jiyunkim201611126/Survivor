@@ -53,7 +53,7 @@ void UOverlayWidgetController::BroadcastInitialValue()
 
 void UOverlayWidgetController::OnPlayButtonClicked() const
 {
-	SVPlayerController->PlayOrStopGame();
+	SVPlayerController->PauseOrRestartGame();
 }
 
 void UOverlayWidgetController::OnXPChanged(int32 InXP)

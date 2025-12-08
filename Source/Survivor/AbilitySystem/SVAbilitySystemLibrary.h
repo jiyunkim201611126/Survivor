@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet/SVAttributeSet.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Survivor/SVAbilityTypes.h"
 #include "SVAbilitySystemLibrary.generated.h"
 
 struct FWidgetControllerParams;
@@ -25,4 +27,7 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary | WidgetController", meta = (WorldContext = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary | GameplayEffects")
+	static FDamageDataContext GetDamageData(const FGameplayEffectContextHandle& EffectContextHandle);
 };
