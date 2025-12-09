@@ -20,6 +20,9 @@ public class Survivor : ModuleRules
 			"Slate",
 			"SlateCore",
 			
+			"AIModule",
+			"ModularGameplay",
+			
 			"GameplayAbilities",
 		});
 
@@ -29,7 +32,6 @@ public class Survivor : ModuleRules
 			"GameplayTasks",
 			"AnimGraphRuntime",
 			"Niagara",
-			"AIModule",
 		});
 
 		// Uncomment if you are using Slate UI

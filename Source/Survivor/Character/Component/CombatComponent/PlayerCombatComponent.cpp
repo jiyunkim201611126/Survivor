@@ -1,0 +1,29 @@
+﻿// KJY
+
+#include "PlayerCombatComponent.h"
+
+#include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
+#include "Survivor/Player/SVPlayerController.h"
+#include "Survivor/Player/SVPlayerState.h"
+#include "Survivor/UI/HUD/SVHUD.h"
+
+void UPlayerCombatComponent::InitAbilityActorInfo()
+{
+	ASVPlayerState* SVPlayerState = GetPlayerState<ASVPlayerState>();
+	check(SVPlayerState);
+
+	AbilitySystemComponent = SVPlayerState->GetAbilitySystemComponent();
+	AbilitySystemComponent->InitAbilityActorInfo(SVPlayerState, GetPawn<APawn>());
+	Cast<USVAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	AttributeSet = SVPlayerState->GetAttributeSet();
+
+	ApplyEffectToSelf(DefaultAttributes, SVPlayerState->GetPlayerLevel());
+
+	if (ASVPlayerController* SVPlayerController = GetController<ASVPlayerController>())
+	{
+		if (ASVHUD* SVHUD = Cast<ASVHUD>(SVPlayerController->GetHUD()))
+		{
+			SVHUD->InitHUD(SVPlayerController, SVPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
+}

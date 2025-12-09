@@ -5,17 +5,21 @@
 #include "AbilitySystemComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Component/CombatComponent/EnemyCombatComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 #include "Survivor/AbilitySystem/AttributeSet/SVAttributeSet.h"
 
 ASVEnemy::ASVEnemy()
 {
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>("CapsuleComponent");
+	SetRootComponent(CapsuleComponent);
+	
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
+	
+	CombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("CombatComponent");
 
 	AbilitySystemComponent = CreateDefaultSubobject<USVAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
@@ -51,20 +55,24 @@ void ASVEnemy::PossessedBy(AController* NewController)
 	SVAIController->RunBehaviorTree(BehaviorTree);
 }
 
-void ASVEnemy::InitAbilityActorInfo()
+void ASVEnemy::InitAbilityActorInfo() const
 {
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	Cast<USVAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
-	ApplyEffectToSelf(DefaultAttributes, 1.f);
-	OnASCRegistered.Broadcast(AbilitySystemComponent);
+	CombatComponent->SetAbilitySystemComponent(AbilitySystemComponent);
+	CombatComponent->SetAttributeSet(AttributeSet);
+	CombatComponent->InitAbilityActorInfo();
 }
 
 void ASVEnemy::StartHide_Implementation()
 {
-	GetMesh()->SetVisibility(false);
+	//GetMesh()->SetVisibility(false);
 }
 
 void ASVEnemy::EndHide_Implementation()
 {
-	GetMesh()->SetVisibility(true);
+	//GetMesh()->SetVisibility(true);
+}
+
+UAbilitySystemComponent* ASVEnemy::GetAbilitySystemComponent() const
+{
+	return CombatComponent->GetAbilitySystemComponent();
 }

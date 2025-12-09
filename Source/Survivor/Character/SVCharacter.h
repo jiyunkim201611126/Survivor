@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SVCharacterBase.h"
+#include "AbilitySystemInterface.h"
+#include "GameFramework/Character.h"
+#include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVCharacter.generated.h"
 
+class UAttributeSet;
+class UPlayerCombatComponent;
 class UInputAction;
 class UInputMappingContext;
 class USVCameraComponent;
@@ -20,20 +24,20 @@ enum class EMovementType : uint8
 };
 
 UCLASS()
-class SURVIVOR_API ASVCharacter : public ASVCharacterBase
+class SURVIVOR_API ASVCharacter : public ACharacter, public IAbilitySystemInterface, public ISVCameraAssistInterface
 {
 	GENERATED_BODY()
 
 public:
 	ASVCharacter();
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	//~ Begin AActor Interface
 	virtual void Tick(float DeltaTime) override;
-
-protected:
-	virtual void BeginPlay() override;
 	//~ End of AActor Interface
 
+protected:
 	//~ Begin APawn Interface
 	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;
@@ -43,11 +47,9 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	//~ End of ACharacter Interface
 	
-	//~ Begin ACharacter Interface
-	virtual void InitAbilityActorInfo() override;
-	//~ End of ACharacter Interface
-	
 private:
+	void InitAbilityActorInfo() const;
+	
 	void UpdateMovement();
 	void UpdateRotation() const;
 	
@@ -59,7 +61,17 @@ private:
 	void Strafe();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	bool bJustLanded = false;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	FVector LandVelocity;
+
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UPlayerCombatComponent> CombatComponent;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<USVCameraComponent> CameraComponent;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -83,7 +95,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputMappingContext> InputContext;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "Movement", meta=(AllowPrivateAccess = "true"))
 	EMovementType MovementType;
 
 	// 아래 Speed들은 축에 따른 이동 속도가 아닌, 해당 상태일 때 속도를 여러 개로 지정한 것입니다.
@@ -100,19 +112,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 	TObjectPtr<UCurveFloat> StrafeSpeedMapCurve; 
 
-	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	bool bWantsToSprint = false;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	bool bWantsToWalk = false;
 
 	// true일 때 캐릭터가 카메라 방향을 바라봅니다.
-	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	bool bWantsToStrafe = true;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	bool bJustLanded = false;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	FVector LandVelocity;
 };

@@ -13,22 +13,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0f7763f-9291-4619-8b52-82b35ab4b0ff" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemGlobals.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemGlobals.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/SVAbilityTypes.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/SVAbilityTypes.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/Widget/Overlay/Attribute/WBP_AttributeList.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/Widget/Overlay/Attribute/WBP_AttributeList.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/Widget/Overlay/WBP_OverlayWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/Widget/Overlay/WBP_OverlayWidget.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_EnemyBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_EnemyBase.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Player/SampleCharacter/BP_SandboxCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Player/SampleCharacter/BP_SandboxCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/B/OD/W6Q6J6JD0LHYZA38NSCONX.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/B/OD/W6Q6J6JD0LHYZA38NSCONX.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Player/SVPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Player/SVPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Player/SVPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Player/SVPlayerController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/UI/WidgetController/OverlayWidgetController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/UI/WidgetController/OverlayWidgetController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Survivor.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Survivor.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Survivor.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Survivor.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Survivor.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/Survivor.uproject" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +47,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://25" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/PoseSearch/Source/Editor/Private/PoseSearchDatabaseAssetBrowser.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/PoseSearch/Source/Runtime/Private/PoseSearchDatabase.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/PoseSearch/Source/Runtime/Public/PoseSearch/PoseSearchDatabase.h" root0="SKIP_HIGHLIGHTING" />
@@ -64,7 +70,9 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/Controller.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/MovementComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/PawnMovementComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.inl" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -75,6 +83,7 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/Controller.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/KismetMathLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/Pawn.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/PrimitiveDrawingUtils.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Public/DrawDebugHelpers.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/GameplayTags/Classes/GameplayTagContainer.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/UMG/Private/UserWidget.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -108,16 +117,18 @@
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Game/SVGameMode.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Game/SVGameMode.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/SVAssetManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/SVAssetManager.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/SVGameplayTags.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -302,6 +313,7 @@
       <workItem from="1765011937722" duration="11274000" />
       <workItem from="1765084227141" duration="21175000" />
       <workItem from="1765199911179" duration="7639000" />
+      <workItem from="1765286270886" duration="8912000" />
     </task>
     <servers />
   </component>

@@ -2,31 +2,33 @@
 
 #include "SVCharacter.h"
 
-#include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "KismetAnimationLibrary.h"
+#include "Component/CombatComponent/PlayerCombatComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 #include "Survivor/Camera/SVCameraComponent.h"
-#include "Survivor/Player/SVPlayerController.h"
-#include "Survivor/Player/SVPlayerState.h"
-#include "Survivor/UI/HUD/SVHUD.h"
 
 ASVCharacter::ASVCharacter()
 {
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(false);
+	
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	CameraComponent = CreateDefaultSubobject<USVCameraComponent>("SVCameraComponent");
 	CameraComponent->SetupAttachment(GetRootComponent());
-}
 
-void ASVCharacter::BeginPlay()
-{
-	Super::BeginPlay();
+	CombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>("CombatComponent");
 }
 
 void ASVCharacter::OnRep_PlayerState()
@@ -46,6 +48,11 @@ void ASVCharacter::PossessedBy(AController* NewController)
 	{
 		Subsystem->AddMappingContext(InputContext, 0);
 	}
+}
+
+void ASVCharacter::InitAbilityActorInfo() const
+{
+	CombatComponent->InitAbilityActorInfo();
 }
 
 void ASVCharacter::Tick(float DeltaTime)
@@ -143,28 +150,6 @@ void ASVCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	EnhancedInputComponent->BindAction(StrafeAction, ETriggerEvent::Started, this, &ThisClass::Strafe);
 }
 
-void ASVCharacter::InitAbilityActorInfo()
-{
-	ASVPlayerState* SVPlayerState = GetPlayerState<ASVPlayerState>();
-	check(SVPlayerState);
-
-	AbilitySystemComponent = SVPlayerState->GetAbilitySystemComponent();
-	AbilitySystemComponent->InitAbilityActorInfo(SVPlayerState, this);
-	Cast<USVAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
-	AttributeSet = SVPlayerState->GetAttributeSet();
-	OnASCRegistered.Broadcast(AbilitySystemComponent);
-
-	ApplyEffectToSelf(DefaultAttributes, SVPlayerState->GetPlayerLevel());
-
-	if (ASVPlayerController* SVPlayerController = GetController<ASVPlayerController>())
-	{
-		if (ASVHUD* SVHUD = Cast<ASVHUD>(SVPlayerController->GetHUD()))
-		{
-			SVHUD->InitHUD(SVPlayerController, SVPlayerState, AbilitySystemComponent, AttributeSet);
-		}
-	}
-}
-
 void ASVCharacter::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D InputValue = InputActionValue.Get<FVector2D>();
@@ -223,4 +208,9 @@ void ASVCharacter::Strafe()
 		MovementComponent->bUseControllerDesiredRotation = false;
 		MovementComponent->bOrientRotationToMovement = true;
 	}
+}
+
+UAbilitySystemComponent* ASVCharacter::GetAbilitySystemComponent() const
+{
+	return CombatComponent->GetAbilitySystemComponent();
 }

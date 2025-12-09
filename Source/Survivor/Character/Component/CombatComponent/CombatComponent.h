@@ -4,41 +4,40 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "GameFramework/Character.h"
-#include "Survivor/Camera/SVCameraAssistInterface.h"
-#include "Survivor/Interface/CombatInterface.h"
-#include "SVCharacterBase.generated.h"
+#include "Components/PawnComponent.h"
+#include "CombatComponent.generated.h"
 
 class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
-UCLASS()
-class SURVIVOR_API ASVCharacterBase : public ACharacter, public ICombatInterface, public IAbilitySystemInterface, public ISVCameraAssistInterface
+UCLASS(Abstract, NotBlueprintable)
+class SURVIVOR_API UCombatComponent : public UPawnComponent, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	ASVCharacterBase();
+	UCombatComponent(const FObjectInitializer& ObjectInitializer);
 
+	// PlayerCharacter는 초기화 시점에 외부에서 두 객체를 넘겨받지만, Enemy의 경우 캐릭터쪽에서 직접 생성하기 때문에, 넘겨받아 할당합니다.
+	void SetAbilitySystemComponent(UAbilitySystemComponent* InAbilitySystemComponent);
+	void SetAttributeSet(UAttributeSet* InAttributeSet);
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
-protected:
 	virtual void InitAbilityActorInfo();
-
+	
+protected:
 	// GameplayEffect를 본인에게 적용하는 함수입니다.
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const;
 	virtual void AddCharacterStartupAbilities() const;
 
-protected:
+public:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-	
-	FOnASCRegistered OnASCRegistered;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultAttributes;
@@ -49,9 +48,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Hide")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Hide")
 	TArray<TObjectPtr<UMaterialInstance>> FadeMaterials;
-	
+
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Hide")
 	TArray<TObjectPtr<UMaterialInstanceDynamic>> OriginalMaterialInstances;
 

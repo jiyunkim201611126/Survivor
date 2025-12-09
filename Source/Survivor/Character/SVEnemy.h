@@ -3,17 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SVCharacterBase.h"
+#include "AbilitySystemInterface.h"
 #include "Survivor/AI/SVAIController.h"
+#include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVEnemy.generated.h"
 
+class UCapsuleComponent;
+class UAttributeSet;
+class UEnemyCombatComponent;
+
 UCLASS()
-class SURVIVOR_API ASVEnemy : public ASVCharacterBase
+class SURVIVOR_API ASVEnemy : public APawn, public IAbilitySystemInterface, public ISVCameraAssistInterface
 {
 	GENERATED_BODY()
 
 public:
 	ASVEnemy();
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -26,14 +33,16 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End of APawn Interface
 
-	//~ Begin ASVCharacterBase Interface
-	virtual void InitAbilityActorInfo() override;
+	//~ Begin ISVCameraAssistInterface
 	virtual void StartHide_Implementation() override;
 	virtual void EndHide_Implementation() override;
-	//~ End of ASVCharacterBase Interface
+	//~ End of ISVCameraAssistInterface
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_PlaySpawnAnimation();
+
+private:
+	void InitAbilityActorInfo() const;
 
 public:
 	UPROPERTY()
@@ -42,7 +51,19 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
-protected:
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UCapsuleComponent> CapsuleComponent;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UEnemyCombatComponent> CombatComponent;
+	
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Character | Movement")
 	float BaseWalkSpeed = 300.f;
 };
