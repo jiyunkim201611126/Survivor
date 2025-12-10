@@ -15,7 +15,7 @@ void USVAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<U
 	for (const TSubclassOf<UGameplayAbility>& AbilityClass : InAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		GiveAbility(AbilitySpec);
+		GiveAbilityAndActivateOnce(AbilitySpec);
 	}
 }
 

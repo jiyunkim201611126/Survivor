@@ -39,4 +39,12 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.Abilities_Types = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Types"), FString(""));
+
+
+	GameplayTags.EnemyAbilities_Normal = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("EnemyAbilities.Normal"), FString(""));
+	
+	
+	GameplayTags.CharacterState_Dead = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CharacterState.Dead"), FString(""));
 }

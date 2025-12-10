@@ -38,6 +38,13 @@ struct FSVGameplayTags
 	FGameplayTag Abilities_Types;
 	//~ End Ability Types
 
+	
+	//~ Begin Abilities	
+	FGameplayTag EnemyAbilities_Normal;
+	//~ End of Abilities
+
+	FGameplayTag CharacterState_Dead;
+
 private:
 	static FSVGameplayTags GameplayTags;
 };

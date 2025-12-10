@@ -8,6 +8,7 @@
 #include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVEnemy.generated.h"
 
+class UGameplayAbility;
 class UCapsuleComponent;
 class UAttributeSet;
 class UEnemyCombatComponent;

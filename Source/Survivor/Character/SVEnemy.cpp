@@ -38,6 +38,7 @@ void ASVEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	InitAbilityActorInfo();
+	CombatComponent->AddCharacterStartupAbilities();
 	BP_PlaySpawnAnimation();
 }
 

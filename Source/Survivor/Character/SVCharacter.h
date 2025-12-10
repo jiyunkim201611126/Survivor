@@ -8,6 +8,7 @@
 #include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVCharacter.generated.h"
 
+class UGameplayAbility;
 class UAttributeSet;
 class UPlayerCombatComponent;
 class UInputAction;

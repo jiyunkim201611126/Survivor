@@ -42,7 +42,7 @@ void UCombatComponent::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> Game
 
 void UCombatComponent::AddCharacterStartupAbilities() const
 {
-	if (HasAuthority())
+	if (!HasAuthority())
 	{
 		return;
 	}

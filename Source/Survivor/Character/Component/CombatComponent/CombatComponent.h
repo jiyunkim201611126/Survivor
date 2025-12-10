@@ -26,11 +26,11 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	virtual void InitAbilityActorInfo();
+	void AddCharacterStartupAbilities() const;
 	
 protected:
 	// GameplayEffect를 본인에게 적용하는 함수입니다.
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const;
-	virtual void AddCharacterStartupAbilities() const;
 
 public:
 	UPROPERTY()
@@ -41,7 +41,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultAttributes;
-	
+
+	// 게임 시작 시 부여되는 Ability입니다.
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	

@@ -43,6 +43,7 @@ void ASVCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
+	CombatComponent->AddCharacterStartupAbilities();
 
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Cast<APlayerController>(NewController)->GetLocalPlayer()))
 	{

@@ -193,33 +193,6 @@ void USVCameraMode_ThirdPerson::PreventCameraPenetration(const AActor& ViewTarge
 				// 주변 Ray가 아닌, 카메라 방향 그대로 나오는 Ray입니다.
 				// 따라서 Snap이 발생하더라도 즉시 카메라를 이동시켜야 합니다.
 				HardBlockedPercent = DistBlockedPercentThisFrame;
-
-				// 이전 프레임에서 Hide했던 Pawn을 다시 렌더링되도록 합니다.
-				for (AActor* HidedOtherPawn : HidedOtherPawns)
-				{
-					ISVCameraAssistInterface::Execute_EndHide(HidedOtherPawn);
-				}
-				HidedOtherPawns.Empty();
-
-				// 카메라 방향 그대로 나오는 Ray에선 Pawn에 대한 충돌 여부도 검사합니다.
-				// 카메라에서 SafeLocation으로 레이 캐스트를 수행하되, 길이는 ReportPenetrationPercent를 따릅니다.
-				TArray<FHitResult> HidePawnHitResults;
-				FVector HidePawnRayTarget = View.Location + (SafeLocation - View.Location) * ReportPenetrationPercent;
-				const bool bPawnHit = World->SweepMultiByChannel(HidePawnHitResults, View.Location, HidePawnRayTarget, FQuat::Identity, ECC_Pawn, SphereShape, SphereParams);
-				if (bPawnHit)
-				{
-					// 검출된 타겟은 모두 Hide합니다.
-					for (const FHitResult& HidePawnHitResult : HidePawnHitResults)
-					{
-						AActor* HitPawnActor = HidePawnHitResult.GetActor();
-						if (HitPawnActor && HitPawnActor->Implements<USVCameraAssistInterface>())
-						{
-							// 숨김과 동시에 다음 프레임에서 다시 렌더링되도록 하기 위해 캐싱합니다.
-							ISVCameraAssistInterface::Execute_StartHide(HitPawnActor);
-							HidedOtherPawns.Emplace(HitPawnActor);
-						}
-					}
-				}
 			}
 			else
 			{
@@ -283,5 +256,32 @@ void USVCameraMode_ThirdPerson::PreventCameraPenetration(const AActor& ViewTarge
 	{
 		// 계산 결과 카메라를 캐릭터쪽으로 밀어야 하는 경우, DistBlockedPercent를 사용해 최종 CameraLocation을 계산합니다.
 		CameraLocation = SafeLocation + (CameraLocation - SafeLocation) * DistBlockedPercent;
+	}
+
+	// 마지막으로 카메라와 가까이 있는 Enemy도 Hide하기 위한 로직을 수행합니다.
+	// 이전 프레임에서 Hide했던 Pawn을 다시 렌더링되도록 합니다.
+	for (AActor* HidedOtherPawn : HidedOtherPawns)
+	{
+		ISVCameraAssistInterface::Execute_EndHide(HidedOtherPawn);
+	}
+	HidedOtherPawns.Empty();
+
+	// 카메라에서 SafeLocation으로 레이 캐스트를 수행하되, 길이는 ReportPenetrationPercent를 따릅니다.
+	TArray<FHitResult> HidePawnHitResults;
+	FVector HidePawnRayTarget = CameraLocation + (SafeLocation - CameraLocation) * ReportPenetrationPercent;
+	const bool bPawnHit = World->SweepMultiByChannel(HidePawnHitResults, CameraLocation, HidePawnRayTarget, FQuat::Identity, ECC_Pawn, SphereShape, SphereParams);
+	if (bPawnHit)
+	{
+		// 검출된 타겟은 모두 Hide합니다.
+		for (const FHitResult& HidePawnHitResult : HidePawnHitResults)
+		{
+			AActor* HitPawnActor = HidePawnHitResult.GetActor();
+			if (HitPawnActor && HitPawnActor->Implements<USVCameraAssistInterface>())
+			{
+				// 숨김과 동시에 다음 프레임에서 다시 렌더링되도록 하기 위해 캐싱합니다.
+				ISVCameraAssistInterface::Execute_StartHide(HitPawnActor);
+				HidedOtherPawns.Emplace(HitPawnActor);
+			}
+		}
 	}
 }

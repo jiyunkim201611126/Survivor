@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet/SVAttributeSet.h"
+#include "EffectApplier/EffectApplier_Damage.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Survivor/SVAbilityTypes.h"
 #include "SVAbilitySystemLibrary.generated.h"
@@ -30,4 +31,7 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary | GameplayEffects")
 	static FDamageDataContext GetDamageData(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	
+	static void SetKnockbackForce(FGameplayEffectContextHandle& EffectContextHandle, const FVector& Force);
 };
