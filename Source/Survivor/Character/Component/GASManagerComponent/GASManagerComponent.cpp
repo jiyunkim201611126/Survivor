@@ -1,36 +1,36 @@
 ﻿// KJY
 
-#include "CombatComponent.h"
+#include "GASManagerComponent.h"
 
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectTypes.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 
-UCombatComponent::UCombatComponent(const FObjectInitializer& ObjectInitializer)
+UGASManagerComponent::UGASManagerComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
 
-void UCombatComponent::SetAbilitySystemComponent(UAbilitySystemComponent* InAbilitySystemComponent)
+void UGASManagerComponent::SetAbilitySystemComponent(UAbilitySystemComponent* InAbilitySystemComponent)
 {
 	AbilitySystemComponent = InAbilitySystemComponent;
 }
 
-void UCombatComponent::SetAttributeSet(UAttributeSet* InAttributeSet)
+void UGASManagerComponent::SetAttributeSet(UAttributeSet* InAttributeSet)
 {
 	AttributeSet = InAttributeSet;
 }
 
-UAbilitySystemComponent* UCombatComponent::GetAbilitySystemComponent() const
+UAbilitySystemComponent* UGASManagerComponent::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
 
-void UCombatComponent::InitAbilityActorInfo()
+void UGASManagerComponent::InitAbilityActorInfo()
 {
 }
 
-void UCombatComponent::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const
+void UGASManagerComponent::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const
 {
 	check(IsValid(AbilitySystemComponent));
 	check(GameplayEffectClass);
@@ -40,7 +40,7 @@ void UCombatComponent::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> Game
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), AbilitySystemComponent);
 }
 
-void UCombatComponent::AddCharacterStartupAbilities() const
+void UGASManagerComponent::AddCharacterStartupAbilities() const
 {
 	if (!HasAuthority())
 	{

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "Components/PawnComponent.h"
-#include "CombatComponent.generated.h"
+#include "GASManagerComponent.generated.h"
 
 class UGameplayAbility;
 class UGameplayEffect;
@@ -13,12 +13,12 @@ class UAttributeSet;
 class UAbilitySystemComponent;
 
 UCLASS(Abstract, NotBlueprintable)
-class SURVIVOR_API UCombatComponent : public UPawnComponent, public IAbilitySystemInterface
+class SURVIVOR_API UGASManagerComponent : public UPawnComponent, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	UCombatComponent(const FObjectInitializer& ObjectInitializer);
+	UGASManagerComponent(const FObjectInitializer& ObjectInitializer);
 
 	// PlayerCharacter는 초기화 시점에 외부에서 두 객체를 넘겨받지만, Enemy의 경우 캐릭터쪽에서 직접 생성하기 때문에, 넘겨받아 할당합니다.
 	void SetAbilitySystemComponent(UAbilitySystemComponent* InAbilitySystemComponent);

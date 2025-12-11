@@ -5,7 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "KismetAnimationLibrary.h"
-#include "Component/CombatComponent/PlayerCombatComponent.h"
+#include "Component/GASManagerComponent/PlayerGASManagerComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -13,8 +13,7 @@
 
 ASVCharacter::ASVCharacter()
 {
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionProfileName("Player");
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
@@ -28,7 +27,7 @@ ASVCharacter::ASVCharacter()
 	CameraComponent = CreateDefaultSubobject<USVCameraComponent>("SVCameraComponent");
 	CameraComponent->SetupAttachment(GetRootComponent());
 
-	CombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>("CombatComponent");
+	GASManagerComponent = CreateDefaultSubobject<UPlayerGASManagerComponent>("CombatComponent");
 }
 
 void ASVCharacter::OnRep_PlayerState()
@@ -43,7 +42,7 @@ void ASVCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-	CombatComponent->AddCharacterStartupAbilities();
+	GASManagerComponent->AddCharacterStartupAbilities();
 
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Cast<APlayerController>(NewController)->GetLocalPlayer()))
 	{
@@ -53,7 +52,7 @@ void ASVCharacter::PossessedBy(AController* NewController)
 
 void ASVCharacter::InitAbilityActorInfo() const
 {
-	CombatComponent->InitAbilityActorInfo();
+	GASManagerComponent->InitAbilityActorInfo();
 }
 
 void ASVCharacter::Tick(float DeltaTime)
@@ -62,6 +61,38 @@ void ASVCharacter::Tick(float DeltaTime)
 
 	UpdateMovement();
 	UpdateRotation();
+}
+
+void ASVCharacter::ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration)
+{
+	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
+	if (!MovementComponent)
+	{
+		return;
+	}
+
+	TSharedPtr<FRootMotionSource_ConstantForce> ConstantForce = MakeShared<FRootMotionSource_ConstantForce>();
+	ConstantForce->InstanceName = FName("Knockback");
+	ConstantForce->Priority = 200;
+	ConstantForce->Force = KnockbackForce / Duration;
+	ConstantForce->Duration = Duration;
+	ConstantForce->FinishVelocityParams.Mode = ERootMotionFinishVelocityMode::MaintainLastRootMotionVelocity;
+	MovementComponent->RemoveRootMotionSource(FName("Knockback"));
+	if (GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		GetMesh()->GetAnimInstance()->SetRootMotionMode(ERootMotionMode::IgnoreRootMotion);
+	}
+	
+	MovementComponent->ApplyRootMotionSource(ConstantForce);
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+	{
+		if (GetMesh() && GetMesh()->GetAnimInstance())
+		{
+			GetMesh()->GetAnimInstance()->SetRootMotionMode(ERootMotionMode::RootMotionFromMontagesOnly);
+		}
+	}, Duration, false);
 }
 
 void ASVCharacter::UpdateMovement()
@@ -213,5 +244,5 @@ void ASVCharacter::Strafe()
 
 UAbilitySystemComponent* ASVCharacter::GetAbilitySystemComponent() const
 {
-	return CombatComponent->GetAbilitySystemComponent();
+	return GASManagerComponent->GetAbilitySystemComponent();
 }

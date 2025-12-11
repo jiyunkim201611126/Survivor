@@ -27,21 +27,18 @@ struct FSVGameplayTags
 	//~ End of Damage Types
 	
 	//~ Begin Abilities	
-	FGameplayTag Abilities_None;
-	//~ End of Abilities
-	
-	//~ Begin Ability Cooldown
-	FGameplayTag Abilities_Cooldown;
-	//~ End of Ability Cooldown
+	FGameplayTag Abilities;
+	//~ End of Ability
 	
 	//~ Begin Ability Types
 	FGameplayTag Abilities_Types;
 	//~ End Ability Types
 
 	
-	//~ Begin Abilities	
+	//~ Begin Enemy Abilities	
 	FGameplayTag EnemyAbilities_Normal;
-	//~ End of Abilities
+	FGameplayTag EnemyAbilities_Cooldown_Normal;
+	//~ End of Enemy Abilities
 
 	FGameplayTag CharacterState_Dead;
 

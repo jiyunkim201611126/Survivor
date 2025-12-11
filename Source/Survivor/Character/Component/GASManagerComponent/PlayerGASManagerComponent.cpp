@@ -1,13 +1,13 @@
 ﻿// KJY
 
-#include "PlayerCombatComponent.h"
+#include "PlayerGASManagerComponent.h"
 
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 #include "Survivor/Player/SVPlayerController.h"
 #include "Survivor/Player/SVPlayerState.h"
 #include "Survivor/UI/HUD/SVHUD.h"
 
-void UPlayerCombatComponent::InitAbilityActorInfo()
+void UPlayerGASManagerComponent::InitAbilityActorInfo()
 {
 	ASVPlayerState* SVPlayerState = GetPlayerState<ASVPlayerState>();
 	check(SVPlayerState);

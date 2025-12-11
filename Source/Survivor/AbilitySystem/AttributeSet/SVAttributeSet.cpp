@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Survivor/CombatInterface.h"
 #include "Survivor/SVAbilityTypes.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
 #include "Survivor/Manager/SVGameplayTags.h"
@@ -109,7 +110,10 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 		{
 			if (!DamageData.KnockbackForce.IsNearlyZero(1.f))
 			{
-				// TODO: 넉백 적용
+				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+				{
+					CombatInterface->ApplyKnockback(DamageData.KnockbackForce, 0.5f);
+				}
 			}
 		}
 

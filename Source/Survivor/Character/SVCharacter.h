@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Survivor/CombatInterface.h"
 #include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVCharacter.generated.h"
 
 class UGameplayAbility;
 class UAttributeSet;
-class UPlayerCombatComponent;
+class UPlayerGASManagerComponent;
 class UInputAction;
 class UInputMappingContext;
 class USVCameraComponent;
@@ -25,7 +26,7 @@ enum class EMovementType : uint8
 };
 
 UCLASS()
-class SURVIVOR_API ASVCharacter : public ACharacter, public IAbilitySystemInterface, public ISVCameraAssistInterface
+class SURVIVOR_API ASVCharacter : public ACharacter, public IAbilitySystemInterface, public ISVCameraAssistInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -37,6 +38,10 @@ public:
 	//~ Begin AActor Interface
 	virtual void Tick(float DeltaTime) override;
 	//~ End of AActor Interface
+
+	//~ Begin ICombatInterface
+	virtual void ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration) override;
+	//~ End of ICombatInterface
 
 protected:
 	//~ Begin APawn Interface
@@ -70,7 +75,7 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UPlayerCombatComponent> CombatComponent;
+	TObjectPtr<UPlayerGASManagerComponent> GASManagerComponent;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<USVCameraComponent> CameraComponent;

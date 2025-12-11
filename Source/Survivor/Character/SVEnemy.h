@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "Survivor/CombatInterface.h"
 #include "Survivor/AI/SVAIController.h"
 #include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVEnemy.generated.h"
@@ -11,10 +12,10 @@
 class UGameplayAbility;
 class UCapsuleComponent;
 class UAttributeSet;
-class UEnemyCombatComponent;
+class UEnemyGASManagerComponent;
 
 UCLASS()
-class SURVIVOR_API ASVEnemy : public APawn, public IAbilitySystemInterface, public ISVCameraAssistInterface
+class SURVIVOR_API ASVEnemy : public APawn, public IAbilitySystemInterface, public ISVCameraAssistInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -24,6 +25,10 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	//~ Begin ICombatInterface
+	virtual void ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration) override;
+	//~ End of ICombatInterface
 
 protected:
 	//~ Begin AActor Interface
@@ -45,6 +50,10 @@ protected:
 private:
 	void InitAbilityActorInfo() const;
 
+	UFUNCTION()
+	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+
 public:
 	UPROPERTY()
 	TObjectPtr<ASVAIController> SVAIController;
@@ -57,7 +66,7 @@ private:
 	TObjectPtr<UCapsuleComponent> CapsuleComponent;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UEnemyCombatComponent> CombatComponent;
+	TObjectPtr<UEnemyGASManagerComponent> GASManagerComponent;
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

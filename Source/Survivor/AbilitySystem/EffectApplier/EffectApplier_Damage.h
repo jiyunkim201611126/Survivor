@@ -7,7 +7,7 @@
 #include "ScalableFloat.h"
 #include "EffectApplier_Damage.generated.h"
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, EditInlineNew, DefaultToInstanced)
 class SURVIVOR_API UEffectApplier_Damage : public UGameplayEffectApplier
 {
 	GENERATED_BODY()

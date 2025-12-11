@@ -13,33 +13,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0f7763f-9291-4619-8b52-82b35ab4b0ff" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/GameplayEffectApplier.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/GameplayEffectApplier.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/projectSettingsUpdater.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/vcs.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/PlayerGASManagerComponent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/CombatInterface.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/CombatInterface.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/GameplayEffect/EnemyCharacter/GE_EnemyCharacterDefaultAttribute.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/GameplayEffect/EnemyCharacter/GE_EnemyCharacterDefaultAttribute.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/Abilities/Enemy/GA_EnemyAbility_Normal.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/Abilities/Enemy/GA_EnemyAbility_Normal.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/GameplayEffect/PlayerCharacter/GE_PlayerCharacterDefaultAttribute.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/GameplayEffect/PlayerCharacter/GE_PlayerCharacterDefaultAttribute.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_EnemyBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_EnemyBase.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Player/SampleCharacter/BP_SandboxCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Player/SampleCharacter/BP_SandboxCharacter.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/B/OD/W6Q6J6JD0LHYZA38NSCONX.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/B/OD/W6Q6J6JD0LHYZA38NSCONX.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/GASManagerComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/GASManagerComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/PlayerGASManagerComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/SVGameplayTags.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/SVGameplayTags.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/SVGameplayTags.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/SVGameplayTags.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Survivor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Survivor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/UI/Widget/ProgressBar/SVProgressBar.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/UI/Widget/ProgressBar/SVProgressBar.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Survivor.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Survivor.sln.DotSettings.user" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,6 +61,7 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/PoseSearch/Source/Runtime/Public/PoseSearch/PoseSearchDatabase.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Experimental/FastGeoStreaming/Source/FastGeoStreaming/Private/IFastGeoElement.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/Abilities/Async/AbilityAsync_WaitGameplayEffectApplied.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/Abilities/GameplayAbility.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/Blutility/Private/EditorUtilityWidgetComponents.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/SceneDepthPickerMode/SceneDepthPickerMode.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/UnrealEd/Classes/Factories/StructureFactory.h" root0="FORCE_HIGHLIGHTING" />
@@ -77,6 +80,7 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectHandleTracking.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/Components/SceneComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/Engine/EngineTypes.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h" root0="FORCE_HIGHLIGHTING" />
@@ -132,16 +136,18 @@
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Camera/SVCameraMode_ThirdPerson.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/CombatComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/EnemyCombatComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/CombatComponent/PlayerCombatComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/GASManagerComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/GASManagerComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/PlayerGASManagerComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/PlayerGASManagerComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/CombatInterface.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/CombatInterface.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Game/SVGameMode.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Game/SVGameMode.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/SVAssetManager.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -354,6 +360,7 @@
       <workItem from="1765199911179" duration="7639000" />
       <workItem from="1765286270886" duration="8912000" />
       <workItem from="1765373448377" duration="14681000" />
+      <workItem from="1765459908725" duration="10855000" />
     </task>
     <servers />
   </component>

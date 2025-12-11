@@ -81,9 +81,11 @@ void UEffectApplier_Damage::CauseDamage(const UGameplayAbility* OwningAbility, A
 	{
 		if (Spec.Data.IsValid())
 		{
-			if (UAbilitySystemComponent* ASC = OwningAbility->GetAbilitySystemComponentFromActorInfo())
+			UAbilitySystemComponent* SourceASC = OwningAbility->GetAbilitySystemComponentFromActorInfo();
+			UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+			if (SourceASC && TargetASC)
 			{
-				ASC->ApplyGameplayEffectSpecToTarget(*Spec.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
+				SourceASC->ApplyGameplayEffectSpecToTarget(*Spec.Data.Get(), TargetASC);
 			}
 		}
 	}

@@ -5,21 +5,25 @@
 #include "AbilitySystemComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Component/CombatComponent/EnemyCombatComponent.h"
+#include "Component/GASManagerComponent/EnemyGASManagerComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 #include "Survivor/AbilitySystem/AttributeSet/SVAttributeSet.h"
+#include "Survivor/Manager/SVGameplayTags.h"
 
 ASVEnemy::ASVEnemy()
 {
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>("CapsuleComponent");
 	SetRootComponent(CapsuleComponent);
+
+	CapsuleComponent->SetCollisionProfileName("Enemy");
+	CapsuleComponent->SetGenerateOverlapEvents(true);
 	
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	
-	CombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("CombatComponent");
+	GASManagerComponent = CreateDefaultSubobject<UEnemyGASManagerComponent>("CombatComponent");
 
 	AbilitySystemComponent = CreateDefaultSubobject<USVAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
@@ -38,8 +42,10 @@ void ASVEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	InitAbilityActorInfo();
-	CombatComponent->AddCharacterStartupAbilities();
+	GASManagerComponent->AddCharacterStartupAbilities();
 	BP_PlaySpawnAnimation();
+
+	CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnComponentBeginOverlap);
 }
 
 void ASVEnemy::PossessedBy(AController* NewController)
@@ -58,9 +64,37 @@ void ASVEnemy::PossessedBy(AController* NewController)
 
 void ASVEnemy::InitAbilityActorInfo() const
 {
-	CombatComponent->SetAbilitySystemComponent(AbilitySystemComponent);
-	CombatComponent->SetAttributeSet(AttributeSet);
-	CombatComponent->InitAbilityActorInfo();
+	GASManagerComponent->SetAbilitySystemComponent(AbilitySystemComponent);
+	GASManagerComponent->SetAttributeSet(AttributeSet);
+	GASManagerComponent->InitAbilityActorInfo();
+}
+
+void ASVEnemy::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	// 이 이벤트로 들어왔다면 OtherActor는 반드시 PlayerCharacter여야 합니다.
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	
+	if (OtherActor && ASC->AbilityActorInfo.IsValid())
+	{
+		FScopedAbilityListLock AbilityListLock(*ASC);
+		const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
+
+		for (const FGameplayAbilitySpec& Spec : ASC->GetActivatableAbilities())
+		{
+			if (Spec.Ability && Spec.Ability->GetAssetTags().HasTagExact(GameplayTags.EnemyAbilities_Normal))
+			{
+				FGameplayEventData EventData;
+				EventData.Target = OtherActor;
+
+				ASC->TriggerAbilityFromGameplayEvent(Spec.Handle, ASC->AbilityActorInfo.Get(), FGameplayTag(), &EventData, *ASC);
+				return;
+			}
+		}
+	}
+}
+
+void ASVEnemy::ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration)
+{
 }
 
 void ASVEnemy::StartHide_Implementation()
@@ -75,5 +109,5 @@ void ASVEnemy::EndHide_Implementation()
 
 UAbilitySystemComponent* ASVEnemy::GetAbilitySystemComponent() const
 {
-	return CombatComponent->GetAbilitySystemComponent();
+	return GASManagerComponent->GetAbilitySystemComponent();
 }

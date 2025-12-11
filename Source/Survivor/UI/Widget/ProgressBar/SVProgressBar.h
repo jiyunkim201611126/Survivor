@@ -52,5 +52,5 @@ private:
 	float GhostPercentTarget = 0.5f;
 	float GhostStartDelay = 1.f;
 	float GhostInterpDelay = 0.05f;
-	float GhostInterpSpeed = 3.f;
+	float GhostInterpSpeed = 5.f;
 };
