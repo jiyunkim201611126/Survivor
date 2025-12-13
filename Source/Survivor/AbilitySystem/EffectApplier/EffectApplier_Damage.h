@@ -23,8 +23,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float KnockbackChance = 100.f;
 
+	// 피격 캐릭터의 속도(Velocity)를 변경하는 로직을 활용한다는 걸 고려해 수치를 입력하는 게 좋습니다.
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	float KnockbackForceMagnitude = 100.f;
+	float KnockbackMagnitude = 300.f;
 
 protected:
 	// 데미지 타입과 그 속성 데미지를 정의하는 변수입니다.

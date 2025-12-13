@@ -31,7 +31,9 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary | GameplayEffects")
 	static FDamageDataContext GetDamageData(const FGameplayEffectContextHandle& EffectContextHandle);
-
 	
-	static void SetKnockbackForce(FGameplayEffectContextHandle& EffectContextHandle, const FVector& Force);
+	static void SetKnockbackMagnitude(FGameplayEffectContextHandle& EffectContextHandle, const float Magnitude);
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary | GameplayEffects")
+	static TArray<AActor*> GetActorsFromContext(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle);
 };

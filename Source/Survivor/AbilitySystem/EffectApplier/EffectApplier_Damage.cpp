@@ -61,14 +61,11 @@ void UEffectApplier_Damage::CauseDamage(const UGameplayAbility* OwningAbility, A
 		TArray<TWeakObjectPtr<AActor>> TargetActors;
 		TargetActors.Add(TargetActor);
 		EffectContextHandle.AddActors(TargetActors);
-
-		if (const AActor* AvatarActor = OwningAbility->GetAvatarActorFromActorInfo())
+		
+		// 넉백은 확률 계산 후 성공 시 세팅합니다.
+		if (FMath::FRandRange(0.f, 100.f) < KnockbackChance)
 		{
-			// 넉백은 확률 계산 후 성공 시 세팅합니다.
-			if (FMath::FRandRange(0.f, 100.f) < KnockbackChance)
-			{
-				USVAbilitySystemLibrary::SetKnockbackForce(EffectContextHandle, AvatarActor->GetActorForwardVector() * KnockbackForceMagnitude);
-			}
+			USVAbilitySystemLibrary::SetKnockbackMagnitude(EffectContextHandle, KnockbackMagnitude);
 		}
 	}
 

@@ -63,10 +63,23 @@ FDamageDataContext USVAbilitySystemLibrary::GetDamageData(const FGameplayEffectC
 	return FDamageDataContext();
 }
 
-void USVAbilitySystemLibrary::SetKnockbackForce(FGameplayEffectContextHandle& EffectContextHandle, const FVector& Force)
+void USVAbilitySystemLibrary::SetKnockbackMagnitude(FGameplayEffectContextHandle& EffectContextHandle, const float Magnitude)
 {
 	if (FSVGameplayEffectContext* SVEffectContext = static_cast<FSVGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
-		SVEffectContext->SetKnockbackForce(Force);
+		SVEffectContext->SetKnockbackMagnitude(Magnitude);
 	}
+}
+
+TArray<AActor*> USVAbilitySystemLibrary::GetActorsFromContext(FGameplayEffectContextHandle& EffectContextHandle)
+{
+	TArray<AActor*> Actors;
+	for (auto Element : EffectContextHandle.GetActors())
+	{
+		if (Element.IsValid())
+		{
+			Actors.Add(Element.Get());
+		}
+	}
+	return Actors;
 }

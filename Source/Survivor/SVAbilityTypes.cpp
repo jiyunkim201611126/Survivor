@@ -4,18 +4,18 @@
 
 bool FDamageDataContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
 {
-	if (!KnockbackForce.IsZero())
+	if (!FMath::IsNearlyZero(KnockbackMagnitude))
 	{
-		Ar << KnockbackForce;
+		Ar << KnockbackMagnitude;
 	}
 
 	bOutSuccess = true;
 	return true;
 }
 
-void FSVGameplayEffectContext::SetKnockbackForce(const FVector& Force)
+void FSVGameplayEffectContext::SetKnockbackMagnitude(const float Magnitude)
 {
-	DamageData.KnockbackForce = Force;
+	DamageData.KnockbackMagnitude = Magnitude;
 }
 
 bool FSVGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
@@ -51,7 +51,7 @@ bool FSVGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
 		{
 			RepBits |= 1 << 6;
 		}
-		if (!DamageData.KnockbackForce.IsZero())
+		if (!FMath::IsNearlyZero(DamageData.KnockbackMagnitude))
 		{
 			RepBits |= 1 << 7;
 		}

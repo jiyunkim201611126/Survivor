@@ -8,6 +8,7 @@
 #include "Survivor/CombatInterface.h"
 #include "Survivor/SVAbilityTypes.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
+#include "Survivor/Manager/DamageSlateManagerSubsystem.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
 USVAttributeSet::USVAttributeSet()
@@ -101,28 +102,38 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 		const bool bFatal = NewHealth <= 0.f;
 
 		const FDamageDataContext DamageData = USVAbilitySystemLibrary::GetDamageData(Props.EffectContextHandle);
+		
+		FVector TargetLocation = Props.TargetAvatarActor->GetActorLocation();
+		FVector SourceLocation = Props.SourceAvatarActor->GetActorLocation();
+
+		// 두 액터 위치 사이에 데미지 텍스트를 표시합니다.
+		const FVector DamageTextLocation = (TargetLocation + SourceLocation) / 2.f;
+		GetWorld()->GetSubsystem<UDamageSlateManagerSubsystem>()->ShowDamageNumber(LocalIncomingDamage, DamageTextLocation);
+		
+		const float KnockbackMagnitude = DamageData.KnockbackMagnitude;
+		if (!FMath::IsNearlyZero(KnockbackMagnitude))
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+			{
+				TargetLocation.Z = 0;
+				SourceLocation.Z = 0;
+				const FVector HorizontalDirection = (TargetLocation - SourceLocation).GetSafeNormal();
+				const FVector KnockbackDirection = (HorizontalDirection + FVector::UpVector) * KnockbackMagnitude;
+				CombatInterface->ApplyKnockback(KnockbackDirection);
+			}
+		}
+		// TODO: 데미지 표시, 적인 경우 ProgressBar Slate 사용
 
 		if (bFatal)
 		{
 			// TODO: 사망 처리 및 XP Event 송신
 		}
-		else
-		{
-			if (!DamageData.KnockbackForce.IsNearlyZero(1.f))
-			{
-				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
-				{
-					CombatInterface->ApplyKnockback(DamageData.KnockbackForce, 0.5f);
-				}
-			}
-		}
-
-		// TODO: 데미지 표시, ProgressBar Slate 사용
 	}
 	else
 	{
 		// 데미지가 0.01보다 작으면 체력 감소를 적용하지 않습니다.
 		SetIncomingDamage(0.f);
+		
 		// TODO: NoDamage 문구 표시
 	}
 }

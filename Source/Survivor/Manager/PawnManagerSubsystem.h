@@ -1,0 +1,45 @@
+// KJY
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "PawnManagerSubsystem.generated.h"
+
+/**
+ * 플레이어와 몬스터들의 Pawn을 등록하는 Subsystem입니다.
+ */
+UCLASS()
+class SURVIVOR_API UPawnManagerSubsystem : public UGameInstanceSubsystem
+{
+	GENERATED_BODY()
+
+public:
+	void RegisterPlayerPawn(APawn* InPawn);
+	void UnRegisterPlayerPawn(APawn* InPawn);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<APawn*> GetAllPlayerPawns();
+	
+	void RegisterAIPawn(APawn* InPawn);
+	void UnRegisterAIPawn(APawn* InPawn);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<APawn*> GetAllAIPawns();
+
+private:
+	UPROPERTY()
+	TArray<TWeakObjectPtr<APawn>> PlayerPawns;
+
+	UPROPERTY()
+	TArray<TWeakObjectPtr<APawn>> AIPawns;
+
+	UPROPERTY()
+	TArray<TObjectPtr<APawn>> CachedPlayerPawns;
+	
+	UPROPERTY()
+	TArray<TObjectPtr<APawn>> CachedAIPawns;
+
+	bool bPlayerPawnsCacheDirty = true;
+	bool bAIPawnsCacheDirty = true;
+};

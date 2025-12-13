@@ -27,16 +27,18 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	//~ Begin ICombatInterface
-	virtual void ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration) override;
+	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
 	//~ End of ICombatInterface
 
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	//~ End of AActor Interface
 
 	//~ Begin APawn Interface
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void UnPossessed() override;
 	//~ End of APawn Interface
 
 	//~ Begin ISVCameraAssistInterface

@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 #include "Survivor/AbilitySystem/AttributeSet/SVAttributeSet.h"
+#include "Survivor/Manager/PawnManagerSubsystem.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
 ASVEnemy::ASVEnemy()
@@ -46,20 +47,45 @@ void ASVEnemy::BeginPlay()
 	BP_PlaySpawnAnimation();
 
 	CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnComponentBeginOverlap);
+
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterAIPawn(this);
+	}
+}
+
+void ASVEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterAIPawn(this);
+	}
+	
+	Super::EndPlay(EndPlayReason);
 }
 
 void ASVEnemy::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	if (!HasAuthority())
+	if (HasAuthority())
 	{
-		return;
-	}
+		SVAIController = Cast<ASVAIController>(NewController);
+		SVAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		SVAIController->RunBehaviorTree(BehaviorTree);
 
-	SVAIController = Cast<ASVAIController>(NewController);
-	SVAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-	SVAIController->RunBehaviorTree(BehaviorTree);
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterAIPawn(this);
+	}
+}
+
+void ASVEnemy::UnPossessed()
+{
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterAIPawn(this);
+	}
+	
+	Super::UnPossessed();
 }
 
 void ASVEnemy::InitAbilityActorInfo() const
@@ -93,7 +119,7 @@ void ASVEnemy::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 }
 
-void ASVEnemy::ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration)
+void ASVEnemy::ApplyKnockback(const FVector& KnockbackForce)
 {
 }
 

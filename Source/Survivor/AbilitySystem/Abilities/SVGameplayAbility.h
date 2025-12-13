@@ -7,7 +7,17 @@
 #include "Survivor/AbilitySystem/EffectApplier/GameplayEffectApplier.h"
 #include "SVGameplayAbility.generated.h"
 
-class UEffectApplier_Damage;
+USTRUCT(BlueprintType)
+struct FGameplayCueData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag ImpactSoundTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag ImpactNiagaraTag;
+};
 
 UCLASS()
 class SURVIVOR_API USVGameplayAbility : public UGameplayAbility
@@ -45,7 +55,7 @@ protected:
 	
 	/**
 	 * 매개변수로 들어온 GameplayEffectApplier 클래스가 갖고 있는 GameplayEffectContextHandle을 가져오는 함수입니다.
-	 * 반드시 Ability가 소유하고 있는 GameplayEffectApplier 사용해야 합니다.
+	 * 반드시 Ability가 소유하고 있는 GameplayEffectApplier를 사용해야 합니다.
 	 * 블루프린트에선 템플릿 함수를 지원하지 않기 때문에 Class를 매개변수로 받아 비슷한 동작을 하도록 구현합니다.
 	 */ 
 	UFUNCTION(BlueprintPure)

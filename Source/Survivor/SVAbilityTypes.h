@@ -11,7 +11,7 @@ struct FDamageDataContext
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FVector_NetQuantize KnockbackForce = FVector_NetQuantize::ZeroVector;
+	float KnockbackMagnitude = 0.f;
 
 	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
 };
@@ -30,7 +30,7 @@ struct FSVGameplayEffectContext : public FGameplayEffectContext
 public:
 	const FDamageDataContext& GetDamageData() const { return DamageData; }
 
-	void SetKnockbackForce(const FVector& Force);
+	void SetKnockbackMagnitude(const float Magnitude);
 
 	virtual UScriptStruct* GetScriptStruct() const override
 	{

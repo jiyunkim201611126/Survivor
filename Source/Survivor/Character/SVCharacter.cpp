@@ -10,6 +10,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Survivor/Camera/SVCameraComponent.h"
+#include "Survivor/Manager/PawnManagerSubsystem.h"
 
 ASVCharacter::ASVCharacter()
 {
@@ -48,6 +49,41 @@ void ASVCharacter::PossessedBy(AController* NewController)
 	{
 		Subsystem->AddMappingContext(InputContext, 0);
 	}
+
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
+	}
+}
+
+void ASVCharacter::UnPossessed()
+{
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterPlayerPawn(this);
+	}
+	
+	Super::UnPossessed();
+}
+
+void ASVCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
+	}
+}
+
+void ASVCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterPlayerPawn(this);
+	}
 }
 
 void ASVCharacter::InitAbilityActorInfo() const
@@ -63,36 +99,9 @@ void ASVCharacter::Tick(float DeltaTime)
 	UpdateRotation();
 }
 
-void ASVCharacter::ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration)
+void ASVCharacter::ApplyKnockback(const FVector& KnockbackForce)
 {
-	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
-	if (!MovementComponent)
-	{
-		return;
-	}
-
-	TSharedPtr<FRootMotionSource_ConstantForce> ConstantForce = MakeShared<FRootMotionSource_ConstantForce>();
-	ConstantForce->InstanceName = FName("Knockback");
-	ConstantForce->Priority = 200;
-	ConstantForce->Force = KnockbackForce / Duration;
-	ConstantForce->Duration = Duration;
-	ConstantForce->FinishVelocityParams.Mode = ERootMotionFinishVelocityMode::MaintainLastRootMotionVelocity;
-	MovementComponent->RemoveRootMotionSource(FName("Knockback"));
-	if (GetMesh() && GetMesh()->GetAnimInstance())
-	{
-		GetMesh()->GetAnimInstance()->SetRootMotionMode(ERootMotionMode::IgnoreRootMotion);
-	}
-	
-	MovementComponent->ApplyRootMotionSource(ConstantForce);
-
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
-	{
-		if (GetMesh() && GetMesh()->GetAnimInstance())
-		{
-			GetMesh()->GetAnimInstance()->SetRootMotionMode(ERootMotionMode::RootMotionFromMontagesOnly);
-		}
-	}, Duration, false);
+	LaunchCharacter(KnockbackForce, true, true);
 }
 
 void ASVCharacter::UpdateMovement()

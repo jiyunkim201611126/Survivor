@@ -17,5 +17,5 @@ class SURVIVOR_API ICombatInterface
 	GENERATED_BODY()
 
 public:
-	virtual void ApplyKnockback(const FVector_NetQuantize& KnockbackForce, const float Duration);
+	virtual void ApplyKnockback(const FVector& KnockbackForce);
 };
