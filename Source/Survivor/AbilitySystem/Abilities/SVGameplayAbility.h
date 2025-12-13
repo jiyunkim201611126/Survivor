@@ -7,6 +7,8 @@
 #include "Survivor/AbilitySystem/EffectApplier/GameplayEffectApplier.h"
 #include "SVGameplayAbility.generated.h"
 
+class UEffectApplier_Damage;
+
 UCLASS()
 class SURVIVOR_API USVGameplayAbility : public UGameplayAbility
 {
@@ -38,7 +40,6 @@ protected:
 				return Cast<T>(Applier);
 			}
 		}
-
 		return nullptr;
 	}
 	
@@ -48,7 +49,7 @@ protected:
 	 * 블루프린트에선 템플릿 함수를 지원하지 않기 때문에 Class를 매개변수로 받아 비슷한 동작을 하도록 구현합니다.
 	 */ 
 	UFUNCTION(BlueprintPure)
-	FGameplayEffectContextHandle GetContextHandle(TSubclassOf<UGameplayEffectApplier> ApplierClass) const;
+	FGameplayEffectContextHandle GetContextHandle(const TSubclassOf<UGameplayEffectApplier> ApplierClass) const;
 
 	// GetDescription을 보조하는 함수입니다.
 	UFUNCTION(BlueprintPure)
@@ -70,6 +71,7 @@ protected:
 
 protected:
 	//~ Begin UGameplayAbility Interface
+	virtual void CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	//~ End UGameplayAbility Interface
 

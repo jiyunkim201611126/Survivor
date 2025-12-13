@@ -2,6 +2,7 @@
 
 #include "SVGameplayAbility.h"
 
+#include "Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
 void USVGameplayAbility::ApplyAllEffects(AActor* TargetActor)
@@ -40,6 +41,16 @@ float USVGameplayAbility::GetCooldown(const int32 InLevel) const
 FText USVGameplayAbility::GetDamageTexts(const int32 InLevel) const
 {
 	return FText();
+}
+
+void USVGameplayAbility::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
+{
+	for (const auto EffectApplier : EffectAppliers)
+	{
+		EffectApplier->CancelAbility();
+	}
+	
+	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 }
 
 void USVGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)

@@ -12,11 +12,6 @@ void UEffectApplier_Damage::ApplyEffect(UGameplayAbility* OwningAbility, AActor*
 	CauseDamage(OwningAbility, TargetActor, MakeDamageSpecHandle(OwningAbility));
 }
 
-void UEffectApplier_Damage::EndAbility()
-{
-	EffectContextHandle.Clear();
-}
-
 TArray<FGameplayEffectSpecHandle> UEffectApplier_Damage::MakeDamageSpecHandle(const UGameplayAbility* OwningAbility)
 {
 	const UAbilitySystemComponent* ASC = OwningAbility->GetAbilitySystemComponentFromActorInfo();

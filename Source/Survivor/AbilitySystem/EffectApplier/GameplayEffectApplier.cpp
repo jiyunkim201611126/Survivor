@@ -19,6 +19,16 @@ void UGameplayEffectApplier::MakeEffectContextHandle(const UGameplayAbility* Own
 	}
 }
 
+void UGameplayEffectApplier::CancelAbility()
+{
+	EffectContextHandle.Clear();
+}
+
+void UGameplayEffectApplier::EndAbility()
+{
+	EffectContextHandle.Clear();
+}
+
 FGameplayEffectContextHandle UGameplayEffectApplier::GetEffectContextHandle() const
 {
 	return EffectContextHandle;
