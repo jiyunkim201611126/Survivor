@@ -17,7 +17,7 @@ public:
 
 	TArray<FGameplayEffectSpecHandle> MakeDamageSpecHandle(const UGameplayAbility* OwningAbility);
 	void CauseDamage(const UGameplayAbility* OwningAbility, AActor* TargetActor, const TArray<FGameplayEffectSpecHandle>& DamageSpecs);
-	virtual FText GetDamageTexts(int32 InLevel);
+	virtual FText GetDamageDescription(int32 InLevel);
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")

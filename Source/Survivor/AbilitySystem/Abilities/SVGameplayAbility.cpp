@@ -33,12 +33,12 @@ FText USVGameplayAbility::GetDescription_Implementation(const int32 Level)
 	return FText();
 }
 
-float USVGameplayAbility::GetCooldown(const int32 InLevel) const
+float USVGameplayAbility::GetCooldownDescription(const int32 InLevel) const
 {
 	return 0.f;
 }
 
-FText USVGameplayAbility::GetDamageTexts(const int32 InLevel) const
+FText USVGameplayAbility::GetDamageDescription(const int32 InLevel) const
 {
 	return FText();
 }

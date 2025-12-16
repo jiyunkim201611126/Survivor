@@ -27,3 +27,15 @@ void UPlayerGASManagerComponent::InitAbilityActorInfo()
 		}
 	}
 }
+
+void UPlayerGASManagerComponent::AddCharacterStartupAbilities() const
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	// ASC 가져와서 부여 함수 호출
+	USVAbilitySystemComponent* SVASC = CastChecked<USVAbilitySystemComponent>(AbilitySystemComponent);
+	SVASC->AddCharacterAbilitiesWithActive(StartupAbilities);
+}

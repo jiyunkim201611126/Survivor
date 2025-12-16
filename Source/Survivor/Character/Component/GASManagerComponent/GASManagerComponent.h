@@ -26,7 +26,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	virtual void InitAbilityActorInfo();
-	void AddCharacterStartupAbilities() const;
+	virtual void AddCharacterStartupAbilities() const;
 	
 protected:
 	// GameplayEffect를 본인에게 적용하는 함수입니다.

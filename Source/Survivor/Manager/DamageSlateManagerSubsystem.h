@@ -37,12 +37,12 @@ class SURVIVOR_API UDamageSlateManagerSubsystem : public UTickableWorldSubsystem
 
 public:
 	//~ Begin UWorldSubsystem Interface
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 	//~ End of UWorldSubsystem Interface
 	
 	//~ Begin FTickableGameObject Interface
 	virtual void Tick(float DeltaTime) override;
+	// Tick 함수의 실행 시간을 stat game에 표시해주는 프로파일링용 함수입니다.
 	virtual TStatId GetStatId() const override;
 	//~ End of FTickableGameObject Interface
 

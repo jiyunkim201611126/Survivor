@@ -19,6 +19,15 @@ void USVAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<U
 	}
 }
 
+void USVAbilitySystemComponent::AddCharacterAbilitiesWithActive(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities)
+{
+	for (const TSubclassOf<UGameplayAbility>& AbilityClass : InAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 void USVAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
 	if (!Cast<APawn>(GetAvatarActor())->IsLocallyControlled())

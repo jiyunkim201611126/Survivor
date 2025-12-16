@@ -13,33 +13,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0f7763f-9291-4619-8b52-82b35ab4b0ff" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Manager/FXManagerSubsystem.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Manager/FXManagerSubsystem.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Manager/PawnManagerSubsystem.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Manager/PawnManagerSubsystem.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/UI/Slate/SDamageTextCanvas.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/UI/Slate/SDamageTextCanvas.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SpawnFloatingActorAbility.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SpawnFloatingActorAbility.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultGameplayTags.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGameplayTags.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/Abilities/Enemy/GA_EnemyAbility_Normal.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/Abilities/Enemy/GA_EnemyAbility_Normal.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/EffectApplier/EffectApplier_Damage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/SVAbilitySystemLibrary.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/CombatInterface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/CombatInterface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/CombatInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/CombatInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/SVAbilityTypes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/SVAbilityTypes.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/SVAbilityTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/SVAbilityTypes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Survivor.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Survivor.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/UI/Slate/SDamageTextCanvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/UI/Slate/SDamageTextCanvas.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/UI/Slate/SDamageTextCanvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/UI/Slate/SDamageTextCanvas.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +41,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://2" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/LiveLink/Source/LiveLink/Private/LiveLinkDebugCommand.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/LiveLinkCurveDebugUI/Source/LiveLinkCurveDebugUI/Private/LiveLinkCurveDebugUIModule.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/PoseSearch/Source/Editor/Private/PoseSearchDatabaseAssetBrowser.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/PoseSearch/Source/Runtime/Private/PoseSearchDatabase.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/PoseSearch/Source/Runtime/Public/PoseSearch/PoseSearchDatabase.h" root0="SKIP_HIGHLIGHTING" />
@@ -61,9 +52,14 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Experimental/TechAudioTools/Source/TechAudioToolsMetaSoundEditor/Private/ViewModels/MetaSoundEditorViewModel.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/Abilities/Async/AbilityAsync_WaitGameplayEffectApplied.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/Abilities/GameplayAbility.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/Abilities/Tasks/AbilityTask_SpawnActor.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Private/AbilitySystemComponent.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Public/Abilities/Tasks/AbilityTask_SpawnActor.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/Metasound/Source/MetasoundEngine/Private/MetasoundSource.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/Metasound/Source/MetasoundEngine/Public/MetasoundSource.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/BlueprintGraph/Classes/K2Node_SpawnActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/BlueprintGraph/Classes/K2Node_SpawnActorFromClass.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/BlueprintGraph/Private/K2Node_SpawnActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/Blutility/Private/EditorUtilityWidgetComponents.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/SceneDepthPickerMode/SceneDepthPickerMode.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/UnrealEd/Classes/Factories/StructureFactory.h" root0="FORCE_HIGHLIGHTING" />
@@ -122,6 +118,8 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/Components/PrimitiveComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/Components/SceneComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/Controller.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/GameFramework/SpawnActorTimer.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/GameFramework/SpawnActorTimer.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/GameViewportClient.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/GameplayStatics.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Private/KismetMathLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -135,8 +133,11 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Public/EngineUtils.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Public/Subsystems/SubsystemCollection.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Public/Subsystems/WorldSubsystem.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/GameMenuBuilder/Private/GameMenuPage.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/GameplayTags/Classes/BlueprintGameplayTagLibrary.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/GameplayTags/Classes/GameplayTagContainer.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/GameplayTasks/Classes/Tasks/GameplayTask_SpawnActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/GameplayTasks/Private/Tasks/GameplayTask_SpawnActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Launch/Private/Launch.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Launch/Private/LaunchEngineLoop.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Launch/Private/Windows/LaunchWindows.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -146,6 +147,7 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/SlateCore/Public/Layout/Geometry.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/SlateCore/Public/Rendering/DrawElementTypes.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/SlateCore/Public/Widgets/SCompoundWidget.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/UMG/Private/Blueprint/GameViewportSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/UMG/Private/UserWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/UMG/Public/Blueprint/UserWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/UMG/Public/Components/ProgressBar.h" root0="FORCE_HIGHLIGHTING" />
@@ -153,6 +155,8 @@
     <setting file="file://$PROJECT_DIR$/Source/Survivor/AI/SVAIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SVGameplayAbility.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SpawnFloatingActorAbility.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SpawnFloatingActorAbility.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/PlayerAttributeSet.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/PlayerAttributeSet.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -237,23 +241,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ 프로젝트.Survivor.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "terminal",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ 프로젝트.Survivor.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C/C++ 프로젝트.Survivor">
     <configuration name="Survivor" type="CppProject" factoryName="C++ Project">
       <configuration_1 setup="1">
@@ -419,6 +423,7 @@
       <workItem from="1765604505134" duration="3873000" />
       <workItem from="1765608807356" duration="1382000" />
       <workItem from="1765610279598" duration="29493000" />
+      <workItem from="1765893481794" duration="5993000" />
     </task>
     <servers />
   </component>

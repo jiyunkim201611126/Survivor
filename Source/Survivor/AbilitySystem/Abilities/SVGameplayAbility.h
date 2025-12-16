@@ -29,11 +29,11 @@ public:
 	 * Ability가 소유하고 있는 EffectPolicy를 모두 순회하며 TargetActor에게 Effect를 부여하는 함수입니다.
 	 * 갖고 있는 Effect를 각각 다른 타이밍에 부여하고 싶다면 자식 클래스를 캐스팅해 ApplyEffect를 직접 호출해 사용합니다.
 	 */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Effect")
 	void ApplyAllEffects(AActor* TargetActor);
 
 	// Ability에 대한 설명을 반환하는 함수로, 블루프린트 클래스에서 정의합니다.
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, Category = "Description")
 	FText GetDescription(const int32 Level);
 
 protected:
@@ -58,14 +58,15 @@ protected:
 	 * 반드시 Ability가 소유하고 있는 GameplayEffectApplier를 사용해야 합니다.
 	 * 블루프린트에선 템플릿 함수를 지원하지 않기 때문에 Class를 매개변수로 받아 비슷한 동작을 하도록 구현합니다.
 	 */ 
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = "Effect")
 	FGameplayEffectContextHandle GetContextHandle(const TSubclassOf<UGameplayEffectApplier> ApplierClass) const;
 
 	// GetDescription을 보조하는 함수입니다.
-	UFUNCTION(BlueprintPure)
-	float GetCooldown(const int32 InLevel) const;
-	UFUNCTION(BlueprintPure)
-	FText GetDamageTexts(const int32 InLevel) const;
+	UFUNCTION(BlueprintPure, Category = "Description")
+	float GetCooldownDescription(const int32 InLevel) const;
+	// 추후 Damage에 Type이 생기면 그에 대응하기 위해 FText를 반환하도록 합니다.
+	UFUNCTION(BlueprintPure, Category = "Description")
+	FText GetDamageDescription(const int32 InLevel) const;
 
 public:
 	// 식별자 역할의 Ability의 전용 태그입니다.

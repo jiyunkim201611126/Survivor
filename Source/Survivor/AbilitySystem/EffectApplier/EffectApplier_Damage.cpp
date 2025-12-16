@@ -83,7 +83,7 @@ void UEffectApplier_Damage::CauseDamage(const UGameplayAbility* OwningAbility, A
 	}
 }
 
-FText UEffectApplier_Damage::GetDamageTexts(int32 InLevel)
+FText UEffectApplier_Damage::GetDamageDescription(int32 InLevel)
 {
 	return FText();
 }

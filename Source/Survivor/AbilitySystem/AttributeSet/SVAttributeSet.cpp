@@ -94,22 +94,24 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 	const float LocalIncomingDamage = GetIncomingDamage();
 	SetIncomingDamage(0.f);
 
+	if (!Props.TargetAvatarActor || !Props.SourceAvatarActor)
+	{
+		return;
+	}
+
+	// 넉백 방향 계산 및 Damage Text 위치를 계산하기 위해 두 액터의 위치를 가져옵니다.
+	FVector TargetLocation = Props.TargetAvatarActor->GetActorLocation();
+	FVector SourceLocation = Props.SourceAvatarActor->GetActorLocation();
+
+	float DamageForText = LocalIncomingDamage;
 	if (LocalIncomingDamage > 0.01f)
 	{
+		// 새로운 체력을 계산해 할당합니다.
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
-		const bool bFatal = NewHealth <= 0.f;
-
+		// 유효한 데미지가 적용되었으므로, 넉백을 적용합니다.
 		const FDamageDataContext DamageData = USVAbilitySystemLibrary::GetDamageData(Props.EffectContextHandle);
-		
-		FVector TargetLocation = Props.TargetAvatarActor->GetActorLocation();
-		FVector SourceLocation = Props.SourceAvatarActor->GetActorLocation();
-
-		// 두 액터 위치 사이에 데미지 텍스트를 표시합니다.
-		const FVector DamageTextLocation = (TargetLocation + SourceLocation) / 2.f;
-		GetWorld()->GetSubsystem<UDamageSlateManagerSubsystem>()->ShowDamageNumber(LocalIncomingDamage, DamageTextLocation);
-		
 		const float KnockbackMagnitude = DamageData.KnockbackMagnitude;
 		if (!FMath::IsNearlyZero(KnockbackMagnitude))
 		{
@@ -118,12 +120,12 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 				TargetLocation.Z = 0;
 				SourceLocation.Z = 0;
 				const FVector HorizontalDirection = (TargetLocation - SourceLocation).GetSafeNormal();
-				const FVector KnockbackDirection = (HorizontalDirection + FVector::UpVector) * KnockbackMagnitude;
+				const FVector KnockbackDirection = (HorizontalDirection + FVector::UpVector * 0.5f) * KnockbackMagnitude;
 				CombatInterface->ApplyKnockback(KnockbackDirection);
 			}
 		}
-		// TODO: 데미지 표시, 적인 경우 ProgressBar Slate 사용
-
+		
+		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)
 		{
 			// TODO: 사망 처리 및 XP Event 송신
@@ -133,9 +135,14 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 	{
 		// 데미지가 0.01보다 작으면 체력 감소를 적용하지 않습니다.
 		SetIncomingDamage(0.f);
-		
-		// TODO: NoDamage 문구 표시
+		DamageForText = 0.f;
 	}
+
+	// 두 액터 위치 사이에 데미지 텍스트를 표시합니다.
+	const FVector DamageTextLocation = (TargetLocation + SourceLocation) / 2.f;
+	GetWorld()->GetSubsystem<UDamageSlateManagerSubsystem>()->ShowDamageNumber(DamageForText, DamageTextLocation);
+	
+	// TODO: 적인 경우 ProgressBar Slate 사용
 }
 
 void USVAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const

@@ -13,4 +13,5 @@ class SURVIVOR_API UPlayerGASManagerComponent : public UGASManagerComponent
 
 public:
 	virtual void InitAbilityActorInfo() override;
+	virtual void AddCharacterStartupAbilities() const override;
 };
