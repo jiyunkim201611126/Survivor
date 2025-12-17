@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "Survivor/CombatInterface.h"
+#include "Survivor/Interface/CombatInterface.h"
 #include "Survivor/AI/SVAIController.h"
 #include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVEnemy.generated.h"

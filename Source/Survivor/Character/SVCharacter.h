@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
-#include "Survivor/CombatInterface.h"
+#include "Survivor/Interface/CombatInterface.h"
 #include "Survivor/Camera/SVCameraAssistInterface.h"
 #include "SVCharacter.generated.h"
 

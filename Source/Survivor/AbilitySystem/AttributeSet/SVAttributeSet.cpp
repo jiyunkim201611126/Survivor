@@ -5,7 +5,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
-#include "Survivor/CombatInterface.h"
+#include "Survivor/Interface/CombatInterface.h"
 #include "Survivor/SVAbilityTypes.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
 #include "Survivor/Manager/DamageSlateManagerSubsystem.h"

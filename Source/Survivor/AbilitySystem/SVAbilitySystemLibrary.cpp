@@ -84,31 +84,36 @@ TArray<AActor*> USVAbilitySystemLibrary::GetActorsFromContext(FGameplayEffectCon
 	return Actors;
 }
 
-TArray<FVector> USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVector& OriginLocation, FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Degree, const float Length)
+TArray<FVector> USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVector& OriginLocation, FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Angle, const float Length)
 {
 	TArray<FVector> OutVectors;
-	OutVectors.Reserve(NumOfVectors);
 
+	// 잘못된 매개변수가 들어오면 바로 return합니다.
 	if (NumOfVectors < 1)
 	{
 		return OutVectors;
 	}
 
-	// 결과 Vector들 각각 Length를 곱하기보다는, ForwardVector에 Vector의 길이를 먼저 곱합니다.
+	// 결과 Vector들에 각각 Length를 곱하기보다는, ForwardVector에 Length를 먼저 곱합니다.
 	NormalizedForwardVector *= Length;
+	OutVectors.Reserve(NumOfVectors);
 
-	// 왼쪽 시작점 Vector와 각도 변화량을 구합니다.
-	const FVector LeftDirection = NormalizedForwardVector.RotateAngleAxis(-Degree / 2.f, FVector::UpVector);
-	const float DeltaDegree = NumOfVectors > 1 ? Degree / (NumOfVectors - 1) : 0.f;
-	// 이미 시작점 Vector는 구했으므로, 바로 OutVector에 넣습니다.
-	OutVectors.Emplace(LeftDirection + OriginLocation);
-
-	// 시작점은 바로 위에서 넣었으므로, 1번 Index부터 시작합니다.
-	for (int32 VectorIndex = 1; VectorIndex < NumOfVectors; ++VectorIndex)
+	if (NumOfVectors == 1)
 	{
-		// 왼쪽 시작점부터 각도 변화량만큼 더해가며 결과 Vector들을 구한 뒤, 기준 위치와 더해줍니다.
-		const FVector Direction = NumOfVectors > 1 ? LeftDirection.RotateAngleAxis(DeltaDegree * VectorIndex, FVector::UpVector) : NormalizedForwardVector;
-		OutVectors.Emplace(Direction + OriginLocation);
+		OutVectors.Add(NormalizedForwardVector + OriginLocation);
+		return OutVectors;
+	}
+
+	// 왼쪽 시작 각도와 각도 변화량을 계산합니다.
+	const float StartAngle = -Angle / 2.f;
+	const float DeltaAngle = Angle / (NumOfVectors - 1);
+
+	// 위 각도 계산 결과를 토대로 Vector들을 계산합니다.
+	for (int32 Index = 0; Index < NumOfVectors; ++Index)
+	{
+		const float CurrentAngle = StartAngle + (DeltaAngle * Index);
+		const FVector RotatedVector = NormalizedForwardVector.RotateAngleAxis(CurrentAngle, FVector::UpVector);
+		OutVectors.Add(RotatedVector + OriginLocation);
 	}
 
 	return OutVectors;
