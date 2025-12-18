@@ -29,9 +29,12 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 		FName("Damage.Normal"), FString(""));
 
 	
-	GameplayTags.Abilities = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities"), FString(""));
-
+	GameplayTags.Abilities_FloatingActor_Axe = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.FloatingActor.Axe"), FString(""));
+	GameplayTags.Abilities_Cooldown_FloatingActor_Axe = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Cooldown.FloatingActor.Axe"), FString(""));
+		
+	GameplayTags.CooldownTagToAbilityTag.Emplace(GameplayTags.Abilities_Cooldown_FloatingActor_Axe, GameplayTags.Abilities_FloatingActor_Axe);
 	
 	GameplayTags.Abilities_Types = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Types"), FString(""));

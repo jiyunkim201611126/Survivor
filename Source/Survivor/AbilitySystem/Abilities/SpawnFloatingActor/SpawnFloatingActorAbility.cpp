@@ -18,6 +18,7 @@ void USpawnFloatingActorAbility::ActivateAbility(const FGameplayAbilitySpecHandl
 	const FVector OriginLocation = AvatarActor->GetActorLocation();
 	FVector ForwardVector = AvatarActor->GetActorForwardVector();
 	const float SpawnNums = SpawnNumsCurve.GetValueAtLevel(GetAbilityLevel());
+	const float SpawnAngle = SpawnAngleCurve.GetValueAtLevel(GetAbilityLevel());
 
 	// Pool 안에 Actor 수가 부족하면 스폰해서 채워넣습니다.
 	if (SpawnNums > FloatingActorPool.Num())
@@ -38,6 +39,11 @@ void USpawnFloatingActorAbility::ActivateAbility(const FGameplayAbilitySpecHandl
 		CurrentActor->SetActorRotation(Rotation);
 		CurrentActor->SetLifeTime(LifeTime);
 	}
+
+	CommitAbility(Handle, ActorInfo, ActivationInfo);
+
+	// TODO: EndAbility 호출 시 Ability 객체가 파괴되므로, Pool을 다른 곳으로 옮겨야 함.
+	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
 
 void USpawnFloatingActorAbility::SpawnFloatingActors(const int32 SpawnNums)

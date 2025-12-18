@@ -31,7 +31,7 @@ private:
 	FScalableFloat SpawnNumsCurve;
 
 	UPROPERTY(EditAnywhere)
-	float SpawnAngle = 180.f;
+	FScalableFloat SpawnAngleCurve;
 
 	UPROPERTY(EditAnywhere)
 	float SpawnLength = 300.f;

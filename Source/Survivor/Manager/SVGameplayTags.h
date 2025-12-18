@@ -27,7 +27,11 @@ struct FSVGameplayTags
 	//~ End of Damage Types
 	
 	//~ Begin Abilities	
-	FGameplayTag Abilities;
+	FGameplayTag Abilities_FloatingActor_Axe;
+	FGameplayTag Abilities_Cooldown_FloatingActor_Axe;
+
+	// CooldownTag를 Key로, AbilityTag를 Value로 매핑합니다.
+	TMap<FGameplayTag, FGameplayTag> CooldownTagToAbilityTag;
 	//~ End of Ability
 	
 	//~ Begin Ability Types
