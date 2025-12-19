@@ -11,7 +11,7 @@ class USphereComponent;
 class AFloatingActor;
 
 DECLARE_DELEGATE_OneParam(FOnFloatingActorActivateDamageSignature, const TArray<AActor*>& Appliers);
-DECLARE_DELEGATE_OneParam(FOnLifeEndSignature, AFloatingActor* InActor)
+DECLARE_DELEGATE_OneParam(FOnLifeEndSignature, AActor* InActor)
 
 UCLASS()
 class SURVIVOR_API AFloatingActor : public AActor
@@ -22,7 +22,6 @@ public:
 	AFloatingActor(const FObjectInitializer& ObjectInitializer);
 
 	void SetLifeTime(const float InLifeTime);
-
 	void Activate();
 
 protected:
@@ -53,5 +52,5 @@ private:
 	FTimerHandle DamageTimerHandle;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FloatingActor")
-	float DamageFrequency = 0.2f;
+	float DamageFrequency = 1.f;
 };

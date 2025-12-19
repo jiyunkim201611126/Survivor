@@ -3,6 +3,7 @@
 #include "ExecCalc_Damage.h"
 
 #include "Survivor/AbilitySystem/AttributeSet/SVAttributeSet.h"
+#include "Survivor/Manager/SVGameplayTags.h"
 
 // 해당 cpp 파일에서만 사용하는 원시 구조체로, 블루프린트는 물론 다른 클래스에서도 노출되지 않기 때문에 네이밍에 F를 붙이지 않습니다.
 struct SVDamageStatics
@@ -49,6 +50,19 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	float Damage = SourceAttack - TargetArmor;
 	Damage = FMath::Clamp(Damage, 0.f, Damage);
+
+	// 현재 데미지 타입과 일치하는 데미지를 탐색합니다.
+	for (const FGameplayTag& DamageTypeTag : FSVGameplayTags::Get().DamageTypeTags)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag, false);
+
+		if (DamageTypeValue > 0.f)
+		{
+			// 속성 데미지 계산 결과 반영 후 반복문을 빠져나갑니다.
+			Damage += DamageTypeValue;
+			break;
+		}
+	}
 
 	// IncomingDamage Attribute에 Damage만큼 Additive 연산을 적용하라는 Modifier 데이터를 생성합니다.
 	const FGameplayModifierEvaluatedData EvaluatedData(USVAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);

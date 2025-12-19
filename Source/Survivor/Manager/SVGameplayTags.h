@@ -24,6 +24,8 @@ struct FSVGameplayTags
 	
 	//~ Begin Damage Types
 	FGameplayTag Damage_Normal;
+
+	TArray<FGameplayTag> DamageTypeTags;
 	//~ End of Damage Types
 	
 	//~ Begin Abilities	

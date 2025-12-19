@@ -28,6 +28,8 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Damage_Normal = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Normal"), FString(""));
 
+	GameplayTags.DamageTypeTags.Emplace(GameplayTags.Damage_Normal);
+	
 	
 	GameplayTags.Abilities_FloatingActor_Axe = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.FloatingActor.Axe"), FString(""));

@@ -45,8 +45,8 @@ public:
 	 * @param NumOfVectors 반환할 Vector의 개수입니다.
 	 * @param Angle 펼쳐질 총 각도입니다.
 	 * @param Length 앞으로 나아갈 거리입니다.
-	 * @return 결과 벡터들을 반환합니다.
+	 * @param OutVectors 결과 벡터들을 반환합니다.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary | HelperFunctions")
-	static TArray<FVector> CalculateEvenlyRotatedVectors(UPARAM(ref) const FVector& OriginLocation, UPARAM(ref) FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Angle, const float Length);
+	static void CalculateEvenlyRotatedVectors(UPARAM(ref) const FVector& OriginLocation, UPARAM(ref) FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Angle, const float Length, TArray<FVector>& OutVectors);
 };

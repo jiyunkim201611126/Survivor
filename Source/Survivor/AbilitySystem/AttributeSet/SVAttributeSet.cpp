@@ -102,6 +102,7 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 	// 넉백 방향 계산 및 Damage Text 위치를 계산하기 위해 두 액터의 위치를 가져옵니다.
 	FVector TargetLocation = Props.TargetAvatarActor->GetActorLocation();
 	FVector SourceLocation = Props.SourceAvatarActor->GetActorLocation();
+	const FVector DamageTextLocation = (TargetLocation + SourceLocation) / 2.f;
 
 	float DamageForText = LocalIncomingDamage;
 	if (LocalIncomingDamage > 0.01f)
@@ -139,7 +140,6 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 	}
 
 	// 두 액터 위치 사이에 데미지 텍스트를 표시합니다.
-	const FVector DamageTextLocation = (TargetLocation + SourceLocation) / 2.f;
 	GetWorld()->GetSubsystem<UDamageSlateManagerSubsystem>()->ShowDamageNumber(DamageForText, DamageTextLocation);
 	
 	// TODO: 적인 경우 ProgressBar Slate 사용

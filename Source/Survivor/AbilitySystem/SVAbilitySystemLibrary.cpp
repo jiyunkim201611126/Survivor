@@ -84,14 +84,12 @@ TArray<AActor*> USVAbilitySystemLibrary::GetActorsFromContext(FGameplayEffectCon
 	return Actors;
 }
 
-TArray<FVector> USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVector& OriginLocation, FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Angle, const float Length)
+void USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVector& OriginLocation, FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Angle, const float Length, TArray<FVector>& OutVectors)
 {
-	TArray<FVector> OutVectors;
-
 	// 잘못된 매개변수가 들어오면 바로 return합니다.
 	if (NumOfVectors < 1)
 	{
-		return OutVectors;
+		return;
 	}
 
 	// 결과 Vector들에 각각 Length를 곱하기보다는, ForwardVector에 Length를 먼저 곱합니다.
@@ -100,8 +98,8 @@ TArray<FVector> USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVe
 
 	if (NumOfVectors == 1)
 	{
-		OutVectors.Add(NormalizedForwardVector + OriginLocation);
-		return OutVectors;
+		OutVectors.Emplace(NormalizedForwardVector + OriginLocation);
+		return;
 	}
 
 	// 왼쪽 시작 각도와 각도 변화량을 계산합니다.
@@ -113,8 +111,6 @@ TArray<FVector> USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVe
 	{
 		const float CurrentAngle = StartAngle + (DeltaAngle * Index);
 		const FVector RotatedVector = NormalizedForwardVector.RotateAngleAxis(CurrentAngle, FVector::UpVector);
-		OutVectors.Add(RotatedVector + OriginLocation);
+		OutVectors.Emplace(RotatedVector + OriginLocation);
 	}
-
-	return OutVectors;
 }

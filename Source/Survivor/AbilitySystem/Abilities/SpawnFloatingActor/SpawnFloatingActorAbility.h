@@ -19,9 +19,12 @@ protected:
 	//~ End of UGameplayAbility Interface
 	
 private:
-	void SpawnFloatingActors(int32 SpawnNums);
+	UFUNCTION()
+	void LoopAbility();
+	void SpawnFloatingActors();
+	
 	void OnFloatingActorActivateDamage(const TArray<AActor*>& TargetActors);
-	void OnLifeEnd(AFloatingActor* FloatingActor);
+	void OnLifeEnd(AActor* InActor) const;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -39,6 +42,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	FScalableFloat LifeTimeCurve;
 
-	UPROPERTY()
-	TArray<TObjectPtr<AFloatingActor>> FloatingActorPool;
+	// Cooldown Effect를 사용하지 않기 때문에 Ability 내에서 직접 Curve를 사용해 레벨당 쿨다운을 구현합니다.
+	UPROPERTY(EditAnywhere)
+	FScalableFloat CooldownCurve;
 };

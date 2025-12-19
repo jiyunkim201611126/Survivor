@@ -2,74 +2,71 @@
 
 #include "SpawnFloatingActorAbility.h"
 
+#include "Abilities/Tasks/AbilityTask_WaitDelay.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
 #include "FloatingActor.h"
+#include "Survivor/Manager/ObjectPoolManagerSubsystem.h"
 
 void USpawnFloatingActorAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
-	const AActor* AvatarActor = GetAvatarActorFromActorInfo();
-	if (!AvatarActor)
+	// 최적화를 위해 EndAbility를 호출하지 않고, Active 한 번 안에서 반복합니다.
+	// 이렇게 하면 Ability 사용이 반복적으로 Replicate되지 않으며, Ability 객체가 파괴되지 않는 이점도 가질 수 있습니다.
+	LoopAbility();
+}
+
+void USpawnFloatingActorAbility::LoopAbility()
+{
+	SpawnFloatingActors();
+
+	const float NextCooldown = CooldownCurve.GetValueAtLevel(GetAbilityLevel());
+
+	UAbilityTask_WaitDelay* DelayTask = UAbilityTask_WaitDelay::WaitDelay(this, NextCooldown);
+	DelayTask->OnFinish.AddDynamic(this, &ThisClass::LoopAbility);
+	DelayTask->ReadyForActivation();
+}
+
+void USpawnFloatingActorAbility::SpawnFloatingActors()
+{
+	AActor* AvatarActor = GetAvatarActorFromActorInfo();
+	APawn* AvatarPawn = Cast<APawn>(AvatarActor);
+	if (!AvatarActor || !AvatarPawn || !GetWorld())
 	{
 		return;
 	}
 	
+	// Actor의 위치를 계산합니다.
 	const FVector OriginLocation = AvatarActor->GetActorLocation();
 	FVector ForwardVector = AvatarActor->GetActorForwardVector();
 	const float SpawnNums = SpawnNumsCurve.GetValueAtLevel(GetAbilityLevel());
 	const float SpawnAngle = SpawnAngleCurve.GetValueAtLevel(GetAbilityLevel());
+	
+	const FRotator SpawnRotation = AvatarActor->GetActorRotation();
+	TArray<FVector> SpawnLocations;
+	USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(OriginLocation, ForwardVector, SpawnNums, SpawnAngle, SpawnLength, SpawnLocations);
 
-	// Pool 안에 Actor 수가 부족하면 스폰해서 채워넣습니다.
-	if (SpawnNums > FloatingActorPool.Num())
+	// Pool에서 꺼내와 해당 위치로 이동시킵니다.
+	if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())
 	{
-		SpawnFloatingActors(SpawnNums - FloatingActorPool.Num());
-	}
-
-	// 위치를 계산한 뒤 Pool에서 가져와 그 위치에 놓습니다.
-	const FRotator Rotation = AvatarActor->GetActorRotation();
-	const TArray<FVector> SpawnLocations = USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(OriginLocation, ForwardVector, SpawnNums, SpawnAngle, SpawnLength);
-	const float LifeTime = LifeTimeCurve.GetValueAtLevel(GetAbilityLevel());
-	for (const FVector& SpawnLocation : SpawnLocations)
-	{
-		// 가장 마지막에 있는 Actor를 가져오며 Pool에서 제거합니다.
-		AFloatingActor* CurrentActor = FloatingActorPool.Pop();
-		
-		CurrentActor->SetActorLocation(SpawnLocation);
-		CurrentActor->SetActorRotation(Rotation);
-		CurrentActor->SetLifeTime(LifeTime);
-	}
-
-	CommitAbility(Handle, ActorInfo, ActivationInfo);
-
-	// TODO: EndAbility 호출 시 Ability 객체가 파괴되므로, Pool을 다른 곳으로 옮겨야 함.
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-}
-
-void USpawnFloatingActorAbility::SpawnFloatingActors(const int32 SpawnNums)
-{
-	AActor* AvatarActor = GetAvatarActorFromActorInfo();
-	APawn* AvatarPawn = Cast<APawn>(AvatarActor);
-	if (!AvatarActor || !AvatarPawn)
-	{
-		return;
-	}
-
-	for (int32 Index = 0; Index < SpawnNums; ++Index)
-	{
-		FTransform SpawnTransform = FTransform(FVector(0.f, 0.f, -10000.f));
-		AFloatingActor* SpawnedFloatingActor = GetWorld()->SpawnActorDeferred<AFloatingActor>(
-			SpawnActorClass,
-			SpawnTransform,
-			AvatarPawn,
-			AvatarPawn,
-			ESpawnActorCollisionHandlingMethod::AlwaysSpawn,
-			ESpawnActorScaleMethod::MultiplyWithRoot);
-		SpawnedFloatingActor->OnFloatingActorActivateDamageDelegate.BindUObject(this, &ThisClass::OnFloatingActorActivateDamage);
-		SpawnedFloatingActor->OnLifeEndDelegate.BindUObject(this, &ThisClass::OnLifeEnd);
-		SpawnedFloatingActor->FinishSpawning(SpawnTransform);
-
-		FloatingActorPool.Emplace(SpawnedFloatingActor);
+		for (const FVector& SpawnLocation : SpawnLocations)
+		{
+			bool bIsSpawning;
+			AFloatingActor* CurrentActor = ObjectPoolManager->GetFromPool<AFloatingActor>(SpawnActorClass, bIsSpawning, AvatarActor, AvatarPawn);
+			if (bIsSpawning)
+			{
+				CurrentActor->OnFloatingActorActivateDamageDelegate.BindUObject(this, &ThisClass::OnFloatingActorActivateDamage);
+				CurrentActor->OnLifeEndDelegate.BindUObject(this, &ThisClass::OnLifeEnd);
+				CurrentActor->FinishSpawning(FTransform());
+			}
+	
+			CurrentActor->SetActorHiddenInGame(false);
+			CurrentActor->SetActorEnableCollision(true);
+			CurrentActor->SetActorLocation(SpawnLocation);
+			CurrentActor->SetActorRotation(SpawnRotation);
+			CurrentActor->SetLifeTime(LifeTimeCurve.GetValueAtLevel(GetAbilityLevel()));
+			CurrentActor->Activate();
+		}
 	}
 }
 
@@ -81,8 +78,13 @@ void USpawnFloatingActorAbility::OnFloatingActorActivateDamage(const TArray<AAct
 	}
 }
 
-void USpawnFloatingActorAbility::OnLifeEnd(AFloatingActor* FloatingActor)
+void USpawnFloatingActorAbility::OnLifeEnd(AActor* InActor) const
 {
-	FloatingActor->SetActorLocation(FVector(0.f, 0.f, -10000.f));
-	FloatingActorPool.Emplace(FloatingActor);
+	if (GetWorld())
+	{
+		if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())
+		{
+			ObjectPoolManager->ReturnToPool(InActor);
+		}
+	}
 }

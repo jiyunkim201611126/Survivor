@@ -24,8 +24,6 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
 	//~ Begin ICombatInterface
 	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
 	//~ End of ICombatInterface

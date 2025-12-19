@@ -45,7 +45,7 @@ void UPlayerGASManagerComponent::AddCharacterStartupAbilities() const
 		return;
 	}
 
-	// ASC 가져와서 부여 함수 호출
+	// Ability를 부여함과 동시에 한 번 발동합니다.
 	USVAbilitySystemComponent* SVASC = CastChecked<USVAbilitySystemComponent>(AbilitySystemComponent);
 	SVASC->AddCharacterAbilitiesWithActive(StartupAbilities);
 }
@@ -54,7 +54,8 @@ void UPlayerGASManagerComponent::OnCooldownTagChanged(const FGameplayTag Cooldow
 {
 	if (NewCount == 0)
 	{
-		// CooldownTag를 받으면 해당하는 AbilityTag를 가져와 Activate합니다.
+		// CooldownTag가 사라지면 해당하는 AbilityTag를 가져와 Activate합니다.
+		// 이 로직을 통해 반복적으로 Ability를 발동합니다.
 		const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
 		const FGameplayTag* AbilityTag = GameplayTags.CooldownTagToAbilityTag.Find(CooldownTag);
 		AbilitySystemComponent->TryActivateAbilitiesByTag(AbilityTag->GetSingleTagContainer());

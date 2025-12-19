@@ -10,7 +10,7 @@ AFloatingActor::AFloatingActor(const FObjectInitializer& ObjectInitializer)
 	// 기본적으로 이 클래스는 Collision을 SphereComponent로 설정하지만, 하위 C++ 클래스에서 변경 가능하도록 만드는 코드입니다.
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<USphereComponent>(TEXT("CollisionComponent")))
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	
 	CollisionComponent = ObjectInitializer.CreateDefaultSubobject<UShapeComponent>(this, TEXT("CollisionComponent"));
 	SetRootComponent(CollisionComponent);
@@ -27,6 +27,10 @@ void AFloatingActor::SetLifeTime(const float InLifeTime)
 		FTimerDelegate TimerDelegate;
 		TimerDelegate.BindLambda([this]()
 		{
+			SetActorTickEnabled(false);
+			
+			GetWorld()->GetTimerManager().ClearTimer(DamageTimerHandle);
+			
 			if (OnLifeEndDelegate.IsBound())
 			{
 				OnLifeEndDelegate.Execute(this);
@@ -38,13 +42,14 @@ void AFloatingActor::SetLifeTime(const float InLifeTime)
 			TimerDelegate,
 			InLifeTime,
 			false,
-			InLifeTime
-			);
+			InLifeTime);
 	}
 }
 
 void AFloatingActor::Activate()
 {
+	SetActorTickEnabled(true);
+	
 	if (GetWorld())
 	{
 		FTimerDelegate TimerDelegate;
@@ -69,9 +74,8 @@ void AFloatingActor::Activate()
 			DamageTimerHandle,
 			TimerDelegate,
 			DamageFrequency,
-			false,
-			DamageFrequency
-			);
+			true,
+			0);
 	}
 }
 
@@ -85,6 +89,8 @@ void AFloatingActor::BeginPlay()
 
 void AFloatingActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	SetActorTickEnabled(false);
+	
 	if (GetWorld())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(LifeTimerHandle);

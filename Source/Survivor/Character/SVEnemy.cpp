@@ -14,6 +14,8 @@
 
 ASVEnemy::ASVEnemy()
 {
+	PrimaryActorTick.bCanEverTick = false;
+	
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>("CapsuleComponent");
 	SetRootComponent(CapsuleComponent);
 
@@ -31,11 +33,6 @@ ASVEnemy::ASVEnemy()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	AttributeSet = CreateDefaultSubobject<USVAttributeSet>("AttributeSet");
-}
-
-void ASVEnemy::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
 void ASVEnemy::BeginPlay()
@@ -100,7 +97,7 @@ void ASVEnemy::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	// 이 이벤트로 들어왔다면 OtherActor는 반드시 PlayerCharacter여야 합니다.
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
 	
-	if (OtherActor && ASC->AbilityActorInfo.IsValid())
+	if (OtherActor && OtherActor->Implements<UCombatInterface>() && ASC->AbilityActorInfo.IsValid())
 	{
 		FScopedAbilityListLock AbilityListLock(*ASC);
 		const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
