@@ -6,36 +6,35 @@
 #include "AIController.h"
 #include "Component/GASManagerComponent/EnemyGASManagerComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "GameFramework/FloatingPawnMovement.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
 #include "Survivor/AbilitySystem/AttributeSet/SVAttributeSet.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
-ASVEnemy::ASVEnemy()
+ASVEnemy::ASVEnemy(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>("CapsuleComponent");
-	SetRootComponent(CapsuleComponent);
+	SetActorTickInterval(0.5f);
 
-	CapsuleComponent->SetCollisionProfileName("Enemy");
-	CapsuleComponent->SetGenerateOverlapEvents(true);
-	
+	GetCapsuleComponent()->SetCollisionProfileName("Enemy");
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	
-	GASManagerComponent = CreateDefaultSubobject<UEnemyGASManagerComponent>("CombatComponent");
 
-	AbilitySystemComponent = CreateDefaultSubobject<USVAbilitySystemComponent>("AbilitySystemComponent");
+	GASManagerComponent = CreateDefaultSubobject<UEnemyGASManagerComponent>(TEXT("GASManagerComponent"));
+	
+	AbilitySystemComponent = CreateDefaultSubobject<USVAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
-	AttributeSet = CreateDefaultSubobject<USVAttributeSet>("AttributeSet");
+	AttributeSet = CreateDefaultSubobject<USVAttributeSet>(TEXT("AttributeSet"));
 
-	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>("FloatingPawnMovement");
-	FloatingPawnMovement->MaxSpeed = 350.f;
+	GetCharacterMovement()->MaxWalkSpeed = 350.f;
 }
 
 void ASVEnemy::BeginPlay()
@@ -45,12 +44,10 @@ void ASVEnemy::BeginPlay()
 	InitAbilityActorInfo();
 	GASManagerComponent->AddCharacterStartupAbilities();
 	BP_PlaySpawnAnimation();
-	UpdateNearestTarget();
 	
 	if (HasAuthority())
 	{
-		UPawnManagerSubsystem* PawnManager = GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>();
-		PawnManager->RegisterAIPawn(this);
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterAIPawn(this);
 	}
 }
 
@@ -68,15 +65,20 @@ void ASVEnemy::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!MoveTargetActor.IsValid() || AbilitySystemComponent->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Knockback))
+	if (!GetAbilitySystemComponent() || GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Knockback))
+	{
+		return;
+	}
+
+	if (!MoveTargetActor.IsValid())
 	{
 		UpdateNearestTarget();
 	}
 
-	// 플레이어를 향해 움직입니다.
+	// 가까운 PlayerCharacter를 향해 다가갑니다.
 	if (AAIController* AIController = Cast<AAIController>(GetController()))
 	{
-		AIController->MoveToActor(MoveTargetActor.Get());
+		AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
 	}
 }
 
@@ -100,13 +102,6 @@ void ASVEnemy::UnPossessed()
 	Super::UnPossessed();
 }
 
-void ASVEnemy::InitAbilityActorInfo() const
-{
-	GASManagerComponent->SetAbilitySystemComponent(AbilitySystemComponent);
-	GASManagerComponent->SetAttributeSet(AttributeSet);
-	GASManagerComponent->InitAbilityActorInfo();
-}
-
 void ASVEnemy::UpdateNearestTarget()
 {
 	UPawnManagerSubsystem* PawnManager = GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>();
@@ -125,28 +120,7 @@ void ASVEnemy::UpdateNearestTarget()
 	MoveTargetActor = ClosestPlayerPawn;
 }
 
-void ASVEnemy::ApplyKnockback(const FVector& KnockbackForce)
-{
-	if (AAIController* AIController = Cast<AAIController>(GetController()))
-	{
-		AIController->MoveToLocation(GetActorLocation() + KnockbackForce);
-	}
-}
-
-void ASVEnemy::StartHide_Implementation()
-{
-}
-
-void ASVEnemy::EndHide_Implementation()
-{
-}
-
 UAbilitySystemComponent* ASVEnemy::GetAbilitySystemComponent() const
 {
-	return GASManagerComponent->GetAbilitySystemComponent();
-}
-
-UCapsuleComponent* ASVEnemy::GetCapsuleComponent() const
-{
-	return CapsuleComponent;
+	return AbilitySystemComponent;
 }

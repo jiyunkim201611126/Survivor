@@ -33,11 +33,6 @@ protected:
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const;
 
 public:
-	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
-
-	UPROPERTY()
-	TObjectPtr<UAttributeSet> AttributeSet;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultAttributes;
@@ -53,6 +48,12 @@ public:
 	TArray<TObjectPtr<UMaterialInstance>> FadeMaterials;
 
 protected:
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Hide")
 	TArray<TObjectPtr<UMaterialInstanceDynamic>> OriginalMaterialInstances;
 

@@ -3,10 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemInterface.h"
-#include "GameFramework/Character.h"
-#include "Survivor/Interface/CombatInterface.h"
-#include "Survivor/Camera/SVCameraAssistInterface.h"
+#include "SVCharacterBase.h"
 #include "SVCharacter.generated.h"
 
 class UGameplayAbility;
@@ -26,26 +23,21 @@ enum class EMovementType : uint8
 };
 
 UCLASS()
-class SURVIVOR_API ASVCharacter : public ACharacter, public IAbilitySystemInterface, public ISVCameraAssistInterface, public ICombatInterface
+class SURVIVOR_API ASVCharacter : public ASVCharacterBase
 {
 	GENERATED_BODY()
 
 public:
-	ASVCharacter();
+	ASVCharacter(const FObjectInitializer& ObjectInitializer);
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
+
 	//~ Begin AActor Interface
-	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void Tick(float DeltaTime) override;
 	//~ End of AActor Interface
 
-	//~ Begin ICombatInterface
-	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
-	//~ End of ICombatInterface
-
-protected:
 	//~ Begin APawn Interface
 	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;
@@ -57,8 +49,6 @@ protected:
 	//~ End of ACharacter Interface
 	
 private:
-	void InitAbilityActorInfo() const;
-	
 	void UpdateMovement();
 	void UpdateRotation() const;
 	
@@ -76,10 +66,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Movement")
 	FVector LandVelocity;
 
-private:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UPlayerGASManagerComponent> GASManagerComponent;
-	
+private:	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<USVCameraComponent> CameraComponent;
 	

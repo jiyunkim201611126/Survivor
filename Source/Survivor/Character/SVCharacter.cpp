@@ -12,8 +12,9 @@
 #include "Survivor/Camera/SVCameraComponent.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 
-ASVCharacter::ASVCharacter()
-{
+ASVCharacter::ASVCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{	
 	GetCapsuleComponent()->SetCollisionProfileName("Player");
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	
@@ -27,8 +28,36 @@ ASVCharacter::ASVCharacter()
 
 	CameraComponent = CreateDefaultSubobject<USVCameraComponent>("SVCameraComponent");
 	CameraComponent->SetupAttachment(GetRootComponent());
+	
+	GASManagerComponent = CreateDefaultSubobject<UPlayerGASManagerComponent>(TEXT("GASManagerComponent"));
+}
 
-	GASManagerComponent = CreateDefaultSubobject<UPlayerGASManagerComponent>("CombatComponent");
+void ASVCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
+	}
+}
+
+void ASVCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterPlayerPawn(this);
+	}
+	
+	Super::EndPlay(EndPlayReason);
+}
+
+void ASVCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	UpdateMovement();
+	UpdateRotation();
 }
 
 void ASVCharacter::OnRep_PlayerState()
@@ -64,44 +93,6 @@ void ASVCharacter::UnPossessed()
 	}
 	
 	Super::UnPossessed();
-}
-
-void ASVCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
-	}
-}
-
-void ASVCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-	
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterPlayerPawn(this);
-	}
-}
-
-void ASVCharacter::InitAbilityActorInfo() const
-{
-	GASManagerComponent->InitAbilityActorInfo();
-}
-
-void ASVCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	UpdateMovement();
-	UpdateRotation();
-}
-
-void ASVCharacter::ApplyKnockback(const FVector& KnockbackForce)
-{
-	LaunchCharacter(KnockbackForce, true, true);
 }
 
 void ASVCharacter::UpdateMovement()
