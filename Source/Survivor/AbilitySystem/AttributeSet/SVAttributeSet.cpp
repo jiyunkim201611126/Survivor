@@ -21,6 +21,7 @@ USVAttributeSet::USVAttributeSet()
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Vital_MaxHealth, GetMaxHealthAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Attack, GetAttackAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Armor, GetArmorAttribute);
+	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_KnockbackResistance, GetKnockbackResistanceAttribute);
 }
 
 void USVAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -31,6 +32,7 @@ void USVAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, Attack, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USVAttributeSet, KnockbackResistance, COND_None, REPNOTIFY_Always);
 }
 
 void USVAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -99,32 +101,12 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 		return;
 	}
 
-	// 넉백 방향 계산 및 Damage Text 위치를 계산하기 위해 두 액터의 위치를 가져옵니다.
-	FVector TargetLocation = Props.TargetAvatarActor->GetActorLocation();
-	FVector SourceLocation = Props.SourceAvatarActor->GetActorLocation();
-	const FVector DamageTextLocation = (TargetLocation + SourceLocation) / 2.f;
-
 	float DamageForText = LocalIncomingDamage;
 	if (LocalIncomingDamage > 0.01f)
 	{
 		// 새로운 체력을 계산해 할당합니다.
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-
-		// 유효한 데미지가 적용되었으므로, 넉백을 적용합니다.
-		const FDamageDataContext DamageData = USVAbilitySystemLibrary::GetDamageData(Props.EffectContextHandle);
-		const float KnockbackMagnitude = DamageData.KnockbackMagnitude;
-		if (!FMath::IsNearlyZero(KnockbackMagnitude))
-		{
-			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
-			{
-				TargetLocation.Z = 0;
-				SourceLocation.Z = 0;
-				const FVector HorizontalDirection = (TargetLocation - SourceLocation).GetSafeNormal();
-				const FVector KnockbackDirection = (HorizontalDirection + FVector::UpVector * 0.5f) * KnockbackMagnitude;
-				CombatInterface->ApplyKnockback(KnockbackDirection);
-			}
-		}
 		
 		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)
@@ -138,7 +120,12 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 		SetIncomingDamage(0.f);
 		DamageForText = 0.f;
 	}
-
+	
+	// Damage Text 위치를 계산하기 위해 두 액터의 위치를 가져옵니다.
+	const FVector TargetLocation = Props.TargetAvatarActor->GetActorLocation();
+	const FVector SourceLocation = Props.SourceAvatarActor->GetActorLocation();
+	const FVector DamageTextLocation = (TargetLocation + SourceLocation) / 2.f;
+	
 	// 두 액터 위치 사이에 데미지 텍스트를 표시합니다.
 	GetWorld()->GetSubsystem<UDamageSlateManagerSubsystem>()->ShowDamageNumber(DamageForText, DamageTextLocation);
 	
@@ -163,4 +150,9 @@ void USVAttributeSet::OnRep_Attack(const FGameplayAttributeData& OldAttack) cons
 void USVAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USVAttributeSet, Armor, OldArmor);
+}
+
+void USVAttributeSet::OnRep_KnockbackResistance(const FGameplayAttributeData& OldKnockbackResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USVAttributeSet, KnockbackResistance, OldKnockbackResistance);
 }

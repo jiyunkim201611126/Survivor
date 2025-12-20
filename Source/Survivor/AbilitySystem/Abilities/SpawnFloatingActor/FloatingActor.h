@@ -10,7 +10,7 @@ class UGameplayEffectApplier;
 class USphereComponent;
 class AFloatingActor;
 
-DECLARE_DELEGATE_OneParam(FOnFloatingActorActivateDamageSignature, const TArray<AActor*>& Appliers);
+DECLARE_DELEGATE_OneParam(FOnFloatingActorActivateSignature, const TArray<AActor*>& InActors);
 DECLARE_DELEGATE_OneParam(FOnLifeEndSignature, AActor* InActor)
 
 UCLASS()
@@ -38,7 +38,7 @@ private:
 	void OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex);
 
 public:
-	FOnFloatingActorActivateDamageSignature OnFloatingActorActivateDamageDelegate;
+	FOnFloatingActorActivateSignature OnFloatingActorActivateDelegate;
 	FOnLifeEndSignature OnLifeEndDelegate;
 
 private:
@@ -52,5 +52,5 @@ private:
 	FTimerHandle DamageTimerHandle;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FloatingActor")
-	float DamageFrequency = 1.f;
+	float DamageFrequency = 0.5f;
 };

@@ -14,6 +14,7 @@ UPlayerAttributeSet::UPlayerAttributeSet()
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Vital_MaxHealth, GetMaxHealthAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Attack, GetAttackAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Armor, GetArmorAttribute);
+	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_KnockbackResistance, GetKnockbackResistanceAttribute);
 	
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_Shield, GetShieldAttribute);
 	TagsToAttributes.Emplace(GameplayTags.Attributes_Stat_MaxShield, GetMaxShieldAttribute);

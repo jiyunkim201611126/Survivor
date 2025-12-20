@@ -55,7 +55,7 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 			AFloatingActor* CurrentActor = ObjectPoolManager->GetFromPool<AFloatingActor>(SpawnActorClass, bIsSpawning, AvatarActor, AvatarPawn);
 			if (bIsSpawning)
 			{
-				CurrentActor->OnFloatingActorActivateDamageDelegate.BindUObject(this, &ThisClass::OnFloatingActorActivateDamage);
+				CurrentActor->OnFloatingActorActivateDelegate.BindUObject(this, &ThisClass::OnFloatingActorActivateDamage);
 				CurrentActor->OnLifeEndDelegate.BindUObject(this, &ThisClass::OnLifeEnd);
 				CurrentActor->FinishSpawning(FTransform());
 			}
@@ -70,10 +70,10 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 	}
 }
 
-void USpawnFloatingActorAbility::OnFloatingActorActivateDamage(const TArray<AActor*>& TargetActors)
+void USpawnFloatingActorAbility::OnFloatingActorActivateDamage(const TArray<AActor*>& InActors)
 {
 	// 스폰한 Actor와 Overlap된 Actor(Enemy)를 받아서 Effect를 부여합니다.
-	for (AActor* TargetActor : TargetActors)
+	for (AActor* TargetActor : InActors)
 	{
 		ApplyAllEffects(TargetActor);
 	}

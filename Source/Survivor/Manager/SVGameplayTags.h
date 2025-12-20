@@ -16,6 +16,7 @@ struct FSVGameplayTags
 	
 	FGameplayTag Attributes_Stat_Attack;
 	FGameplayTag Attributes_Stat_Armor;
+	FGameplayTag Attributes_Stat_KnockbackResistance;
 
 	FGameplayTag Attributes_Stat_Shield;
 	FGameplayTag Attributes_Stat_MaxShield;
@@ -46,6 +47,7 @@ struct FSVGameplayTags
 	//~ End of Enemy Abilities
 
 	FGameplayTag CharacterState_Dead;
+	FGameplayTag CharacterState_Knockback;
 
 private:
 	static FSVGameplayTags GameplayTags;

@@ -15,6 +15,7 @@ public class Survivor : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
+			"Paper2D",
 			
 			"UMG",
 			"Slate",

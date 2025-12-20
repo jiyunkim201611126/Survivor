@@ -4,11 +4,21 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
 #include "Abilities/GameplayAbility.h"
-#include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
+#include "Survivor/Manager/SVGameplayTags.h"
 
 void UEffectApplier_Damage::ApplyEffect(UGameplayAbility* OwningAbility, AActor* TargetActor)
 {
+	const IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(TargetActor);
+	const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
+	if (AbilitySystemInterface && AbilitySystemInterface->GetAbilitySystemComponent() && AbilitySystemInterface->GetAbilitySystemComponent()->HasMatchingGameplayTag(GameplayTags.CharacterState_Dead))
+	{
+		// GameplayEffect를 적용할 대상이 이미 사망한 경우 로직을 중단합니다.
+		EffectContextHandle.Clear();
+		return;
+	}
+	
 	CauseDamage(OwningAbility, TargetActor, MakeDamageSpecHandle(OwningAbility));
 }
 
@@ -29,7 +39,7 @@ TArray<FGameplayEffectSpecHandle> UEffectApplier_Damage::MakeDamageSpecHandle(co
 		{
 			const float ScaledDamage = Pair.Value.GetValueAtLevel(OwningAbility->GetAbilityLevel());
 		
-			// 할당받은 DamageEffectClass를 기반으로 GameplayEffectSpecHandle을 생성합니다.
+			// 할당받은 DamageEffectClass를 기반으로 GameplayEffectSpec을 생성합니다.
 			FGameplayEffectSpecHandle DamageSpecHandle = ASC->MakeOutgoingSpec(EffectClass, 1.f, EffectContextHandle);
 		
 			// Spec 안에 SetByCallerMagnitudes라는 이름의 TMap이 있으며, 거기에 Tag를 키, Damage를 밸류로 값을 추가하는 함수입니다.
@@ -44,29 +54,13 @@ TArray<FGameplayEffectSpecHandle> UEffectApplier_Damage::MakeDamageSpecHandle(co
 }
 
 void UEffectApplier_Damage::CauseDamage(const UGameplayAbility* OwningAbility, AActor* TargetActor, const TArray<FGameplayEffectSpecHandle>& DamageSpecs)
-{
-	/*
-	const IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(TargetActor);
-	const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
-	if (AbilitySystemInterface && AbilitySystemInterface->GetAbilitySystemComponent() && AbilitySystemInterface->GetAbilitySystemComponent()->HasMatchingGameplayTag(GameplayTags.CharacterState_Dead))
-	{
-		// GameplayEffect를 적용할 대상이 이미 사망한 경우 로직을 중단합니다.
-		return;
-	}
-	*/
-	
+{	
 	if (EffectContextHandle.IsValid())
 	{
 		// 대상을 관련 액터에 추가합니다.
 		TArray<TWeakObjectPtr<AActor>> TargetActors;
 		TargetActors.Add(TargetActor);
 		EffectContextHandle.AddActors(TargetActors);
-		
-		// 넉백은 확률 계산 후 성공 시 세팅합니다.
-		if (FMath::FRandRange(0.f, 100.f) < KnockbackChance)
-		{
-			USVAbilitySystemLibrary::SetKnockbackMagnitude(EffectContextHandle, KnockbackMagnitude);
-		}
 	}
 
 	for (auto& Spec : DamageSpecs)

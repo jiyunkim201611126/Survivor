@@ -66,9 +66,9 @@ void AFloatingActor::Activate()
 					ValidTargetActors.Emplace(OverlappedActor.Get());
 				}
 				
-				if (OnFloatingActorActivateDamageDelegate.IsBound())
+				if (OnFloatingActorActivateDelegate.IsBound())
 				{
-					OnFloatingActorActivateDamageDelegate.Execute(ValidTargetActors);
+					OnFloatingActorActivateDelegate.Execute(ValidTargetActors);
 				}
 			}
 		});
@@ -102,7 +102,7 @@ void AFloatingActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	
 	CollisionComponent->OnComponentBeginOverlap.RemoveDynamic(this, &ThisClass::OnComponentBeginOverlap);
 	CollisionComponent->OnComponentEndOverlap.RemoveDynamic(this, &ThisClass::OnComponentEndOverlap);
-	OnFloatingActorActivateDamageDelegate.Unbind();
+	OnFloatingActorActivateDelegate.Unbind();
 	OnLifeEndDelegate.Unbind();
 	
 	Super::EndPlay(EndPlayReason);
@@ -115,6 +115,14 @@ void AFloatingActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 	if (OtherActor && OtherActor->Implements<UCombatInterface>())
 	{
 		OverlappedActors.Emplace(OtherActor);
+				
+		if (OnFloatingActorActivateDelegate.IsBound())
+		{
+			// Overlap된 순간 우선 Cooldown과 관계 없이 Effect를 한 번 부여합니다.
+			TArray<AActor*> OtherActorArray;
+			OtherActorArray.Emplace(OtherActor);
+			OnFloatingActorActivateDelegate.Execute(OtherActorArray);
+		}
 	}
 }
 

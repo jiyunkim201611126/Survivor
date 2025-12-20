@@ -16,6 +16,8 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Stat.Attack"), FString(""));
 	GameplayTags.Attributes_Stat_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Stat.Armor"), FString(""));
+	GameplayTags.Attributes_Stat_KnockbackResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Stat.KnockbackResistance"), FString(""));
 	
 	GameplayTags.Attributes_Stat_Shield = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Stat.Shield"), FString(""));
@@ -47,4 +49,6 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.CharacterState_Dead = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("CharacterState.Dead"), FString(""));
+	GameplayTags.CharacterState_Knockback = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CharacterState.Knockback"), FString(""));
 }

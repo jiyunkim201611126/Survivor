@@ -29,7 +29,7 @@ private:
 	void LoopAbility();
 	void SpawnFloatingActors();
 	
-	void OnFloatingActorActivateDamage(const TArray<AActor*>& TargetActors);
+	void OnFloatingActorActivateDamage(const TArray<AActor*>& InActors);
 	void OnLifeEnd(AActor* InActor) const;
 
 private:

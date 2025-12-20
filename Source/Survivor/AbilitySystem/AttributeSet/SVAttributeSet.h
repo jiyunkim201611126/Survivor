@@ -118,6 +118,12 @@ public:
 	ATTRIBUTE_ACCESSORS(USVAttributeSet, Armor);
 	UFUNCTION()
 	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+	
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_KnockbackResistance, Category = "Stat Attributes")
+	FGameplayAttributeData KnockbackResistance;
+	ATTRIBUTE_ACCESSORS(USVAttributeSet, KnockbackResistance);
+	UFUNCTION()
+	void OnRep_KnockbackResistance(const FGameplayAttributeData& OldKnockbackResistance) const;
 
 	/**
 	 * Meta Attributes
