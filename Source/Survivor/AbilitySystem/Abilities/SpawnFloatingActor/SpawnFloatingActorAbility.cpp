@@ -72,6 +72,7 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 
 void USpawnFloatingActorAbility::OnFloatingActorActivateDamage(const TArray<AActor*>& TargetActors)
 {
+	// 스폰한 Actor와 Overlap된 Actor(Enemy)를 받아서 Effect를 부여합니다.
 	for (AActor* TargetActor : TargetActors)
 	{
 		ApplyAllEffects(TargetActor);
@@ -80,6 +81,7 @@ void USpawnFloatingActorAbility::OnFloatingActorActivateDamage(const TArray<AAct
 
 void USpawnFloatingActorAbility::OnLifeEnd(AActor* InActor) const
 {
+	// 스폰한 Actor의 LifeTime이 종료되면 다시 Pool에 반환합니다.
 	if (GetWorld())
 	{
 		if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())

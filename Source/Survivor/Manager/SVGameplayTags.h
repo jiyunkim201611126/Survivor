@@ -30,10 +30,6 @@ struct FSVGameplayTags
 	
 	//~ Begin Abilities	
 	FGameplayTag Abilities_FloatingActor_Axe;
-	FGameplayTag Abilities_Cooldown_FloatingActor_Axe;
-
-	// CooldownTag를 Key로, AbilityTag를 Value로 매핑합니다.
-	TMap<FGameplayTag, FGameplayTag> CooldownTagToAbilityTag;
 	//~ End of Ability
 	
 	//~ Begin Ability Types
@@ -44,6 +40,9 @@ struct FSVGameplayTags
 	//~ Begin Enemy Abilities	
 	FGameplayTag EnemyAbilities_Normal;
 	FGameplayTag EnemyAbilities_Cooldown_Normal;
+
+	// Enemy Ability의 CooldownTag를 Key로, AbilityTag를 Value로 매핑합니다.
+	TMap<FGameplayTag, FGameplayTag> EnemyCooldownTagToAbilityTag;
 	//~ End of Enemy Abilities
 
 	FGameplayTag CharacterState_Dead;

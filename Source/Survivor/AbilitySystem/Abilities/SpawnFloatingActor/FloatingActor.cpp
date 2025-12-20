@@ -22,6 +22,7 @@ AFloatingActor::AFloatingActor(const FObjectInitializer& ObjectInitializer)
 
 void AFloatingActor::SetLifeTime(const float InLifeTime)
 {
+	// 지정된 시간 이후 콜백을 호출, OwnerAbility가 이 Actor를 Pool에 반환합니다.
 	if (GetWorld())
 	{
 		FTimerDelegate TimerDelegate;
@@ -48,8 +49,10 @@ void AFloatingActor::SetLifeTime(const float InLifeTime)
 
 void AFloatingActor::Activate()
 {
+	// 활성화된 동안엔 Tick 함수가 돌도록 설정합니다.
 	SetActorTickEnabled(true);
-	
+
+	// 타이머를 통해 Overlap되어 캐싱된 Actor들을 대상으로 OwnerAbility가 걸어둔 콜백을 호출합니다.
 	if (GetWorld())
 	{
 		FTimerDelegate TimerDelegate;
@@ -107,6 +110,8 @@ void AFloatingActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AFloatingActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// 자신과 Overlap된 Actor를 캐싱합니다.
+	// Collision 설정에서 Enemy 외엔 전부 Ignore로 설정해뒀기 때문에 조건 검사를 간편하게 합니다.
 	if (OtherActor && OtherActor->Implements<UCombatInterface>())
 	{
 		OverlappedActors.Emplace(OtherActor);
@@ -115,5 +120,6 @@ void AFloatingActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 
 void AFloatingActor::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex)
 {
+	// Overlap이 종료된 Actor를 제외합니다.
 	OverlappedActors.RemoveSingleSwap(OtherActor);
 }

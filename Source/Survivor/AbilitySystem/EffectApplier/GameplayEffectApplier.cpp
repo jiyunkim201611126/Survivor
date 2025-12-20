@@ -9,13 +9,11 @@ void UGameplayEffectApplier::MakeEffectContextHandle(const UGameplayAbility* Own
 {
 	// EffectContext를 생성 및 할당합니다.
 	// MakeEffectContext 함수는 자동으로 OwnerActor를 Instigator로, AvatarActor를 EffectCauser로 할당합니다.
-	if (!EffectContextHandle.Get())
+	if (const UAbilitySystemComponent* AbilitySystemComponent = OwningAbility->GetAbilitySystemComponentFromActorInfo())
 	{
-		if (const UAbilitySystemComponent* AbilitySystemComponent = OwningAbility->GetAbilitySystemComponentFromActorInfo())
-		{
-			EffectContextHandle = AbilitySystemComponent->MakeEffectContext();
-			EffectContextHandle.SetAbility(OwningAbility);
-		}
+		EffectContextHandle.Clear();
+		EffectContextHandle = AbilitySystemComponent->MakeEffectContext();
+		EffectContextHandle.SetAbility(OwningAbility);
 	}
 }
 

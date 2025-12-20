@@ -33,10 +33,6 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.Abilities_FloatingActor_Axe = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.FloatingActor.Axe"), FString(""));
-	GameplayTags.Abilities_Cooldown_FloatingActor_Axe = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Cooldown.FloatingActor.Axe"), FString(""));
-		
-	GameplayTags.CooldownTagToAbilityTag.Emplace(GameplayTags.Abilities_Cooldown_FloatingActor_Axe, GameplayTags.Abilities_FloatingActor_Axe);
 	
 	GameplayTags.Abilities_Types = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Types"), FString(""));
@@ -46,6 +42,8 @@ void FSVGameplayTags::InitializeNativeGameplayTags()
 		FName("EnemyAbilities.Normal"), FString(""));
 	GameplayTags.EnemyAbilities_Cooldown_Normal = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("EnemyAbilities.Cooldown.Normal"), FString(""));
+		
+	GameplayTags.EnemyCooldownTagToAbilityTag.Emplace(GameplayTags.EnemyAbilities_Cooldown_Normal, GameplayTags.EnemyAbilities_Normal);
 	
 	GameplayTags.CharacterState_Dead = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("CharacterState.Dead"), FString(""));

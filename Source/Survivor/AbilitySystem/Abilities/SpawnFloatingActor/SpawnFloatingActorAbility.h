@@ -8,6 +8,12 @@
 
 class AFloatingActor;
 
+/**
+ * PlayerCharacter 전용 Ability로 파생되는 Base 클래스입니다.
+ * Enemy Ability의 경우 Cooldown GameplayEffect를 사용하는 GAS의 방식을 그대로 따르지만,
+ * PlayerCharacter의 Ability들은 게임 후반부에 굉장히 빠른 속도로 발동되기 때문에, GAS의 방식을 그대로 따르면 최적화 문제가 발생합니다.
+ * 따라서 한 번만 발동 후 EndAbility를 호출하지 않으며, 반복적으로 Actor를 스폰시키도록 구성합니다.
+ */
 UCLASS()
 class SURVIVOR_API USpawnFloatingActorAbility : public USVGameplayAbility
 {

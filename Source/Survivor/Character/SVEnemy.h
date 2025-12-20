@@ -23,6 +23,7 @@ public:
 	ASVEnemy();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UCapsuleComponent* GetCapsuleComponent() const;
 
 	//~ Begin ICombatInterface
 	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
@@ -49,11 +50,7 @@ protected:
 
 private:
 	void InitAbilityActorInfo() const;
-
-	UFUNCTION()
-	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
-
 public:
 	UPROPERTY()
 	TObjectPtr<ASVAIController> SVAIController;
