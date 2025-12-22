@@ -22,7 +22,11 @@ public:
 	AFloatingActor(const FObjectInitializer& ObjectInitializer);
 
 	void SetLifeTime(const float InLifeTime);
-	void Activate();
+
+	void Activate(const FVector& InActivateLocation, const FRotator& InActivateRotation);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnActivate();
 
 protected:
 	//~ Begin AActor Interface
@@ -40,6 +44,14 @@ private:
 public:
 	FOnFloatingActorActivateSignature OnFloatingActorActivateDelegate;
 	FOnLifeEndSignature OnLifeEndDelegate;
+
+protected:
+	// Ability가 Activate 시점에 넘겨주는 위치 정보로, 블루프린트의 Tick에서 활용해 해당 Actor의 움직임을 구현하는 데에 사용합니다.
+	UPROPERTY(BlueprintReadOnly, Category = "FloatingActor")
+	FVector TargetLocation;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "FloatingActor")
+	FRotator TargetRotation;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))

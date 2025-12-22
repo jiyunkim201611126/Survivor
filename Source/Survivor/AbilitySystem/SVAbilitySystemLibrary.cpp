@@ -84,7 +84,7 @@ TArray<AActor*> USVAbilitySystemLibrary::GetActorsFromContext(FGameplayEffectCon
 	return Actors;
 }
 
-void USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVector& OriginLocation, FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Angle, const float Length, TArray<FVector>& OutVectors)
+void USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(FVector& NormalizedForwardVector, const int32 NumOfVectors, const float Angle, const float Length, TArray<FVector>& OutVectors)
 {
 	// 잘못된 매개변수가 들어오면 바로 return합니다.
 	if (NumOfVectors < 1)
@@ -98,7 +98,7 @@ void USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVector& Origi
 
 	if (NumOfVectors == 1)
 	{
-		OutVectors.Emplace(NormalizedForwardVector + OriginLocation);
+		OutVectors.Emplace(NormalizedForwardVector);
 		return;
 	}
 
@@ -111,6 +111,6 @@ void USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(const FVector& Origi
 	{
 		const float CurrentAngle = StartAngle + (DeltaAngle * Index);
 		const FVector RotatedVector = NormalizedForwardVector.RotateAngleAxis(CurrentAngle, FVector::UpVector);
-		OutVectors.Emplace(RotatedVector + OriginLocation);
+		OutVectors.Emplace(RotatedVector);
 	}
 }

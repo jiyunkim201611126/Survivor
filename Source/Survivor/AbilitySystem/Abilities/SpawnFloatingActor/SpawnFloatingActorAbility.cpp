@@ -37,14 +37,13 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 	}
 	
 	// Actor의 위치를 계산합니다.
-	const FVector OriginLocation = AvatarActor->GetActorLocation();
+	const FVector ActorLocation = AvatarActor->GetActorLocation();
 	FVector ForwardVector = AvatarActor->GetActorForwardVector();
 	const float SpawnNums = SpawnNumsCurve.GetValueAtLevel(GetAbilityLevel());
 	const float SpawnAngle = SpawnAngleCurve.GetValueAtLevel(GetAbilityLevel());
 	
-	const FRotator SpawnRotation = AvatarActor->GetActorRotation();
 	TArray<FVector> SpawnLocations;
-	USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(OriginLocation, ForwardVector, SpawnNums, SpawnAngle, SpawnLength, SpawnLocations);
+	USVAbilitySystemLibrary::CalculateEvenlyRotatedVectors(ForwardVector, SpawnNums, SpawnAngle, SpawnLength, SpawnLocations);
 
 	// Pool에서 꺼내와 해당 위치로 이동시킵니다.
 	if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())
@@ -55,17 +54,17 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 			AFloatingActor* CurrentActor = ObjectPoolManager->GetFromPool<AFloatingActor>(SpawnActorClass, bIsSpawning, AvatarActor, AvatarPawn);
 			if (bIsSpawning)
 			{
+				// 새로 스폰하는 경우 함수를 바인드하고 FinishSpawning을 호출합니다.
 				CurrentActor->OnFloatingActorActivateDelegate.BindUObject(this, &ThisClass::OnFloatingActorActivateDamage);
 				CurrentActor->OnLifeEndDelegate.BindUObject(this, &ThisClass::OnLifeEnd);
 				CurrentActor->FinishSpawning(FTransform());
 			}
-	
+
+			CurrentActor->SetOwner(AvatarActor);
 			CurrentActor->SetActorHiddenInGame(false);
 			CurrentActor->SetActorEnableCollision(true);
-			CurrentActor->SetActorLocation(SpawnLocation);
-			CurrentActor->SetActorRotation(SpawnRotation);
 			CurrentActor->SetLifeTime(LifeTimeCurve.GetValueAtLevel(GetAbilityLevel()));
-			CurrentActor->Activate();
+			CurrentActor->Activate(SpawnLocation + ActorLocation, SpawnLocation.Rotation());
 		}
 	}
 }

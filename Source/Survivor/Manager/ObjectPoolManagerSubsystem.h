@@ -30,6 +30,9 @@ class SURVIVOR_API UObjectPoolManagerSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
+	// 플레이에 지장을 주지 못 하도록 Pool 시스템에 의해 초기화되는 위치입니다.
+	inline static const FVector PoolLocation = FVector(0.f, 0.f, -10000.f);
+
 	template<typename T>
 	T* GetFromPool(const TSubclassOf<AActor>& InClass, bool& bIsSpawning, AActor* OwnerActor, APawn* InstigatorPawn);
 	AActor* GetFromPool(const TSubclassOf<AActor>& InClass, bool& bIsSpawning, AActor* OwnerActor, APawn* InstigatorPawn);

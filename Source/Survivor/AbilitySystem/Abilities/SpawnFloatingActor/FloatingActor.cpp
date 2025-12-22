@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Survivor/Survivor.h"
 #include "Survivor/Interface/CombatInterface.h"
+#include "Survivor/Manager/ObjectPoolManagerSubsystem.h"
 
 AFloatingActor::AFloatingActor(const FObjectInitializer& ObjectInitializer)
 	// 기본적으로 이 클래스는 Collision을 SphereComponent로 설정하지만, 하위 C++ 클래스에서 변경 가능하도록 만드는 코드입니다.
@@ -30,6 +31,9 @@ void AFloatingActor::SetLifeTime(const float InLifeTime)
 		{
 			SetActorTickEnabled(false);
 			
+			TargetLocation = UObjectPoolManagerSubsystem::PoolLocation;
+			TargetRotation = FRotator::ZeroRotator;
+			
 			GetWorld()->GetTimerManager().ClearTimer(DamageTimerHandle);
 			
 			if (OnLifeEndDelegate.IsBound())
@@ -47,12 +51,17 @@ void AFloatingActor::SetLifeTime(const float InLifeTime)
 	}
 }
 
-void AFloatingActor::Activate()
+void AFloatingActor::Activate(const FVector& InActivateLocation, const FRotator& InActivateRotation)
 {
+	// Activate 시점에 Ability가 정해준 위치 정보를 캐싱합니다.
+	TargetLocation = InActivateLocation;
+	TargetRotation = InActivateRotation;
+	OnActivate();
+	
 	// 활성화된 동안엔 Tick 함수가 돌도록 설정합니다.
 	SetActorTickEnabled(true);
 
-	// 타이머를 통해 Overlap되어 캐싱된 Actor들을 대상으로 OwnerAbility가 걸어둔 콜백을 호출합니다.
+	// 타이머를 통해 주기적으로 Overlap되어 캐싱된 Actor들을 대상으로 OwnerAbility가 걸어둔 콜백을 호출합니다.
 	if (GetWorld())
 	{
 		FTimerDelegate TimerDelegate;

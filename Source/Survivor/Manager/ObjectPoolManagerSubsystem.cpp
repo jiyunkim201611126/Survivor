@@ -11,7 +11,7 @@ AActor* UObjectPoolManagerSubsystem::GetFromPool(const TSubclassOf<AActor>& InCl
 	{
 		bIsSpawning = true;
 
-		const FTransform SpawnTransform = FTransform(FVector(0.f, 0.f, -10000.f));
+		const FTransform SpawnTransform = FTransform(PoolLocation);
 		AActor* SpawnedActor = GetWorld()->SpawnActorDeferred<AActor>(
 			InClass,
 			SpawnTransform,
@@ -33,7 +33,7 @@ void UObjectPoolManagerSubsystem::ReturnToPool(AActor* InActor)
 	{
 		InActor->SetActorHiddenInGame(true);
 		InActor->SetActorEnableCollision(false);
-		InActor->SetActorLocation(FVector(0.f, 0.f, -10000.f));
+		InActor->SetActorLocation(PoolLocation);
 		TArray<TObjectPtr<AActor>>& ActorPool = ActorPoolMap.FindOrAdd(InActor->GetClass()).InactiveActors;
 		ActorPool.Emplace(InActor);
 	}
