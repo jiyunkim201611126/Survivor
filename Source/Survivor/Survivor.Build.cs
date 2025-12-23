@@ -38,6 +38,10 @@ public class Survivor : ModuleRules
 			"MassCommon",
 			"MassMovement",
 			"MassActors",
+			"MassSignals",
+			"MassLOD",
+			"MassRepresentation",
+			"MassSpawner",
 			"MassNavigation",
 		});
 

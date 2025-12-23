@@ -3,7 +3,7 @@
 #include "MonsterMoveProcessor.h"
 
 #include "MassExecutionContext.h"
-#include "MassMonsterFragments.h"
+#include "MassCommonFragments.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 
 UMonsterMoveProcessor::UMonsterMoveProcessor()
@@ -18,7 +18,7 @@ UMonsterMoveProcessor::UMonsterMoveProcessor()
 
 void UMonsterMoveProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
-	EntityQuery.AddRequirement<FMonsterTransformFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
 }
 
 void UMonsterMoveProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
@@ -26,7 +26,7 @@ void UMonsterMoveProcessor::Execute(FMassEntityManager& EntityManager, FMassExec
 	EntityQuery.ForEachEntityChunk(Context, [this](FMassExecutionContext& Context)
 	{
 		const int32 NumEntities = Context.GetNumEntities();
-		auto Transforms = Context.GetMutableFragmentView<FMonsterTransformFragment>();
+		auto Transforms = Context.GetMutableFragmentView<FTransformFragment>();
 
 		UPawnManagerSubsystem* PawnManager = GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>();
 		const APawn* PlayerPawn = PawnManager->GetAllPlayerPawns()[0];
@@ -39,23 +39,18 @@ void UMonsterMoveProcessor::Execute(FMassEntityManager& EntityManager, FMassExec
 		const FVector PlayerLocation = PlayerPawn->GetActorLocation();
 		
 		const float DeltaTime = Context.GetDeltaTimeSeconds();
-		
-		UE_LOG(LogTemp, Warning, TEXT("Monster 0 Location: %s"), *Transforms[0].Transform.GetLocation().ToString());
 
 		for (int32 Index = 0; Index < NumEntities; ++Index)
 		{
 			// 플레이어쪽을 바라본 채로 다가가도록 합니다.
-			FVector CurrentLocation = Transforms[Index].Transform.GetLocation();
-
+			FVector CurrentLocation = Transforms[Index].GetMutableTransform().GetLocation();
 			FVector Direction = (PlayerLocation - CurrentLocation).GetSafeNormal();
-
 			FVector NewVelocity = Direction * 300.f;
-
 			FVector NewLocation = CurrentLocation + (NewVelocity * DeltaTime);
-			Transforms[Index].Transform.SetLocation(NewLocation);
-
-			Transforms[Index].Transform.SetRotation(Direction.Rotation().Quaternion());
-
+			
+			Transforms[Index].GetMutableTransform().SetLocation(NewLocation);
+			Transforms[Index].GetMutableTransform().SetRotation(Direction.Rotation().Quaternion());
 		}
+		UE_LOG(LogTemp, Warning, TEXT("Monster 0 Location: %s"), *Transforms[0].GetTransform().GetLocation().ToString());
 	});
 }
