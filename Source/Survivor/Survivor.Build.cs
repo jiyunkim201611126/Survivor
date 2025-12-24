@@ -33,16 +33,6 @@ public class Survivor : ModuleRules
 			"GameplayTasks",
 			"AnimGraphRuntime",
 			"Niagara",
-			
-			"MassEntity",
-			"MassCommon",
-			"MassMovement",
-			"MassActors",
-			"MassSignals",
-			"MassLOD",
-			"MassRepresentation",
-			"MassSpawner",
-			"MassNavigation",
 		});
 
 		// Uncomment if you are using Slate UI
