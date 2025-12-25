@@ -40,6 +40,10 @@ private:
 	TMap<uint8, FMonsterData> MonsterDatas;
 };
 
+/**
+ * EntityManagerSubsystem과 밀접하게 관련 있는 클래스입니다.
+ * Subsystem은 Replicate되지 않는다는 점과, EditDefaultOnly 등의 UPROPERTY 매크로 사용 편의성을 위해 선언되었습니다.
+ */
 UCLASS()
 class SURVIVOR_API AEntitySpawner : public AActor
 {

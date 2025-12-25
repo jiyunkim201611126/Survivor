@@ -30,7 +30,8 @@ void USVAbilitySystemComponent::AddCharacterAbilitiesWithActive(const TArray<TSu
 
 void USVAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
-	if (!Cast<APawn>(GetAvatarActor())->IsLocallyControlled())
+	const APawn* AvatarPawn = Cast<APawn>(GetAvatarActor());
+	if (!AvatarPawn || !AvatarPawn->IsLocallyControlled())
 	{
 		return;
 	}

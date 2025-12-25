@@ -74,7 +74,7 @@ void ASVCharacter::PossessedBy(AController* NewController)
 	InitAbilityActorInfo();
 	GASManagerComponent->AddCharacterStartupAbilities();
 
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Cast<APlayerController>(NewController)->GetLocalPlayer()))
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Cast<APlayerController>(GetController())->GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(InputContext, 0);
 	}
@@ -82,6 +82,16 @@ void ASVCharacter::PossessedBy(AController* NewController)
 	if (HasAuthority())
 	{
 		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
+	}
+}
+
+void ASVCharacter::OnRep_Controller()
+{
+	Super::OnRep_Controller();
+
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Cast<APlayerController>(GetController())->GetLocalPlayer()))
+	{
+		Subsystem->AddMappingContext(InputContext, 0);
 	}
 }
 

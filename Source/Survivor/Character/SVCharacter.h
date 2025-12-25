@@ -41,6 +41,7 @@ public:
 	//~ Begin APawn Interface
 	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_Controller() override;
 	virtual void UnPossessed() override;
 	//~ End of APawn Interface
 

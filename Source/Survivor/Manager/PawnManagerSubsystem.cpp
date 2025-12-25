@@ -67,3 +67,30 @@ TArray<APawn*> UPawnManagerSubsystem::GetAllAIPawns()
 	}
 	return CachedAIPawns;
 }
+
+APawn* UPawnManagerSubsystem::GetRandomPlayerPawn()
+{
+	// Refresh를 위해 아래 함수를 한 번 호출한 뒤 진행합니다.
+	GetAllPlayerPawns();
+	if (PlayerPawns.Num() > 0)
+	{
+		const int32 RandomIndex = FMath::RandRange(0, PlayerPawns.Num() - 1);
+		return CachedPlayerPawns[RandomIndex];
+	}
+
+	return nullptr;
+}
+
+APawn* UPawnManagerSubsystem::GetLocalPlayerPawn()
+{
+	GetAllPlayerPawns();
+	for (APawn* PlayerPawn : CachedPlayerPawns)
+	{
+		if (PlayerPawn->IsLocallyControlled())
+		{
+			return PlayerPawn;
+		}
+	}
+
+	return nullptr;
+}
