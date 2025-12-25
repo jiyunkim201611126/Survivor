@@ -23,6 +23,7 @@ public class Survivor : ModuleRules
 			
 			"AIModule",
 			"ModularGameplay",
+			"NavigationSystem",
 			
 			"GameplayAbilities",
 		});

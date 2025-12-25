@@ -6,6 +6,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "EntityManagerSubsystem.generated.h"
 
+class UNavigationSystemV1;
 class ASVEnemy;
 class AEntitySpawner;
 
@@ -19,6 +20,12 @@ struct FEntityInstanceData
 
 	UPROPERTY()
 	TObjectPtr<APawn> Target;
+
+	UPROPERTY()
+	TArray<FVector> PathPoints;
+
+	UPROPERTY()
+	int32 CurrentPathIndex = 0;
 };
 
 USTRUCT()
@@ -52,6 +59,8 @@ public:
 
 private:
 	void InitEntitySpawner();
+
+	void MoveToTargetWithNavMesh(FEntityInstanceData& InstanceData, const UNavigationSystemV1* NavSystem, APawn* TargetPawn, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared);
 	
 	// InstancedMesh와 매핑된 PlayerPawn을 가져오는 함수입니다.
 	APawn* GetEntityTarget(const FEntityPool& Pool, const int32 InstanceIndex) const;

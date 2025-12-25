@@ -3,9 +3,10 @@
 #include "EntityManagerSubsystem.h"
 
 #include "EntitySpawner.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 #include "Components/InstancedStaticMeshComponent.h"
-#include "Kismet/KismetMathLibrary.h"
 
 void UEntityManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -14,12 +15,64 @@ void UEntityManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	InitEntitySpawner();
 }
 
+void UEntityManagerSubsystem::InitEntitySpawner()
+{
+	if (!GlobalEntitySpawner)
+	{
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		GlobalEntitySpawner = GetWorld()->SpawnActor<AEntitySpawner>(EntitySpawnerClass, SpawnParameters);
+	}
+}
+
+void UEntityManagerSubsystem::SpawnEntities(const uint8 MonsterID, const TArray<FVector>& NewLocations, APawn* TargetPawn)
+{
+	if (NewLocations.IsEmpty() || !GlobalEntitySpawner)
+	{
+		return;
+	}
+
+	// MonsterID에 해당하는 Pool이 없으면 추가하고 가져옵니다.
+	FEntityPool& Pool = EntityPools.FindOrAdd(MonsterID);
+	if (!Pool.InstancedStaticMeshComponent)
+	{
+		UStaticMesh* MonsterMesh = GlobalEntitySpawner->GetMonsterMesh(MonsterID);
+		if (!MonsterMesh)
+		{
+			return;
+		}
+		
+		Pool.InstancedStaticMeshComponent = NewObject<UInstancedStaticMeshComponent>(GlobalEntitySpawner);
+		Pool.InstancedStaticMeshComponent->SetStaticMesh(MonsterMesh);
+		Pool.InstancedStaticMeshComponent->SetEvaluateWorldPositionOffset(false);
+		Pool.InstancedStaticMeshComponent->RegisterComponent();
+	}
+
+	// 새로 추가된 위치에 대한 인스턴스 데이터와 트랜스폼을 생성합니다.
+	TArray<FTransform> NewTransforms;
+	NewTransforms.Reserve(NewLocations.Num());
+	
+	for (const FVector& Location : NewLocations)
+	{
+		FEntityInstanceData& NewData = Pool.Instances.Emplace_GetRef();
+		NewData.Transform = FTransform(Location);
+		NewData.Target = TargetPawn;
+		NewData.PathPoints.Empty();
+		NewData.CurrentPathIndex = 0;
+		
+		NewTransforms.Add(NewData.Transform);
+	}
+	
+	Pool.InstancedStaticMeshComponent->AddInstances(NewTransforms, false);
+}
+
 void UEntityManagerSubsystem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	UPawnManagerSubsystem* PawnManagerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>();
-	if (!PawnManagerSubsystem || !GlobalEntitySpawner)
+	const UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	if (!PawnManagerSubsystem || !GlobalEntitySpawner || !NavSystem)
 	{
 		return;
 	}
@@ -29,6 +82,10 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 		// 로컬 캐릭터와 거리가 아래 값 이하인 Entity만 InstancedMesh로 렌더링합니다. 
 		constexpr float CullDistance = 1000.f;
 		constexpr float CullDistanceSquared = CullDistance * CullDistance;
+
+		// 경로에 도착했는지 판별하는 기준 거리입니다.
+		constexpr float WaypointArrivalThreshold = 10.f;
+		constexpr float WaypointArrivalThresholdSquared = WaypointArrivalThreshold * WaypointArrivalThreshold;
 		
 		const FVector LocalPawnLocation = LocalPawn->GetActorLocation();
 	
@@ -44,7 +101,7 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 			TArray<FEntityInstanceData> NextInstances;
 			NextInstances.Reserve(Pool.Instances.Num());
 
-			const uint8 MonsterID = PoolPair.Key; 
+			const uint8 MonsterID = PoolPair.Key;
 			const float MonsterSpeed = GlobalEntitySpawner->GetMonsterSpeed(MonsterID);
 
 			for (FEntityInstanceData& InstanceData : Pool.Instances)
@@ -55,38 +112,25 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 					InstanceData.Target = PawnManagerSubsystem->GetRandomPlayerPawn();
 				}
 			
-				const APawn* TargetPawn = InstanceData.Target;
-
+				APawn* TargetPawn = InstanceData.Target;
 				if (!TargetPawn)
 				{
 					// 유효한 플레이어가 한 명도 없으면 데이터를 그대로 유지합니다.
 					NextInstances.Emplace(InstanceData);
 					continue;
 				}
-			
-				const FVector TargetPos = TargetPawn->GetActorLocation();
-				const FVector CurrentLocation = InstanceData.Transform.GetLocation();
 
-				// TODO: NavMesh와 상호작용하는 MoveTo 함수를 만들어야 합니다.
-				const FVector NewLocation = FMath::VInterpTo(CurrentLocation, TargetPos, DeltaTime, MonsterSpeed / 1000.f);
+				// NavMesh 기반으로 TargetPawn을 향해 움직입니다.
+				MoveToTargetWithNavMesh(InstanceData, NavSystem, TargetPawn, DeltaTime, MonsterSpeed, WaypointArrivalThresholdSquared);
 			
-				if (FVector::DistSquared(LocalPawnLocation, NewLocation) > CullDistanceSquared)
+				if (FVector::DistSquared(LocalPawnLocation, InstanceData.Transform.GetLocation()) > CullDistanceSquared)
 				{
 					// 일정 거리보다 멀어 InstancedMesh로 렌더링해야 하는 경우, NextInstances에 추가합니다.
-					InstanceData.Transform.SetLocation(NewLocation);
-
-					FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(NewLocation, TargetPos);
-					LookAtRotation.Pitch = 0.f;
-					LookAtRotation.Roll = 0.f;
-					InstanceData.Transform.SetRotation(LookAtRotation.Quaternion());
-
-					// 업데이트된 인스턴스 데이터를 다음 프레임 목록에 추가합니다.
 					NextInstances.Add(InstanceData);
 				}
 				else
 				{
-					// TODO: GASActor로 교체합니다.
-					// 이 경우, 해당 몬스터 정보는 NextInstances에 추가되지 않으므로 자연스럽게 InstancedMesh 목록에서 제거됩니다.
+					// LocalPawn과 가까워졌으므로, GAS 관련 Component를 가진 Actor로 교체합니다.
 				}
 			}
 
@@ -119,9 +163,9 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 				// 인덱스 기반 매핑이 꼬이지 않도록 하기 위해 뒤쪽에서부터 제거합니다.
 				TArray<int32> IndicesToRemove;
 				IndicesToRemove.Reserve(-Delta);
-				for (int i = 0; i < -Delta; ++i)
+				for (int32 Index = 0; Index < -Delta; ++Index)
 				{
-					IndicesToRemove.Emplace(CurrentInstanceCount - 1 - i);
+					IndicesToRemove.Emplace(CurrentInstanceCount - 1 - Index);
 				}
 				Pool.InstancedStaticMeshComponent->RemoveInstances(IndicesToRemove);
 			}
@@ -135,51 +179,62 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 	}
 }
 
-void UEntityManagerSubsystem::SpawnEntities(const uint8 MonsterID, const TArray<FVector>& NewLocations, APawn* TargetPawn)
+void UEntityManagerSubsystem::MoveToTargetWithNavMesh(FEntityInstanceData& InstanceData, const UNavigationSystemV1* NavSystem, APawn* TargetPawn, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared)
 {
-	if (NewLocations.IsEmpty() || !GlobalEntitySpawner)
+	// 경로가 없으면 새로 탐색합니다.
+	if (InstanceData.PathPoints.Num() == 0)
 	{
-		return;
+		const UNavigationPath* NavPath = NavSystem->FindPathToActorSynchronously(this, InstanceData.Transform.GetLocation(), TargetPawn);
+		if (NavPath && NavPath->PathPoints.Num() > 1)
+		{
+			InstanceData.PathPoints = NavPath->PathPoints;
+			InstanceData.CurrentPathIndex = 1;
+		}
 	}
 
-	// MonsterID에 해당하는 Pool이 없으면 추가하고 가져옵니다.
-	FEntityPool& Pool = EntityPools.FindOrAdd(MonsterID);
-	if (!Pool.InstancedStaticMeshComponent)
+	// 경로가 있으면 해당 경로로 이동합니다.
+	if (InstanceData.PathPoints.Num() > 0 && InstanceData.PathPoints.IsValidIndex(InstanceData.CurrentPathIndex))
 	{
-		UStaticMesh* MonsterMesh = GlobalEntitySpawner->GetMonsterMesh(MonsterID);
-		if (!MonsterMesh)
+		const FVector CurrentLocation = InstanceData.Transform.GetLocation();
+		const FVector Waypoint = InstanceData.PathPoints[InstanceData.CurrentPathIndex];
+
+		// 다음 목적지까지의 벡터와 거리 제곱을 구합니다.
+		const FVector VectorToWaypoint = Waypoint - CurrentLocation;
+		const float ToWaypointDistSquared = VectorToWaypoint.SizeSquared();
+
+		// 이번 프레임에 나아가야 하는 거리입니다.
+		const float ThisFrameStepLength = MonsterSpeed * DeltaTime;
+		const float ThisFrameStepSquared = FMath::Square(ThisFrameStepLength);
+		
+		FVector NewLocation;
+		if (ToWaypointDistSquared < ThisFrameStepSquared)
 		{
-			return;
+			// 이번 프레임에 목적지를 지나치는 경우 목적지 위치를 그대로 사용합니다.
+			NewLocation = Waypoint;
+		}
+		else
+		{
+			// 이번 프레임에 목적지에 도착하지 못 한 경우 일정한 속도로 계속 나아가도록 위치를 갱신합니다.
+			NewLocation = CurrentLocation + VectorToWaypoint.GetSafeNormal() * ThisFrameStepLength;
 		}
 		
-		Pool.InstancedStaticMeshComponent = NewObject<UInstancedStaticMeshComponent>(GlobalEntitySpawner);
-		Pool.InstancedStaticMeshComponent->SetStaticMesh(MonsterMesh);
-		Pool.InstancedStaticMeshComponent->RegisterComponent();
-	}
-
-	// 새로 추가된 위치에 대한 인스턴스 데이터와 트랜스폼을 생성합니다.
-	TArray<FTransform> NewTransforms;
-	NewTransforms.Reserve(NewLocations.Num());
-	
-	for (const FVector& Location : NewLocations)
-	{
-		FEntityInstanceData& NewData = Pool.Instances.Emplace_GetRef();
-		NewData.Transform = FTransform(Location);
-		NewData.Target = TargetPawn;
+		InstanceData.Transform.SetLocation(NewLocation);
 		
-		NewTransforms.Add(NewData.Transform);
+		// 목적지에 도착했는지 검사합니다.
+		if (FVector::DistSquared(NewLocation, Waypoint) < WaypointArrivalThresholdSquared)
+		{
+			InstanceData.CurrentPathIndex++;
+			// 경로의 끝에 도달했으면 경로를 비워서 다음 틱에 새로 탐색하도록 합니다.
+			if (!InstanceData.PathPoints.IsValidIndex(InstanceData.CurrentPathIndex))
+			{
+				InstanceData.PathPoints.Empty();
+			}
+		}
 	}
-	
-	Pool.InstancedStaticMeshComponent->AddInstances(NewTransforms, false);
-}
-
-void UEntityManagerSubsystem::InitEntitySpawner()
-{
-	if (!GlobalEntitySpawner)
+	else
 	{
-		FActorSpawnParameters SpawnParameters;
-		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		GlobalEntitySpawner = GetWorld()->SpawnActor<AEntitySpawner>(EntitySpawnerClass, SpawnParameters);
+		// 경로가 없거나, 경로 인덱스가 잘못된 경우, 다음 틱에 경로를 다시 탐색하도록 경로를 비웁니다.
+		InstanceData.PathPoints.Empty();
 	}
 }
 
