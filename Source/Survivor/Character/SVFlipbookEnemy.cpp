@@ -64,10 +64,8 @@ void ASVFlipbookEnemy::UpdateFlipbookImage()
 	const FVector CameraForward = CameraComponent->GetForwardVector().GetSafeNormal2D();
 	const FVector CharacterForward = GetActorForwardVector().GetSafeNormal2D();
 
-	// 내적과 외적을 계산합니다.
+	// 내적을 계산합니다.
 	const float Dot = FVector::DotProduct(CharacterForward, CameraForward);
-	const FVector Cross = FVector::CrossProduct(CameraForward, CharacterForward);
-
 	if (Dot < -0.5f)
 	{
 		// 내적이 -0.5보다 작으면 다른 방향을 보고 있으므로, 앞모습을 보여줍니다.
@@ -82,6 +80,7 @@ void ASVFlipbookEnemy::UpdateFlipbookImage()
 	{
 		// 내적이 -0.5이상, 0.5이하인 경우, 즉 옆모습을 보여줘야 하는 경우 들어오는 분기입니다.
 		// 외적의 Z값을 통해 좌우를 결정합니다.
+		const FVector Cross = FVector::CrossProduct(CameraForward, CharacterForward);
 		CurrentDirection = Cross.Z > 0.f ? EEnemyDirection::Right : EEnemyDirection::Left;
 	}
 

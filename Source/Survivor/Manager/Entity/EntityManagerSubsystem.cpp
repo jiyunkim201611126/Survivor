@@ -104,6 +104,9 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 			const uint8 MonsterID = PoolPair.Key;
 			const float MonsterSpeed = GlobalEntitySpawner->GetMonsterSpeed(MonsterID);
 
+			TArray<FTransform> NextTransforms;
+			NextTransforms.Reserve(Pool.Instances.Num());
+			
 			for (FEntityInstanceData& InstanceData : Pool.Instances)
 			{
 				if (!InstanceData.Target)
@@ -127,6 +130,9 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 				{
 					// 일정 거리보다 멀어 InstancedMesh로 렌더링해야 하는 경우, NextInstances에 추가합니다.
 					NextInstances.Add(InstanceData);
+					
+					// ISM 렌더링을 위해 트랜스폼 목록을 준비합니다.
+					NextTransforms.Add(InstanceData.Transform);
 				}
 				else
 				{
@@ -136,14 +142,6 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 
 			// 다음 프레임을 위해 인스턴스 목록을 통째로 업데이트합니다.
 			Pool.Instances = NextInstances;
-
-			// ISM 렌더링을 위해 트랜스폼 목록을 준비합니다.
-			TArray<FTransform> NextTransforms;
-			NextTransforms.Reserve(Pool.Instances.Num());
-			for (const FEntityInstanceData& InstanceData : Pool.Instances)
-			{
-				NextTransforms.Add(InstanceData.Transform);
-			}
 		
 			// 현재 인스턴스 개수와 필요한 개수를 비교하여 차이만큼 추가하거나 제거합니다.
 			const int32 CurrentInstanceCount = Pool.InstancedStaticMeshComponent->GetInstanceCount();
@@ -189,6 +187,14 @@ void UEntityManagerSubsystem::MoveToTargetWithNavMesh(FEntityInstanceData& Insta
 		{
 			InstanceData.PathPoints = NavPath->PathPoints;
 			InstanceData.CurrentPathIndex = 1;
+
+			// Material에서 사용할 수 있도록 목적지를 향하는 Rotation을 Transform에 넣어줍니다.
+			// InstancedMesh가 이 값으로 인해 회전하지만, Material의 WorldPositionOffset에 의해 덮어씌워져 실제로는 다른 방향을 바라보도록 렌더링됩니다.
+			// ISM의 SetNumCustomDataFloats 함수를 사용하는 방법도 있었으나, Transform의 Rotation 공간이 낭비되고 있어 이 방법을 채택했습니다. 
+			const FVector& InstanceLocation = InstanceData.Transform.GetLocation();
+			const FVector& TargetLocation = NavPath->PathPoints[1];
+			const FVector InstanceDirection = TargetLocation - InstanceLocation;
+			InstanceData.Transform.SetRotation(InstanceDirection.Rotation().Quaternion());
 		}
 
 		RefreshNavPathTime = 0.f;
@@ -229,6 +235,8 @@ void UEntityManagerSubsystem::MoveToTargetWithNavMesh(FEntityInstanceData& Insta
 		// 목적지에 도착했는지 검사합니다.
 		if (FVector::DistSquared(NewLocation, Waypoint) < WaypointArrivalThresholdSquared)
 		{
+			// 일단 다음 경로를 향해 나아갈 수 있도록 값을 더해줍니다.
+			// 단, 0.5초마다 경로를 재탐색하기 때문에 단순히 Entity가 멈추지 않게 하는 의도일 뿐입니다.
 			InstanceData.CurrentPathIndex++;
 			// 경로의 끝에 도달했으면 경로를 비워서 다음 틱에 새로 탐색하도록 합니다.
 			if (!InstanceData.PathPoints.IsValidIndex(InstanceData.CurrentPathIndex))

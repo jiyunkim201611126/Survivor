@@ -14,34 +14,34 @@
   <component name="ChangeListManager">
     <list default="true" id="a0f7763f-9291-4619-8b52-82b35ab4b0ff" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AssetOrigin/Enemy1.clip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AssetOrigin/Enemy1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AssetOrigin/Enemy1_Entity.clip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AssetOrigin/Enemy1_Entity.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_1.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_10.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_10.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_11.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_11.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_12.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_12.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_13.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_13.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_14.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_14.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_15.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_15.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_2.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_3.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_3.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_4.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_4.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_5.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_5.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_6.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_6.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_7.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_7.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_8.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_8.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_9.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_9.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Back_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Back_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Front_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Front_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Left_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Left_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Right_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Right_Enemy0.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/M_Enemy0_Entity.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/M_Enemy0_Entity.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_0.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_10.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_11.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_12.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_13.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_14.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_15.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_4.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_5.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_6.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_7.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_8.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/Enemy0_Sprite_9.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/FB_Back_Enemy0.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/FB_Front_Enemy0.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/FB_Left_Enemy0.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/FB_Right_Enemy0.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/M_Enemy0_Entity.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/SM_Entity.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Texture/Enemy/T_Entity0.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +55,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://2" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://4" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbook.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbookActor.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbookComponent.h" root0="SKIP_HIGHLIGHTING" />
@@ -512,7 +512,7 @@
       <workItem from="1766583610263" duration="12198000" />
       <workItem from="1766635779705" duration="23581000" />
       <workItem from="1766682395073" duration="3216000" />
-      <workItem from="1766840774715" duration="1497000" />
+      <workItem from="1766840774715" duration="7286000" />
     </task>
     <servers />
   </component>
