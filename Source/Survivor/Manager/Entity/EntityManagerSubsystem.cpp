@@ -44,7 +44,7 @@ void UEntityManagerSubsystem::SpawnEntities(const uint8 MonsterID, const TArray<
 		
 		Pool.InstancedStaticMeshComponent = NewObject<UInstancedStaticMeshComponent>(GlobalEntitySpawner);
 		Pool.InstancedStaticMeshComponent->SetStaticMesh(MonsterMesh);
-		Pool.InstancedStaticMeshComponent->SetEvaluateWorldPositionOffset(false);
+		Pool.InstancedStaticMeshComponent->SetEvaluateWorldPositionOffset(true);
 		Pool.InstancedStaticMeshComponent->RegisterComponent();
 	}
 
@@ -181,8 +181,8 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 
 void UEntityManagerSubsystem::MoveToTargetWithNavMesh(FEntityInstanceData& InstanceData, const UNavigationSystemV1* NavSystem, APawn* TargetPawn, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared)
 {
-	// 경로가 없으면 새로 탐색합니다.
-	if (InstanceData.PathPoints.Num() == 0)
+	// 경로가 없거나 경로를 갱신한지 0.5초가 지나면 경로를 재생성합니다.
+	if (InstanceData.PathPoints.Num() == 0 || RefreshNavPathThreshold <= RefreshNavPathTime)
 	{
 		const UNavigationPath* NavPath = NavSystem->FindPathToActorSynchronously(this, InstanceData.Transform.GetLocation(), TargetPawn);
 		if (NavPath && NavPath->PathPoints.Num() > 1)
@@ -190,6 +190,12 @@ void UEntityManagerSubsystem::MoveToTargetWithNavMesh(FEntityInstanceData& Insta
 			InstanceData.PathPoints = NavPath->PathPoints;
 			InstanceData.CurrentPathIndex = 1;
 		}
+
+		RefreshNavPathTime = 0.f;
+	}
+	else
+	{
+		RefreshNavPathTime += DeltaTime;
 	}
 
 	// 경로가 있으면 해당 경로로 이동합니다.

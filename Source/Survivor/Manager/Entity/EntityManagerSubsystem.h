@@ -78,4 +78,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<AEntitySpawner> GlobalEntitySpawner;
+
+	float RefreshNavPathThreshold = 0.5f;
+	float RefreshNavPathTime = 0.f;
 };
