@@ -43,12 +43,8 @@ void ASVEnemy::BeginPlay()
 
 	InitAbilityActorInfo();
 	GASManagerComponent->AddCharacterStartupAbilities();
-	BP_PlaySpawnAnimation();
-	
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterAIPawn(this);
-	}
+
+	// Enemy 객체는 풀링되므로 BeginPlay에선 RegisterPawn을 호출하지 않습니다.
 }
 
 void ASVEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -100,6 +96,11 @@ void ASVEnemy::UnPossessed()
 	}
 	
 	Super::UnPossessed();
+}
+
+void ASVEnemy::OnSpawnFromPool()
+{
+	Cast<UEnemyGASManagerComponent>(GASManagerComponent)->OnOwnerSpawnFromPool();
 }
 
 void ASVEnemy::UpdateNearestTarget()

@@ -1,21 +1,23 @@
 // KJY
 
-#include "EntityManagerSubsystem.h"
+#include "EnemyManagerSubsystem.h"
 
 #include "EntitySpawner.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Survivor/Character/SVEnemy.h"
+#include "Survivor/Manager/ObjectPoolManagerSubsystem.h"
 
-void UEntityManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UEnemyManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
 	InitEntitySpawner();
 }
 
-void UEntityManagerSubsystem::InitEntitySpawner()
+void UEnemyManagerSubsystem::InitEntitySpawner()
 {
 	if (!GlobalEntitySpawner)
 	{
@@ -25,7 +27,7 @@ void UEntityManagerSubsystem::InitEntitySpawner()
 	}
 }
 
-void UEntityManagerSubsystem::SpawnEntities(const uint8 MonsterID, const TArray<FVector>& NewLocations, APawn* TargetPawn)
+void UEnemyManagerSubsystem::SpawnEntities(const uint8 MonsterID, const TArray<FVector>& NewLocations, APawn* TargetPawn)
 {
 	if (NewLocations.IsEmpty() || !GlobalEntitySpawner)
 	{
@@ -72,12 +74,12 @@ void UEntityManagerSubsystem::SpawnEntities(const uint8 MonsterID, const TArray<
 	Pool.InstancedStaticMeshComponent->AddInstances(NewTransforms, false);
 }
 
-void UEntityManagerSubsystem::Tick(float DeltaTime)
+void UEnemyManagerSubsystem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	UPawnManagerSubsystem* PawnManagerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>();
-	const UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	if (!PawnManagerSubsystem || !GlobalEntitySpawner || !NavSystem)
 	{
 		return;
@@ -141,14 +143,14 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 					InstanceData.Target = PawnManagerSubsystem->GetRandomPlayerPawn();
 				}
 
-				// NavMesh 기반으로 TargetPawn을 향해 움직입니다.
-				const FVector NavLocation = GetNextLocationWithNavMesh(InstanceData, NavSystem, InstanceData.Target, DeltaTime, MonsterSpeed, WaypointArrivalThresholdSquared);
+				// Grid 공간분할 알고리즘으로 Entity들을 충돌 처리한 뒤, NavMesh 기반으로 TargetPawn을 향해 움직입니다.
 				const FVector SeparationOffset = CalculateSeparationOffset(&InstanceData, EntityGrid);
-				const FVector FinalLocation = NavLocation + SeparationOffset;
+				const FVector SeparatedLocation = InstanceData.Transform.GetLocation() + SeparationOffset;
 				
-				InstanceData.Transform.SetLocation(FinalLocation);
+				const FVector NextLocation = GetNextLocationWithNavMesh(InstanceData, NavSystem, SeparatedLocation, DeltaTime, MonsterSpeed, WaypointArrivalThresholdSquared);
+				InstanceData.Transform.SetLocation(NextLocation);
 				
-				if (FVector::DistSquared(LocalPawnLocation, FinalLocation) > CullDistanceSquared)
+				if (FVector::DistSquared(LocalPawnLocation, NextLocation) > CullDistanceSquared)
 				{
 					// 일정 거리보다 멀어 InstancedMesh로 렌더링해야 하는 경우, NextInstances에 추가합니다.
 					NextInstances.Add(InstanceData);
@@ -157,7 +159,10 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 				else
 				{
 					// LocalPawn과 가까워졌으므로, GAS 관련 Component를 가진 Actor로 교체합니다.
-					// TODO
+					ASVEnemy* SpawnedEnemy = GetEnemyFromPool(MonsterID);
+					FVector SpawnLocation = InstanceData.Transform.GetLocation();
+					SpawnLocation.Z += 90.f;
+					SpawnedEnemy->SetActorLocation(SpawnLocation, false, nullptr, ETeleportType::ResetPhysics);
 				}
 			}
 
@@ -196,85 +201,12 @@ void UEntityManagerSubsystem::Tick(float DeltaTime)
 			}
 		}
 	}
+
+	// 경로 재탐색 조건을 갱신합니다.
+	RefreshNavPathThreshold <= RefreshNavPathTime ? RefreshNavPathTime = 0.f : RefreshNavPathTime += DeltaTime;
 }
 
-FVector UEntityManagerSubsystem::GetNextLocationWithNavMesh(FEntityInstanceData& InstanceData, const UNavigationSystemV1* NavSystem, APawn* TargetPawn, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared)
-{
-	const FVector CurrentLocation = InstanceData.Transform.GetLocation();
-
-	// 경로가 없거나 경로를 갱신한지 RefreshNavPathThreshold초가 지나면 경로를 재생성합니다.
-	if (InstanceData.PathPoints.Num() == 0 || RefreshNavPathThreshold <= RefreshNavPathTime)
-	{
-		const UNavigationPath* NavPath = NavSystem->FindPathToActorSynchronously(this, CurrentLocation, TargetPawn);
-		if (NavPath && NavPath->PathPoints.Num() > 1)
-		{
-			InstanceData.PathPoints = NavPath->PathPoints;
-			InstanceData.CurrentPathIndex = 1;
-
-			// Material에서 사용할 수 있도록 목적지를 향하는 Rotation을 Transform에 넣어줍니다.
-			// InstancedMesh가 이 값으로 인해 회전하지만, Material의 WorldPositionOffset에 의해 덮어씌워져 실제로는 다른 방향을 바라보도록 렌더링됩니다.
-			// ISM의 SetNumCustomDataFloats 함수를 사용하는 방법도 있었으나, Transform의 Rotation 공간이 낭비되고 있어 이 방법을 채택했습니다. 
-			const FVector InstanceLocation = InstanceData.Transform.GetLocation();
-			const FVector& NextGoalLocation = NavPath->PathPoints[InstanceData.CurrentPathIndex];
-			const FVector InstanceDirection = NextGoalLocation - InstanceLocation;
-			InstanceData.Transform.SetRotation(InstanceDirection.Rotation().Quaternion());
-		}
-
-		RefreshNavPathTime = 0.f;
-	}
-	else
-	{
-		RefreshNavPathTime += DeltaTime;
-	}
-
-	// 경로가 있으면 해당 경로로 이동합니다.
-	if (InstanceData.PathPoints.Num() > 0 && InstanceData.PathPoints.IsValidIndex(InstanceData.CurrentPathIndex))
-	{
-		const FVector Waypoint = InstanceData.PathPoints[InstanceData.CurrentPathIndex];
-		// 다음 목적지까지의 벡터와 거리 제곱을 구합니다.
-		const FVector VectorToWaypoint = Waypoint - CurrentLocation;
-		const float ToWaypointDistSquared = VectorToWaypoint.SizeSquared();
-		// 이번 프레임에 나아가야 하는 거리입니다.
-		const float ThisFrameStepLength = MonsterSpeed * DeltaTime;
-		const float ThisFrameStepSquared = FMath::Square(ThisFrameStepLength);
-		
-		FVector NewLocation;
-		if (ToWaypointDistSquared < ThisFrameStepSquared)
-		{
-			// 이번 프레임에 목적지를 지나치는 경우 목적지 위치를 그대로 사용합니다.
-			NewLocation = Waypoint;
-		}
-		else
-		{
-			// 이번 프레임에 목적지에 도착하지 못 한 경우 일정한 속도로 계속 나아가도록 위치를 갱신합니다.
-			NewLocation = CurrentLocation + VectorToWaypoint.GetSafeNormal() * ThisFrameStepLength;
-		}
-		
-		// 목적지에 도착했는지 검사합니다.
-		if (FVector::DistSquared(NewLocation, Waypoint) < WaypointArrivalThresholdSquared)
-		{
-			// 일단 다음 경로를 향해 나아갈 수 있도록 값을 더해줍니다.
-			// 단, 0.5초마다 경로를 재탐색하기 때문에 단순히 Entity가 멈추지 않게 하는 의도일 뿐입니다.
-			InstanceData.CurrentPathIndex++;
-			
-			// 경로의 끝에 도달했으면 경로를 비워서 다음 틱에 새로 탐색하도록 합니다.
-			if (!InstanceData.PathPoints.IsValidIndex(InstanceData.CurrentPathIndex))
-			{
-				InstanceData.PathPoints.Empty();
-			}
-		}
-
-		// 위 과정을 통해 계산된 Location을 반환합니다.
-		return NewLocation;
-	}
-	
-	// 경로가 없거나, 경로 인덱스가 잘못된 경우, 다음 틱에 경로를 다시 탐색하도록 경로를 비웁니다.
-	InstanceData.PathPoints.Empty();
-
-	return CurrentLocation;
-}
-
-FVector UEntityManagerSubsystem::CalculateSeparationOffset(const FEntityInstanceData* CurrentInstance, const TMap<FIntVector, TArray<FEntityInstanceData*>>& EntityGrid) const
+FVector UEnemyManagerSubsystem::CalculateSeparationOffset(const FEntityInstanceData* CurrentInstance, const TMap<FIntVector, TArray<FEntityInstanceData*>>& EntityGrid) const
 {
 	// 이번 Entity 인스턴스의 위치를 가져옵니다.
 	const FVector CurrentLocation = CurrentInstance->Transform.GetLocation();
@@ -320,21 +252,112 @@ FVector UEntityManagerSubsystem::CalculateSeparationOffset(const FEntityInstance
 		}
 	}
 
-	// TODO: NavMesh 바깥으로 빠져나가지 않도록 조정하기
-
 	return SeparationOffset;
 }
 
-APawn* UEntityManagerSubsystem::GetEntityTarget(const FEntityPool& Pool, const int32 InstanceIndex) const
+FVector UEnemyManagerSubsystem::GetNextLocationWithNavMesh(FEntityInstanceData& InstanceData, UNavigationSystemV1* NavSystem, const FVector& StartLocation, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared)
 {
-	if (Pool.Instances.IsValidIndex(InstanceIndex))
+	// 충돌 처리로 인해 Entity가 NavMesh 바깥으로 밀려났을 수 있으므로, 이를 먼저 보간합니다.
+	FNavLocation ProjectedLocation;
+	NavSystem->ProjectPointToNavigation(StartLocation, ProjectedLocation, FVector(GridCellSize));
+	
+	// 경로가 없거나 경로를 갱신한지 RefreshNavPathThreshold초가 지나면 경로를 재생성합니다.
+	if (InstanceData.PathPoints.Num() == 0 || RefreshNavPathThreshold <= RefreshNavPathTime)
 	{
-		return Pool.Instances[InstanceIndex].Target;
+		const UNavigationPath* NavPath = NavSystem->FindPathToActorSynchronously(this, ProjectedLocation, InstanceData.Target);
+		if (NavPath && NavPath->PathPoints.Num() > 1)
+		{
+			InstanceData.PathPoints = NavPath->PathPoints;
+			InstanceData.CurrentPathIndex = 1;
+
+			// Material에서 사용할 수 있도록 목적지를 향하는 Rotation을 Transform에 넣어줍니다.
+			// InstancedMesh가 이 값으로 인해 회전하지만, Material의 WorldPositionOffset에 의해 덮어씌워져 실제로는 다른 방향을 바라보도록 렌더링됩니다.
+			// ISM의 SetNumCustomDataFloats 함수를 사용하는 방법도 있었으나, Transform의 Rotation 공간이 낭비되고 있어 이 방법을 선택했습니다. 
+			const FVector InstanceLocation = InstanceData.Transform.GetLocation();
+			const FVector& NextGoalLocation = NavPath->PathPoints[InstanceData.CurrentPathIndex];
+			const FVector InstanceDirection = NextGoalLocation - InstanceLocation;
+			InstanceData.Transform.SetRotation(InstanceDirection.Rotation().Quaternion());
+		}
 	}
-	return nullptr;
+
+	// 경로가 있으면 해당 경로로 이동합니다.
+	if (InstanceData.PathPoints.Num() > 0 && InstanceData.PathPoints.IsValidIndex(InstanceData.CurrentPathIndex))
+	{
+		const FVector Waypoint = InstanceData.PathPoints[InstanceData.CurrentPathIndex];
+		// 다음 목적지까지의 벡터와 거리 제곱을 구합니다.
+		const FVector VectorToWaypoint = Waypoint - StartLocation;
+		const float ToWaypointDistSquared = VectorToWaypoint.SizeSquared();
+		// 이번 프레임에 나아가야 하는 거리입니다.
+		const float ThisFrameStepLength = MonsterSpeed * DeltaTime;
+		const float ThisFrameStepSquared = FMath::Square(ThisFrameStepLength);
+		
+		FVector NewLocation;
+		if (ToWaypointDistSquared < ThisFrameStepSquared)
+		{
+			// 이번 프레임에 목적지를 지나치는 경우 목적지 위치를 그대로 사용합니다.
+			NewLocation = Waypoint;
+		}
+		else
+		{
+			// 이번 프레임에 목적지에 도착하지 못 한 경우 일정한 속도로 계속 나아가도록 위치를 갱신합니다.
+			NewLocation = StartLocation + VectorToWaypoint.GetSafeNormal() * ThisFrameStepLength;
+		}
+		
+		// 목적지에 도착했는지 검사합니다.
+		if (FVector::DistSquared(NewLocation, Waypoint) < WaypointArrivalThresholdSquared)
+		{
+			// 일단 다음 경로를 향해 나아갈 수 있도록 값을 더해줍니다.
+			// 단, 0.5초마다 경로를 재탐색하기 때문에 단순히 Entity가 멈추지 않게 하는 의도일 뿐입니다.
+			InstanceData.CurrentPathIndex++;
+			
+			// 경로의 끝에 도달했으면 경로를 비워서 다음 틱에 새로 탐색하도록 합니다.
+			if (!InstanceData.PathPoints.IsValidIndex(InstanceData.CurrentPathIndex))
+			{
+				InstanceData.PathPoints.Empty();
+			}
+		}
+
+		// 위 과정을 통해 계산된 Location을 반환합니다.
+		return NewLocation;
+	}
+	
+	// 경로가 없거나, 경로 인덱스가 잘못된 경우, 다음 틱에 경로를 다시 탐색하도록 경로를 비웁니다.
+	InstanceData.PathPoints.Empty();
+
+	return ProjectedLocation.Location;
 }
 
-TStatId UEntityManagerSubsystem::GetStatId() const
+ASVEnemy* UEnemyManagerSubsystem::GetEnemyFromPool(const uint8 InMonsterID) const
 {
-	RETURN_QUICK_DECLARE_CYCLE_STAT(UEntityManagerSubsystem, STATGROUP_Game);
+	ASVEnemy* SpawnedEnemy = nullptr;
+	if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())
+	{
+		const TSubclassOf<ASVEnemy> EnemyClass = GlobalEntitySpawner->GetGASActorClass(InMonsterID);
+		bool bIsSpawning;
+		SpawnedEnemy = ObjectPoolManager->GetFromPool<ASVEnemy>(EnemyClass, bIsSpawning, nullptr, nullptr);
+
+		if (SpawnedEnemy)
+		{
+			if (bIsSpawning)
+			{
+				// TODO: Enemy 사망 시 Pool에 Return하는 함수 콜백으로 붙이기
+			}
+
+			SpawnedEnemy->FinishSpawning(FTransform(UObjectPoolManagerSubsystem::PoolLocation));
+			SpawnedEnemy->OnSpawnFromPool();
+			SpawnedEnemy->SetActorHiddenInGame(false);
+			SpawnedEnemy->SetActorEnableCollision(true);
+			if (!SpawnedEnemy->GetController())
+			{
+				SpawnedEnemy->SpawnDefaultController();
+			}
+		}
+	}
+	
+	return SpawnedEnemy;
+}
+
+TStatId UEnemyManagerSubsystem::GetStatId() const
+{
+	RETURN_QUICK_DECLARE_CYCLE_STAT(UEnemyManagerSubsystem, STATGROUP_Game);
 }

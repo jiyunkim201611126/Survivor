@@ -42,6 +42,21 @@ void ASVFlipbookEnemy::EndHide_Implementation()
 	PaperFlipbookComponent->SetHiddenInGame(false);
 }
 
+void ASVFlipbookEnemy::OnSpawnFromPool()
+{
+	Super::OnSpawnFromPool();
+
+	// Pool에서 나온 직후 방향이 맞지 않아 '드득'하는 현상을 없애기 위해 Flipbook을 업데이트합니다.
+	if (!CameraComponent.IsValid())
+	{
+		SetLocalCameraComponent();
+		return;
+	}
+	
+	UpdateFlipbookImage();
+	UpdateFlipbookComponentDirection();
+}
+
 void ASVFlipbookEnemy::SetLocalCameraComponent()
 {
 	// 플레이어의 카메라를 가져와 캐싱합니다.

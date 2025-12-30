@@ -27,7 +27,7 @@ public:
 	
 	virtual void InitAbilityActorInfo();
 	virtual void AddCharacterStartupAbilities() const;
-	
+
 protected:
 	// GameplayEffect를 본인에게 적용하는 함수입니다.
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const;

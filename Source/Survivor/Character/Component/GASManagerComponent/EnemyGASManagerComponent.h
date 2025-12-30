@@ -15,6 +15,8 @@ class SURVIVOR_API UEnemyGASManagerComponent : public UGASManagerComponent
 
 public:
 	virtual void InitAbilityActorInfo() override;
+	
+	void OnOwnerSpawnFromPool() const;
 
 private:
 	UFUNCTION()

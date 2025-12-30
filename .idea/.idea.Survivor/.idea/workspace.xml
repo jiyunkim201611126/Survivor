@@ -14,9 +14,27 @@
   <component name="ChangeListManager">
     <list default="true" id="a0f7763f-9291-4619-8b52-82b35ab4b0ff" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Back_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Back_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Front_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Front_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Left_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Left_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Right_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Right_Enemy0.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/M_Enemy0_Entity.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/M_Enemy0_Entity.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_Enemy0_Entity.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_Enemy0_Entity.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Entity/BP_EntitySpawner.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Entity/BP_EntitySpawner.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/GASManagerComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/GASManagerComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/ObjectPoolManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/ObjectPoolManagerSubsystem.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +48,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://11" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbook.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbookActor.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbookComponent.h" root0="SKIP_HIGHLIGHTING" />
@@ -53,11 +70,14 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/MassGameplay/Source/MassSpawner/Public/MassAssortedFragmentsTrait.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/Metasound/Source/MetasoundEngine/Private/MetasoundSource.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Runtime/Metasound/Source/MetasoundEngine/Public/MetasoundSource.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Developer/CQTest/Public/Components/SpawnHelper.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/BlueprintGraph/Classes/K2Node_SpawnActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/BlueprintGraph/Classes/K2Node_SpawnActorFromClass.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/BlueprintGraph/Private/K2Node_SpawnActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/Blutility/Private/EditorUtilityWidgetComponents.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/Experimental/EditorInteractiveToolsFramework/Private/EditorInteractiveGizmoRegistry.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/LandscapeEditor/Private/LandscapeEdModeBPCustomTools.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/LandscapeEditor/Private/LandscapeRegionUtils.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/SceneDepthPickerMode/SceneDepthPickerMode.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/SequencerCore/Public/MVVM/Extensions/IViewSpaceClientExtension.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Editor/UnrealEd/Classes/Factories/StructureFactory.h" root0="FORCE_HIGHLIGHTING" />
@@ -71,6 +91,7 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/AIModule/Classes/AIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/AIModule/Classes/EnvironmentQuery/EnvQueryManager.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/AIModule/Private/AIController.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/AIModule/Private/EnvironmentQuery/EnvQueryManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/AIModule/Private/Navigation/NavFilter_AIControllerDefault.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/AnimGraphRuntime/Private/KismetAnimationLibrary.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/AnimGraphRuntime/Public/KismetAnimationLibrary.h" root0="FORCE_HIGHLIGHTING" />
@@ -97,6 +118,7 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Core/Public/Math/Matrix.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Core/Public/Math/Rotator.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Core/Public/Math/TransformVectorized.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Core/Public/Math/UnrealMathSSE.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Core/Public/Math/Vector.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Core/Public/Stats/Stats.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Core/Public/Templates/Function.h" root0="FORCE_HIGHLIGHTING" />
@@ -181,6 +203,7 @@
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/MassEntity/Public/MassProcessor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/MassEntity/Public/MassQueryExecutor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/MassEntity/Public/MassRequirements.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/NavigationSystem/Private/NavigationSystem.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/NavigationSystem/Public/NavigationSystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/Renderer/Private/RendererScene.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Source/Runtime/SlateCore/Private/Rendering/DrawElementTypes.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -247,8 +270,8 @@
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Game/SVGameMode.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/DamageSlateManagerSubsystem.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntityManagerSubsystem.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Survivor/Manager/FXManagerSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -494,6 +517,7 @@
       <workItem from="1766931510721" duration="539000" />
       <workItem from="1766935542987" duration="217000" />
       <workItem from="1767015799294" duration="9776000" />
+      <workItem from="1767100942983" duration="12326000" />
     </task>
     <servers />
   </component>

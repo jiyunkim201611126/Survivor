@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "EntityManagerSubsystem.generated.h"
+#include "EnemyManagerSubsystem.generated.h"
 
 class UNavigationSystemV1;
 class ASVEnemy;
@@ -52,7 +52,7 @@ struct FEntityPool
  * 이를 통해 CPU 최적화를 극한으로 이루어냈(다고 생각하고 있)습니다.
  */
 UCLASS(Config = Game)
-class SURVIVOR_API UEntityManagerSubsystem : public UTickableWorldSubsystem
+class SURVIVOR_API UEnemyManagerSubsystem : public UTickableWorldSubsystem
 {
 	GENERATED_BODY()
 
@@ -68,26 +68,17 @@ public:
 
 private:
 	void InitEntitySpawner();
-
-	// Entity가 NavMesh 기반으로 Target을 향해 움직일 때, 다음 프레임의 위치를 가져오는 함수입니다.
-	FVector GetNextLocationWithNavMesh(FEntityInstanceData& InstanceData, const UNavigationSystemV1* NavSystem, APawn* TargetPawn, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared);
-
+	
 	// Entity가 서로 겹치지 않도록 어느 방향으로 밀어낼지 계산하는 함수입니다.
 	FVector CalculateSeparationOffset(const FEntityInstanceData* CurrentInstance, const TMap<FIntVector, TArray<FEntityInstanceData*>>& EntityGrid) const;
+
+	// Entity가 NavMesh 기반으로 Target을 향해 움직일 때, 다음 프레임의 위치를 가져오는 함수입니다.
+	FVector GetNextLocationWithNavMesh(FEntityInstanceData& InstanceData, UNavigationSystemV1* NavSystem, const FVector& StartLocation, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared);
 	
-	// InstancedMesh와 매핑된 PlayerPawn을 가져오는 함수입니다.
-	APawn* GetEntityTarget(const FEntityPool& Pool, const int32 InstanceIndex) const;
+	ASVEnemy* GetEnemyFromPool(uint8 InMonsterID) const;
+	void ReturnToEnemyPool(ASVEnemy* Enemy);
 
 private:
-	// uint8은 MonsterID를 의미합니다.
-	UPROPERTY()
-	TMap<uint8, FEntityPool> EntityPools;
-
-	int32 MaxEntityCount = 500;
-
-	UPROPERTY()
-	TMap<uint8, TObjectPtr<ASVEnemy>> EnemyPools;
-
 	UPROPERTY(Config)
 	TSubclassOf<AEntitySpawner> EntitySpawnerClass;
 
@@ -102,4 +93,10 @@ private:
 
 	float GridCellSize = 80.0f;
 	float EntityRadius = 40.0f;
+	
+	// uint8은 MonsterID를 의미합니다.
+	UPROPERTY()
+	TMap<uint8, FEntityPool> EntityPools;
+
+	int32 MaxEntityCount = 500;
 };

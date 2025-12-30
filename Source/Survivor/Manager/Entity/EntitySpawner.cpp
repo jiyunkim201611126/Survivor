@@ -2,7 +2,7 @@
 
 #include "EntitySpawner.h"
 
-#include "EntityManagerSubsystem.h"
+#include "EnemyManagerSubsystem.h"
 #include "Algo/RandomShuffle.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
@@ -64,7 +64,8 @@ float AEntitySpawner::GetMonsterSpeed(const uint8 MonsterID) const
 
 void AEntitySpawner::SpawnEntities()
 {
-	for (APawn* PlayerPawn : GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->GetAllPlayerPawns())
+	TArray<APawn*> AllPlayerPawns = GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->GetAllPlayerPawns();
+	for (APawn* PlayerPawn : AllPlayerPawns)
 	{
 		FEnvQueryRequest QueryRequest(EntitySpawnLocationQuery, PlayerPawn);
 		QueryRequest.Execute(EEnvQueryRunMode::AllMatching, this, &ThisClass::OnQueryFinished);
@@ -80,7 +81,7 @@ void AEntitySpawner::OnQueryFinished(TSharedPtr<FEnvQueryResult> Result) const
 	// 이 중 랜덤하게 몇 개의 위치만 사용합니다.
 	// TODO: 생존 시간, 웨이브 수, 플레이어 수 등으로 이 개수를 결정하는 알고리즘이 필요합니다.
 	Algo::RandomShuffle(Locations);
-	Locations.SetNum(100);
+	Locations.SetNum(10);
 
 	// EQS의 OwnerPawn을 가져와 스폰될 Entity의 TargetPawn으로 할당합니다.
 	APawn* QuerierPawn = nullptr;
@@ -89,7 +90,7 @@ void AEntitySpawner::OnQueryFinished(TSharedPtr<FEnvQueryResult> Result) const
 		QuerierPawn = Cast<APawn>(Result->Owner);
 	}
 
-	if (UEntityManagerSubsystem* EntityManagerSubsystem = GetWorld()->GetSubsystem<UEntityManagerSubsystem>())
+	if (UEnemyManagerSubsystem* EntityManagerSubsystem = GetWorld()->GetSubsystem<UEnemyManagerSubsystem>())
 	{
 		EntityManagerSubsystem->SpawnEntities(0, Locations, QuerierPawn);
 	}

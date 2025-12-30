@@ -13,7 +13,6 @@ void UEnemyGASManagerComponent::InitAbilityActorInfo()
 	AbilitySystemComponent = OwnerEnemy->GetAbilitySystemComponent();
 	AbilitySystemComponent->InitAbilityActorInfo(GetOwner(), GetOwner());
 	Cast<USVAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
-	ApplyEffectToSelf(DefaultAttributes, 1.f);
 	
 	OwnerEnemy->GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnComponentBeginOverlap);
 
@@ -29,9 +28,9 @@ void UEnemyGASManagerComponent::InitAbilityActorInfo()
 
 void UEnemyGASManagerComponent::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// 이 이벤트로 들어왔다면 OtherActor는 반드시 PlayerCharacter여야 합니다.
-	const ASVEnemy* OwnerEnemy = GetPawn<ASVEnemy>();
-	if (OwnerEnemy && OtherActor && OtherActor->Implements<UCombatInterface>() && AbilitySystemComponent->AbilityActorInfo.IsValid())
+	// 이 이벤트로 들어왔다면 Collision 채널을 통해 거르고 있기 때문에 OtherActor는 반드시 PlayerCharacter여야 합니다.
+	const ASVEnemy* Owner = GetPawn<ASVEnemy>();
+	if (Owner && OtherActor && OtherActor->Implements<UCombatInterface>() && AbilitySystemComponent->AbilityActorInfo.IsValid())
 	{
 		FScopedAbilityListLock AbilityListLock(*AbilitySystemComponent);
 		const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
@@ -46,7 +45,7 @@ void UEnemyGASManagerComponent::OnComponentBeginOverlap(UPrimitiveComponent* Ove
 				AbilitySystemComponent->TriggerAbilityFromGameplayEvent(Spec.Handle, AbilitySystemComponent->AbilityActorInfo.Get(), FGameplayTag(), &EventData, *AbilitySystemComponent);
 
 				// Ability가 발동되었으므로, Cooldown이 종료될 때까지 잠시 Overlap이 발생하지 않도록 설정합니다.
-				OwnerEnemy->GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+				Owner->GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 				return;
 			}
 		}
@@ -58,9 +57,15 @@ void UEnemyGASManagerComponent::OnCooldownTagChanged(const FGameplayTag Cooldown
 	if (NewCount == 0)
 	{
 		// Cooldown이 종료되었으므로 다시 Overlap 이벤트가 발생할 수 있도록 설정합니다.
-		if (const ASVEnemy* OwnerEnemy = GetPawn<ASVEnemy>())
+		if (const ASVEnemy* Owner = GetPawn<ASVEnemy>())
 		{
-			OwnerEnemy->GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+			Owner->GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+			Owner->GetCapsuleComponent()->UpdateOverlaps();
 		}
 	}
+}
+
+void UEnemyGASManagerComponent::OnOwnerSpawnFromPool() const
+{
+	ApplyEffectToSelf(DefaultAttributes, 1.f);
 }

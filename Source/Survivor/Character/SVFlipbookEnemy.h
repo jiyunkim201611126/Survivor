@@ -37,6 +37,8 @@ public:
 	virtual void EndHide_Implementation() override;
 	//~ End of ISVCameraAssistInterface
 
+	virtual void OnSpawnFromPool() override;
+
 private:
 	void SetLocalCameraComponent();
 	void UpdateFlipbookImage();

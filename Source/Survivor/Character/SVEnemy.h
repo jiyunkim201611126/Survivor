@@ -35,9 +35,7 @@ public:
 	virtual void UnPossessed() override;
 	//~ End of APawn Interface
 
-protected:
-	UFUNCTION(BlueprintImplementableEvent)
-	void BP_PlaySpawnAnimation();
+	virtual void OnSpawnFromPool();
 
 private:
 	void UpdateNearestTarget();
