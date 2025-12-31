@@ -25,6 +25,7 @@ public:
 	
 	//~ Begin ICombatInterface
 	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
+	virtual UCapsuleComponent* GetCombatCapsuleComponent() const override;
 	//~ End of ICombatInterface
 
 protected:

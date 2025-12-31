@@ -45,10 +45,10 @@ private:
 	void UpdateFlipbookComponentDirection() const;
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Flipbook", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sprite", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPaperFlipbookComponent> PaperFlipbookComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Flipbook", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Sprite", meta = (AllowPrivateAccess = "true"))
 	TMap<EEnemyDirection, TObjectPtr<UPaperFlipbook>> Flipbooks;
 
 	UPROPERTY()

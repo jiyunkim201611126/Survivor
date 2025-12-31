@@ -7,14 +7,17 @@
 #include "NavigationSystem.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 #include "Components/InstancedStaticMeshComponent.h"
-#include "Survivor/Character/SVEnemy.h"
+#include "Survivor/Interface/EnemyInterface.h"
 #include "Survivor/Manager/ObjectPoolManagerSubsystem.h"
 
 void UEnemyManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	InitEntitySpawner();
+	if (GetWorld() && GetWorld()->IsGameWorld())
+	{
+		InitEntitySpawner();
+	}
 }
 
 void UEnemyManagerSubsystem::InitEntitySpawner()
@@ -159,10 +162,12 @@ void UEnemyManagerSubsystem::Tick(float DeltaTime)
 				else
 				{
 					// LocalPawn과 가까워졌으므로, GAS 관련 Component를 가진 Actor로 교체합니다.
-					ASVEnemy* SpawnedEnemy = GetEnemyFromPool(MonsterID);
+					AActor* SpawnedEnemy = GetEnemyFromPool(MonsterID);
+					
 					FVector SpawnLocation = InstanceData.Transform.GetLocation();
 					SpawnLocation.Z += 90.f;
-					SpawnedEnemy->SetActorLocation(SpawnLocation, false, nullptr, ETeleportType::ResetPhysics);
+					InstanceData.Transform.SetLocation(SpawnLocation);
+					SpawnedEnemy->SetActorTransform(InstanceData.Transform, false, nullptr, ETeleportType::ResetPhysics);
 				}
 			}
 
@@ -327,30 +332,24 @@ FVector UEnemyManagerSubsystem::GetNextLocationWithNavMesh(FEntityInstanceData& 
 	return ProjectedLocation.Location;
 }
 
-ASVEnemy* UEnemyManagerSubsystem::GetEnemyFromPool(const uint8 InMonsterID) const
+AActor* UEnemyManagerSubsystem::GetEnemyFromPool(const uint8 InMonsterID) const
 {
-	ASVEnemy* SpawnedEnemy = nullptr;
+	AActor* SpawnedEnemy = nullptr;
 	if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())
 	{
-		const TSubclassOf<ASVEnemy> EnemyClass = GlobalEntitySpawner->GetGASActorClass(InMonsterID);
+		const TSubclassOf<AActor> EnemyClass = GlobalEntitySpawner->GetGASActorClass(InMonsterID);
 		bool bIsSpawning;
-		SpawnedEnemy = ObjectPoolManager->GetFromPool<ASVEnemy>(EnemyClass, bIsSpawning, nullptr, nullptr);
+		SpawnedEnemy = ObjectPoolManager->GetFromPool<AActor>(EnemyClass, bIsSpawning, nullptr, nullptr);
 
 		if (SpawnedEnemy)
 		{
 			if (bIsSpawning)
 			{
 				// TODO: Enemy 사망 시 Pool에 Return하는 함수 콜백으로 붙이기
+				SpawnedEnemy->FinishSpawning(FTransform(UObjectPoolManagerSubsystem::PoolLocation));
 			}
 
-			SpawnedEnemy->FinishSpawning(FTransform(UObjectPoolManagerSubsystem::PoolLocation));
-			SpawnedEnemy->OnSpawnFromPool();
-			SpawnedEnemy->SetActorHiddenInGame(false);
-			SpawnedEnemy->SetActorEnableCollision(true);
-			if (!SpawnedEnemy->GetController())
-			{
-				SpawnedEnemy->SpawnDefaultController();
-			}
+			Cast<IEnemyInterface>(SpawnedEnemy)->OnSpawnFromPool();
 		}
 	}
 	

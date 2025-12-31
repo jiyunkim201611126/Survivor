@@ -19,7 +19,7 @@ struct FMonsterData
 	TObjectPtr<UStaticMesh> EntityMesh;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ASVEnemy> GASActorClass;
+	TSubclassOf<AActor> GASActorClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	float MovementSpeed = 300.f;
@@ -32,7 +32,7 @@ class SURVIVOR_API UMonsterDataAsset : public UDataAsset
 
 public:
 	UStaticMesh* GetMonsterMesh(const uint8 MonsterID);
-	TSubclassOf<ASVEnemy> GetGASActorClass(const uint8 MonsterID);
+	TSubclassOf<AActor> GetGASActorClass(const uint8 MonsterID);
 	float GetMonsterSpeed(const uint8 MonsterID);
 
 private:
@@ -43,6 +43,7 @@ private:
 /**
  * EntityManagerSubsystem과 밀접하게 관련 있는 클래스입니다.
  * Subsystem은 Replicate되지 않는다는 점과, EditDefaultOnly 등의 UPROPERTY 매크로 사용 편의성을 위해 선언되었습니다.
+ * 또한 Subsystem은 Entity의 총괄, 해당 클래스는 Spawn될 위치 계산과 타이밍 결정 등의 역할을 담당하는 관심사의 분리가 되어있습니다.
  */
 UCLASS()
 class SURVIVOR_API AEntitySpawner : public AActor
@@ -55,7 +56,7 @@ public:
 	UMonsterDataAsset* GetMonsterDataAsset();
 
 	UStaticMesh* GetMonsterMesh(const uint8 MonsterID) const;
-	TSubclassOf<ASVEnemy> GetGASActorClass(const uint8 MonsterID) const;
+	TSubclassOf<AActor> GetGASActorClass(const uint8 MonsterID) const;
 	float GetMonsterSpeed(const uint8 MonsterID) const;
 	
 	UFUNCTION(BlueprintCallable)

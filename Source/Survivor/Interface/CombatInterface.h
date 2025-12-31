@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
+class UCapsuleComponent;
+
 UINTERFACE()
 class UCombatInterface : public UInterface
 {
@@ -17,5 +19,6 @@ class SURVIVOR_API ICombatInterface
 	GENERATED_BODY()
 
 public:
-	virtual void ApplyKnockback(const FVector& KnockbackForce);
+	virtual void ApplyKnockback(const FVector& KnockbackForce) = 0;
+	virtual UCapsuleComponent* GetCombatCapsuleComponent() const = 0;
 };

@@ -1,12 +1,11 @@
 // KJY
 
 #include "SVFlipbookEnemy.h"
+
 #include "PaperFlipbookComponent.h"
 #include "SVCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
-
-class UPawnManagerSubsystem;
 
 ASVFlipbookEnemy::ASVFlipbookEnemy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.DoNotCreateDefaultSubobject(MeshComponentName))

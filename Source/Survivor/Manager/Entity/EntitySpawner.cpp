@@ -17,7 +17,7 @@ UStaticMesh* UMonsterDataAsset::GetMonsterMesh(const uint8 MonsterID)
 	return nullptr;
 }
 
-TSubclassOf<ASVEnemy> UMonsterDataAsset::GetGASActorClass(const uint8 MonsterID)
+TSubclassOf<AActor> UMonsterDataAsset::GetGASActorClass(const uint8 MonsterID)
 {
 	if (const FMonsterData* MonsterData = MonsterDatas.Find(MonsterID))
 	{
@@ -52,7 +52,7 @@ UStaticMesh* AEntitySpawner::GetMonsterMesh(const uint8 MonsterID) const
 	return MonsterDataAsset->GetMonsterMesh(MonsterID);
 }
 
-TSubclassOf<ASVEnemy> AEntitySpawner::GetGASActorClass(const uint8 MonsterID) const
+TSubclassOf<AActor> AEntitySpawner::GetGASActorClass(const uint8 MonsterID) const
 {
 	return MonsterDataAsset->GetGASActorClass(MonsterID);
 }

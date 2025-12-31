@@ -30,6 +30,8 @@ public:
 	APawn* GetRandomPlayerPawn();
 	APawn* GetLocalPlayerPawn();
 
+	FVector GetNearestPlayerPawnNavLocation(const FVector& InLocation);
+
 private:
 	UPROPERTY()
 	TArray<TWeakObjectPtr<APawn>> PlayerPawns;

@@ -16,25 +16,27 @@ ASVEnemy::ASVEnemy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.SetTickFunctionEnable(false);
 	SetActorTickInterval(0.5f);
 
 	GetCapsuleComponent()->SetCollisionProfileName("Enemy");
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 
+	GetCharacterMovement()->bEnablePhysicsInteraction = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
 	GASManagerComponent = CreateDefaultSubobject<UEnemyGASManagerComponent>(TEXT("GASManagerComponent"));
-	
 	AbilitySystemComponent = CreateDefaultSubobject<USVAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-
 	AttributeSet = CreateDefaultSubobject<USVAttributeSet>(TEXT("AttributeSet"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 350.f;
+	
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void ASVEnemy::BeginPlay()
@@ -66,12 +68,12 @@ void ASVEnemy::Tick(float DeltaSeconds)
 		return;
 	}
 
+	// 가까운 PlayerCharacter를 향해 다가갑니다.
 	if (!MoveTargetActor.IsValid())
 	{
 		UpdateNearestTarget();
 	}
 
-	// 가까운 PlayerCharacter를 향해 다가갑니다.
 	if (AAIController* AIController = Cast<AAIController>(GetController()))
 	{
 		AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
@@ -101,6 +103,14 @@ void ASVEnemy::UnPossessed()
 void ASVEnemy::OnSpawnFromPool()
 {
 	Cast<UEnemyGASManagerComponent>(GASManagerComponent)->OnOwnerSpawnFromPool();
+	
+	UpdateNearestTarget();
+	if (AAIController* AIController = Cast<AAIController>(GetController()))
+	{
+		AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
+	}
+	
+	SetActorTickEnabled(true);
 }
 
 void ASVEnemy::UpdateNearestTarget()

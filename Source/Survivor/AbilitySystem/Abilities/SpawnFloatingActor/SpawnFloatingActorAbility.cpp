@@ -61,8 +61,6 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 			}
 
 			CurrentActor->SetOwner(AvatarActor);
-			CurrentActor->SetActorHiddenInGame(false);
-			CurrentActor->SetActorEnableCollision(true);
 			CurrentActor->SetLifeTime(LifeTimeCurve.GetValueAtLevel(GetAbilityLevel()));
 			CurrentActor->Activate(SpawnLocation + ActorLocation, SpawnLocation.Rotation());
 		}

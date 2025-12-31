@@ -4,17 +4,21 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Survivor/AbilitySystem/SVAbilitySystemComponent.h"
-#include "Survivor/Character/SVEnemy.h"
+#include "Survivor/Interface/CombatInterface.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
 void UEnemyGASManagerComponent::InitAbilityActorInfo()
 {
-	const ASVEnemy* OwnerEnemy = GetPawn<ASVEnemy>();
-	AbilitySystemComponent = OwnerEnemy->GetAbilitySystemComponent();
-	AbilitySystemComponent->InitAbilityActorInfo(GetOwner(), GetOwner());
-	Cast<USVAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	AActor* OwnerActor = GetOwner();
+	const IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OwnerActor);
+	const ICombatInterface* CombatInterface = Cast<ICombatInterface>(OwnerActor);
 	
-	OwnerEnemy->GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnComponentBeginOverlap);
+	AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
+	AbilitySystemComponent->InitAbilityActorInfo(OwnerActor, OwnerActor);
+	Cast<USVAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+
+	UCapsuleComponent* OwnerCapsuleComponent = CombatInterface->GetCombatCapsuleComponent();
+	OwnerCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnComponentBeginOverlap);
 
 	// Ability는 쿨다운이 끝나면 자동으로 재발동합니다.
 	// AbilitySystemComponent에 특정 태그가 부여/제거될 때 호출되는 델리게이트를 이용합니다.
@@ -28,8 +32,7 @@ void UEnemyGASManagerComponent::InitAbilityActorInfo()
 
 void UEnemyGASManagerComponent::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// 이 이벤트로 들어왔다면 Collision 채널을 통해 거르고 있기 때문에 OtherActor는 반드시 PlayerCharacter여야 합니다.
-	const ASVEnemy* Owner = GetPawn<ASVEnemy>();
+	const ICombatInterface* Owner = GetOwner<ICombatInterface>();
 	if (Owner && OtherActor && OtherActor->Implements<UCombatInterface>() && AbilitySystemComponent->AbilityActorInfo.IsValid())
 	{
 		FScopedAbilityListLock AbilityListLock(*AbilitySystemComponent);
@@ -45,7 +48,7 @@ void UEnemyGASManagerComponent::OnComponentBeginOverlap(UPrimitiveComponent* Ove
 				AbilitySystemComponent->TriggerAbilityFromGameplayEvent(Spec.Handle, AbilitySystemComponent->AbilityActorInfo.Get(), FGameplayTag(), &EventData, *AbilitySystemComponent);
 
 				// Ability가 발동되었으므로, Cooldown이 종료될 때까지 잠시 Overlap이 발생하지 않도록 설정합니다.
-				Owner->GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+				Owner->GetCombatCapsuleComponent()->SetGenerateOverlapEvents(false);
 				return;
 			}
 		}
@@ -57,15 +60,16 @@ void UEnemyGASManagerComponent::OnCooldownTagChanged(const FGameplayTag Cooldown
 	if (NewCount == 0)
 	{
 		// Cooldown이 종료되었으므로 다시 Overlap 이벤트가 발생할 수 있도록 설정합니다.
-		if (const ASVEnemy* Owner = GetPawn<ASVEnemy>())
+		const ICombatInterface* Owner = GetOwner<ICombatInterface>();
 		{
-			Owner->GetCapsuleComponent()->SetGenerateOverlapEvents(true);
-			Owner->GetCapsuleComponent()->UpdateOverlaps();
+			Owner->GetCombatCapsuleComponent()->SetGenerateOverlapEvents(true);
+			Owner->GetCombatCapsuleComponent()->UpdateOverlaps();
 		}
 	}
 }
 
 void UEnemyGASManagerComponent::OnOwnerSpawnFromPool() const
 {
+	// Pool에서 방금 나왔으므로 DefaultAttributes를 한 번 적용합니다.
 	ApplyEffectToSelf(DefaultAttributes, 1.f);
 }

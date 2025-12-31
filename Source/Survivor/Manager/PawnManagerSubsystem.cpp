@@ -2,6 +2,8 @@
 
 #include "PawnManagerSubsystem.h"
 
+#include "NavigationSystem.h"
+
 void UPawnManagerSubsystem::RegisterPlayerPawn(APawn* InPawn)
 {
 	if (!PlayerPawns.Contains(InPawn))
@@ -93,4 +95,31 @@ APawn* UPawnManagerSubsystem::GetLocalPlayerPawn()
 	}
 
 	return nullptr;
+}
+
+FVector UPawnManagerSubsystem::GetNearestPlayerPawnNavLocation(const FVector& InLocation)
+{
+	float ClosestDistanceSquared = FLT_MAX;
+	const APawn* ClosestPlayerPawn = nullptr;
+	for (const APawn* PlayerPawn : GetAllPlayerPawns())
+	{
+		const float DistanceSquared = FVector::DistSquared(PlayerPawn->GetActorLocation(), InLocation);
+		if (DistanceSquared < ClosestDistanceSquared)
+		{
+			ClosestDistanceSquared = DistanceSquared;
+			ClosestPlayerPawn = PlayerPawn;
+		}
+	}
+
+	if (ClosestPlayerPawn)
+	{
+		UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+		FNavLocation ProjectedTargetLocation;
+		if (NavSystem->ProjectPointToNavigation(ClosestPlayerPawn->GetActorLocation(), ProjectedTargetLocation, FVector(10.f, 10.f, 10000.f)))
+		{
+			return ProjectedTargetLocation.Location;
+		}
+	}
+
+	return FVector::ZeroVector;
 }

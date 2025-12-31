@@ -75,7 +75,7 @@ private:
 	// Entity가 NavMesh 기반으로 Target을 향해 움직일 때, 다음 프레임의 위치를 가져오는 함수입니다.
 	FVector GetNextLocationWithNavMesh(FEntityInstanceData& InstanceData, UNavigationSystemV1* NavSystem, const FVector& StartLocation, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared);
 	
-	ASVEnemy* GetEnemyFromPool(uint8 InMonsterID) const;
+	AActor* GetEnemyFromPool(uint8 InMonsterID) const;
 	void ReturnToEnemyPool(ASVEnemy* Enemy);
 
 private:

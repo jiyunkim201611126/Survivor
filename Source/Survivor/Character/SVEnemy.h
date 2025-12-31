@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "SVCharacterBase.h"
 #include "AbilitySystemInterface.h"
+#include "Survivor/Interface/EnemyInterface.h"
 #include "SVEnemy.generated.h"
 
 class UGameplayEffect;
@@ -15,7 +16,7 @@ class UAttributeSet;
 class UEnemyGASManagerComponent;
 
 UCLASS()
-class SURVIVOR_API ASVEnemy : public ASVCharacterBase
+class SURVIVOR_API ASVEnemy : public ASVCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 
@@ -35,7 +36,7 @@ public:
 	virtual void UnPossessed() override;
 	//~ End of APawn Interface
 
-	virtual void OnSpawnFromPool();
+	virtual void OnSpawnFromPool() override;
 
 private:
 	void UpdateNearestTarget();

@@ -15,6 +15,11 @@ void ASVCharacterBase::ApplyKnockback(const FVector& KnockbackForce)
 	LaunchCharacter(KnockbackForce, true, true);
 }
 
+UCapsuleComponent* ASVCharacterBase::GetCombatCapsuleComponent() const
+{
+	return GetCapsuleComponent();
+}
+
 void ASVCharacterBase::InitAbilityActorInfo() const
 {
 	GASManagerComponent->SetAbilitySystemComponent(AbilitySystemComponent);
