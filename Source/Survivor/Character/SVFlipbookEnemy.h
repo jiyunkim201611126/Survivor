@@ -36,6 +36,10 @@ public:
 	virtual void StartHide_Implementation() override;
 	virtual void EndHide_Implementation() override;
 	//~ End of ISVCameraAssistInterface
+	
+	//~ Begin ICombatInterface
+	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
+	//~ End of ICombatInterface
 
 	virtual void OnSpawnFromPool() override;
 
@@ -43,7 +47,7 @@ public:
 
 private:
 	void SetLocalCameraComponent();
-	void UpdateFlipbookImage();
+	void UpdateFlipbookImage() const;
 	void UpdateFlipbookComponentDirection() const;
 
 private:
@@ -58,6 +62,4 @@ private:
 
 	UPROPERTY()
 	TWeakObjectPtr<UCameraComponent> CameraComponent;
-
-	EEnemyDirection CurrentDirection = EEnemyDirection::Front;
 };

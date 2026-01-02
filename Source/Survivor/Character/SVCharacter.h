@@ -53,6 +53,9 @@ public:
 	virtual void RegisterPawn(APawn* InPawn) override;
 	virtual void UnregisterPawn(APawn* InPawn) override;
 	//~ End of ICombatInterface
+
+protected:
+	virtual void OnDeath() override;
 	
 private:
 	void UpdateMovement();

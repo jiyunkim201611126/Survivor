@@ -6,8 +6,6 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Survivor/Interface/CombatInterface.h"
-#include "Survivor/SVAbilityTypes.h"
-#include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
 #include "Survivor/Manager/DamageSlateManagerSubsystem.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
@@ -107,6 +105,7 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 		// 새로운 체력을 계산해 할당합니다.
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+		UE_LOG(LogTemp, Log, TEXT("SVAttributeSet - Damage Applied"));
 		
 		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)

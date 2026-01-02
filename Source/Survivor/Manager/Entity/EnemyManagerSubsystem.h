@@ -76,7 +76,7 @@ private:
 	FVector GetNextLocationWithNavMesh(FEntityInstanceData& InstanceData, UNavigationSystemV1* NavSystem, const FVector& StartLocation, const float DeltaTime, const float MonsterSpeed, const float WaypointArrivalThresholdSquared);
 	
 	AActor* GetEnemyFromPool(uint8 InMonsterID) const;
-	void ReturnToEnemyPool(ASVEnemy* Enemy);
+	void ReturnToEnemyPool(ASVEnemy* Enemy) const;
 
 private:
 	UPROPERTY(Config)

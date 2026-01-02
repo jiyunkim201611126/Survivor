@@ -7,6 +7,7 @@
 #include "NavigationSystem.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Survivor/Character/SVEnemy.h"
 #include "Survivor/Interface/EnemyInterface.h"
 #include "Survivor/Manager/ObjectPoolManagerSubsystem.h"
 
@@ -345,7 +346,7 @@ AActor* UEnemyManagerSubsystem::GetEnemyFromPool(const uint8 InMonsterID) const
 		{
 			if (bIsSpawning)
 			{
-				// TODO: Enemy 사망 시 Pool에 Return하는 함수 콜백으로 붙이기
+				Cast<ASVEnemy>(SpawnedEnemy)->OnEnemyDyingFinished.BindUObject(this, &ThisClass::ReturnToEnemyPool);
 				SpawnedEnemy->FinishSpawning(FTransform(UObjectPoolManagerSubsystem::PoolLocation));
 			}
 
@@ -354,6 +355,14 @@ AActor* UEnemyManagerSubsystem::GetEnemyFromPool(const uint8 InMonsterID) const
 	}
 	
 	return SpawnedEnemy;
+}
+
+void UEnemyManagerSubsystem::ReturnToEnemyPool(ASVEnemy* Enemy) const
+{
+	if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())
+	{
+		ObjectPoolManager->ReturnToPool(Enemy);
+	}
 }
 
 TStatId UEnemyManagerSubsystem::GetStatId() const

@@ -81,7 +81,7 @@ void AEntitySpawner::OnQueryFinished(TSharedPtr<FEnvQueryResult> Result) const
 	// 이 중 랜덤하게 몇 개의 위치만 사용합니다.
 	// TODO: 생존 시간, 웨이브 수, 플레이어 수 등으로 이 개수를 결정하는 알고리즘이 필요합니다.
 	Algo::RandomShuffle(Locations);
-	Locations.SetNum(10);
+	Locations.SetNum(1);
 
 	// EQS의 OwnerPawn을 가져와 스폰될 Entity의 TargetPawn으로 할당합니다.
 	APawn* QuerierPawn = nullptr;

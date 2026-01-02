@@ -10,8 +10,8 @@ class UGameplayEffectApplier;
 class USphereComponent;
 class AFloatingActor;
 
-DECLARE_DELEGATE_OneParam(FOnFloatingActorActivateSignature, const TArray<AActor*>& InActors);
-DECLARE_DELEGATE_OneParam(FOnLifeEndSignature, AActor* InActor)
+DECLARE_DELEGATE_OneParam(FOnFloatingActorActivateSignature, AActor* InActor);
+DECLARE_DELEGATE_OneParam(FOnLifeEndSignature, AFloatingActor* InActor)
 
 UCLASS()
 class SURVIVOR_API AFloatingActor : public AActor
@@ -27,6 +27,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnActivate();
+
+	void ResetOverlapActors();
 
 protected:
 	//~ Begin AActor Interface
@@ -56,9 +58,11 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UShapeComponent> CollisionComponent;
-	
-	UPROPERTY()
-	TArray<TWeakObjectPtr<AActor>> OverlappedActors;
+
+	// Active 후 Pool로 돌아가기 전까지 처음 Overlap된 대상을 캐싱하는 배열입니다.
+	TArray<TWeakObjectPtr<AActor>> FirstOverlapThisActive;
+	// 데미지를 줄 수 있는 현재 Overlap된 Actor를 캐싱해놓는 배열입니다.
+	TArray<TWeakObjectPtr<AActor>> OverlappedCombatActors;
 	
 	FTimerHandle LifeTimerHandle;
 	FTimerHandle DamageTimerHandle;

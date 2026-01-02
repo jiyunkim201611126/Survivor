@@ -15,6 +15,8 @@ class UCapsuleComponent;
 class UAttributeSet;
 class UEnemyGASManagerComponent;
 
+DECLARE_DELEGATE_OneParam(FOnEnemyDyingFinished, ASVEnemy*);
+
 UCLASS()
 class SURVIVOR_API ASVEnemy : public ASVCharacterBase, public IEnemyInterface
 {
@@ -41,8 +43,13 @@ public:
 
 	virtual void OnSpawnFromPool() override;
 
+	virtual void OnDeath() override;
+
 private:
 	void UpdateNearestTarget();
+
+public:
+	FOnEnemyDyingFinished OnEnemyDyingFinished;
 	
 private:
 	TWeakObjectPtr<AActor> MoveTargetActor;

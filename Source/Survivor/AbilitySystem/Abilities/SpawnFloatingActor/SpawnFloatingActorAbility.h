@@ -29,8 +29,7 @@ private:
 	void LoopAbility();
 	void SpawnFloatingActors();
 	
-	void OnFloatingActorActivateDamage(const TArray<AActor*>& InActors);
-	void OnLifeEnd(AActor* InActor) const;
+	void OnLifeEnd(AFloatingActor* InFloatingActor) const;
 
 private:
 	UPROPERTY(EditAnywhere)

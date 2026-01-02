@@ -196,6 +196,14 @@ void ASVCharacter::UnregisterPawn(APawn* InPawn)
 	}
 }
 
+void ASVCharacter::OnDeath()
+{
+	if (GetMesh())
+	{
+		Execute_StartHide(this);
+	}
+}
+
 void ASVCharacter::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D InputValue = InputActionValue.Get<FVector2D>();

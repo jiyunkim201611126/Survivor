@@ -67,17 +67,24 @@ void AFloatingActor::Activate(const FVector& InActivateLocation, const FRotator&
 		FTimerDelegate TimerDelegate;
 		TimerDelegate.BindLambda([this]()
 		{
-			for (const auto& OverlappedActor : OverlappedActors)
+			// 데미지로 인해 TargetActor가 사망하게 될 경우, Collision이 꺼지면서 OverlappedCombatActors의 개수가 달라져 위험합니다.
+			// 따라서 현재 Overlap된 Actor를 이 스코프 안에서 캐싱한 뒤 사용합니다.
+			TArray<AActor*> ValidActors;
+			for (const TWeakObjectPtr<AActor>& TargetActor : OverlappedCombatActors)
 			{
-				TArray<AActor*> ValidTargetActors;
-				if (OverlappedActor.IsValid())
+				if (TargetActor.IsValid())
 				{
-					ValidTargetActors.Emplace(OverlappedActor.Get());
+					ValidActors.Emplace(TargetActor.Get());
 				}
-				
-				if (OnFloatingActorActivateDelegate.IsBound())
+			}
+			
+			// 현재 살아있는 Actor들에게 Effect를 적용합니다.
+			if (OnFloatingActorActivateDelegate.IsBound())
+			{
+				for (AActor* TargetActor : ValidActors)
 				{
-					OnFloatingActorActivateDelegate.Execute(ValidTargetActors);
+					OnFloatingActorActivateDelegate.Execute(TargetActor);
+					UE_LOG(LogTemp, Log, TEXT("AFloatingActor::Activate - Damage Applied"));
 				}
 			}
 		});
@@ -89,6 +96,12 @@ void AFloatingActor::Activate(const FVector& InActivateLocation, const FRotator&
 			true,
 			0);
 	}
+}
+
+void AFloatingActor::ResetOverlapActors()
+{
+	FirstOverlapThisActive.Reset();
+	OverlappedCombatActors.Reset();
 }
 
 void AFloatingActor::BeginPlay()
@@ -123,14 +136,16 @@ void AFloatingActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 	// Collision 설정에서 Enemy 외엔 전부 Ignore로 설정해뒀기 때문에 조건 검사를 간편하게 합니다.
 	if (OtherActor && OtherActor->Implements<UCombatInterface>())
 	{
-		OverlappedActors.Emplace(OtherActor);
-				
+		OverlappedCombatActors.Emplace(OtherActor);
+		
 		if (OnFloatingActorActivateDelegate.IsBound())
 		{
-			// Overlap된 순간 우선 Cooldown과 관계 없이 Effect를 한 번 부여합니다.
-			TArray<AActor*> OtherActorArray;
-			OtherActorArray.Emplace(OtherActor);
-			OnFloatingActorActivateDelegate.Execute(OtherActorArray);
+			// Active 후 처음 Overlap된 대상에겐 Overlap 즉시 Effect를 한 번 적용합니다.
+			if (!FirstOverlapThisActive.Contains(OtherActor))
+			{
+				FirstOverlapThisActive.Emplace(OtherActor);
+				OnFloatingActorActivateDelegate.Execute(OtherActor);
+			}
 		}
 	}
 }
@@ -138,5 +153,8 @@ void AFloatingActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 void AFloatingActor::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex)
 {
 	// Overlap이 종료된 Actor를 제외합니다.
-	OverlappedActors.RemoveSingleSwap(OtherActor);
+	if (OtherActor && OtherActor->Implements<UCombatInterface>())
+	{
+		OverlappedCombatActors.RemoveSingleSwap(OtherActor);
+	}
 }

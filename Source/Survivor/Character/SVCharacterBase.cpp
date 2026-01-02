@@ -14,44 +14,9 @@ ASVCharacterBase::ASVCharacterBase(const FObjectInitializer& ObjectInitializer)
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void ASVCharacterBase::ApplyKnockback(const FVector& KnockbackForce)
+UAbilitySystemComponent* ASVCharacterBase::GetAbilitySystemComponent() const
 {
-	LaunchCharacter(KnockbackForce, true, true);
-}
-
-void ASVCharacterBase::Die()
-{
-	UnregisterPawn(this);
-
-	MulticastDeath();
-}
-
-void ASVCharacterBase::MulticastDeath_Implementation()
-{
-	if (GetCharacterMovement())
-	{
-		GetCharacterMovement()->StopMovementImmediately();
-		GetCharacterMovement()->DisableMovement();
-	}
-
-	// Collision의 충돌 주도권을 제거합니다.
-	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
-	GetCapsuleComponent()->SetEnableGravity(false);
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	if (USkeletalMeshComponent* MeshComponent = GetMesh())
-	{
-		MeshComponent->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-		MeshComponent->SetCollisionProfileName(TEXT("Ragdoll"));
-		MeshComponent->SetSimulatePhysics(true);
-		MeshComponent->SetAllBodiesSimulatePhysics(true);
-		MeshComponent->WakeAllRigidBodies();
-		MeshComponent->KinematicBonesUpdateType = EKinematicBonesUpdateToPhysics::Type::SkipAllBones;
-
-		MeshComponent->AddImpulse(FVector(100.f, 0.f, 0.f), NAME_None, true);
-	}
-
-	GetAbilitySystemComponent()->AddLooseGameplayTag(FSVGameplayTags::Get().CharacterState_Dead);
+	return AbilitySystemComponent;
 }
 
 UCapsuleComponent* ASVCharacterBase::GetCombatCapsuleComponent() const
@@ -66,7 +31,60 @@ void ASVCharacterBase::InitAbilityActorInfo() const
 	GASManagerComponent->InitAbilityActorInfo();
 }
 
-UAbilitySystemComponent* ASVCharacterBase::GetAbilitySystemComponent() const
+void ASVCharacterBase::ApplyKnockback(const FVector& KnockbackForce)
 {
-	return AbilitySystemComponent;
+	const bool bDead = GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Dead);
+	if (bDead)
+	{
+		if (GetMesh())
+		{
+			GetMesh()->AddImpulseToAllBodiesBelow(KnockbackForce, NAME_None, true, true);
+		}
+	}
+	else
+	{
+		LaunchCharacter(KnockbackForce, true, true);
+	}
+}
+
+void ASVCharacterBase::Die()
+{
+	UnregisterPawn(this);
+
+	MulticastDeath();
+}
+
+void ASVCharacterBase::MulticastDeath_Implementation()
+{
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->DisableMovement();
+	}
+
+	// Collision의 충돌 주도권을 제거합니다.
+	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
+	GetMesh()->SetSimulatePhysics(true);
+
+	GetAbilitySystemComponent()->AddLooseGameplayTag(FSVGameplayTags::Get().CharacterState_Dead);
+
+	StartOnDeathTimer();
+}
+
+void ASVCharacterBase::StartOnDeathTimer()
+{
+	FTimerHandle TimerHandle;
+	FTimerDelegate TimerDelegate;
+	TimerDelegate.BindLambda([this]()
+	{
+		OnDeath();
+	});
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.f, false, 2.f);
+}
+
+void ASVCharacterBase::OnDeath()
+{
 }

@@ -56,31 +56,6 @@ void ASVEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-void ASVEnemy::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	AAIController* AIController = Cast<AAIController>(GetController());
-	if (!GetAbilitySystemComponent() || !AIController)
-	{
-		return;
-	}
-
-	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Dead) || GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Knockback))
-	{
-		AIController->StopMovement();
-		return;
-	}
-
-	// 가까운 PlayerCharacter를 향해 다가갑니다.
-	if (!MoveTargetActor.IsValid())
-	{
-		UpdateNearestTarget();
-	}
-
-	AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
-}
-
 void ASVEnemy::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -111,17 +86,29 @@ void ASVEnemy::UnregisterPawn(APawn* InPawn)
 	}
 }
 
-void ASVEnemy::OnSpawnFromPool()
+void ASVEnemy::Tick(float DeltaSeconds)
 {
-	Cast<UEnemyGASManagerComponent>(GASManagerComponent)->OnOwnerSpawnFromPool();
-	
-	UpdateNearestTarget();
-	if (AAIController* AIController = Cast<AAIController>(GetController()))
+	Super::Tick(DeltaSeconds);
+
+	AAIController* AIController = Cast<AAIController>(GetController());
+	if (!GetAbilitySystemComponent() || !AIController)
 	{
-		AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
+		return;
 	}
-	
-	SetActorTickEnabled(true);
+
+	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Dead) || GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Knockback))
+	{
+		AIController->StopMovement();
+		return;
+	}
+
+	// 가까운 PlayerCharacter를 향해 다가갑니다.
+	if (!MoveTargetActor.IsValid())
+	{
+		UpdateNearestTarget();
+	}
+
+	AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
 }
 
 void ASVEnemy::UpdateNearestTarget()
@@ -140,4 +127,22 @@ void ASVEnemy::UpdateNearestTarget()
 		}
 	}
 	MoveTargetActor = ClosestPlayerPawn;
+}
+
+void ASVEnemy::OnSpawnFromPool()
+{
+	Cast<UEnemyGASManagerComponent>(GASManagerComponent)->OnOwnerSpawnFromPool();
+	
+	UpdateNearestTarget();
+	if (AAIController* AIController = Cast<AAIController>(GetController()))
+	{
+		AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
+	}
+	
+	SetActorTickEnabled(true);
+}
+
+void ASVEnemy::OnDeath()
+{
+	OnEnemyDyingFinished.Execute(this);
 }

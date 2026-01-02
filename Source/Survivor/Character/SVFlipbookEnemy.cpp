@@ -7,6 +7,7 @@
 #include "SVCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
 #include "Survivor/Manager/SVGameplayTags.h"
 
@@ -20,20 +21,6 @@ ASVFlipbookEnemy::ASVFlipbookEnemy(const FObjectInitializer& ObjectInitializer)
 	PaperFlipbookComponent->SetupAttachment(RootComponent);
 }
 
-void ASVFlipbookEnemy::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	if (!CameraComponent.IsValid())
-	{
-		SetLocalCameraComponent();
-		return;
-	}
-
-	UpdateFlipbookImage();
-	UpdateFlipbookComponentDirection();
-}
-
 void ASVFlipbookEnemy::StartHide_Implementation()
 {
 	PaperFlipbookComponent->SetHiddenInGame(true);
@@ -42,6 +29,11 @@ void ASVFlipbookEnemy::StartHide_Implementation()
 void ASVFlipbookEnemy::EndHide_Implementation()
 {
 	PaperFlipbookComponent->SetHiddenInGame(false);
+}
+
+void ASVFlipbookEnemy::ApplyKnockback(const FVector& KnockbackForce)
+{
+	LaunchCharacter(KnockbackForce, true, true);
 }
 
 void ASVFlipbookEnemy::OnSpawnFromPool()
@@ -59,9 +51,20 @@ void ASVFlipbookEnemy::OnSpawnFromPool()
 	UpdateFlipbookComponentDirection();
 }
 
-void ASVFlipbookEnemy::MulticastDeath()
+void ASVFlipbookEnemy::Tick(float DeltaSeconds)
 {
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Super::Tick(DeltaSeconds);
+
+	if (!CameraComponent.IsValid())
+	{
+		SetLocalCameraComponent();
+	}
+
+	if (CameraComponent.IsValid())
+	{
+		UpdateFlipbookImage();
+		UpdateFlipbookComponentDirection();
+	}
 }
 
 void ASVFlipbookEnemy::SetLocalCameraComponent()
@@ -80,13 +83,13 @@ void ASVFlipbookEnemy::SetLocalCameraComponent()
 	}
 }
 
-void ASVFlipbookEnemy::UpdateFlipbookImage()
+void ASVFlipbookEnemy::UpdateFlipbookImage() const
 {
 	// 카메라와 캐릭터의 정면 방향을 가져와 XY 평면에서 정규화합니다.
 	const FVector CameraForward = CameraComponent->GetForwardVector().GetSafeNormal2D();
 	const FVector CharacterForward = GetActorForwardVector().GetSafeNormal2D();
 
-	// 내적을 계산합니다.
+	EEnemyDirection CurrentDirection;
 	const float Dot = FVector::DotProduct(CharacterForward, CameraForward);
 	if (Dot < -0.5f)
 	{
@@ -120,4 +123,22 @@ void ASVFlipbookEnemy::UpdateFlipbookComponentDirection() const
 	LookAtRotation.Roll = CameraComponent->GetComponentRotation().Pitch;
 	
 	PaperFlipbookComponent->SetWorldRotation(LookAtRotation);
+}
+
+void ASVFlipbookEnemy::MulticastDeath()
+{
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->DisableMovement();
+	}
+	
+	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
+	GetAbilitySystemComponent()->AddLooseGameplayTag(FSVGameplayTags::Get().CharacterState_Dead);
+
+	UpdateFlipbookImage();
+
+	StartOnDeathTimer();
 }

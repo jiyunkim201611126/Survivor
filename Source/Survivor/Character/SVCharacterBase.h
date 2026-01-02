@@ -13,7 +13,7 @@ class UGASManagerComponent;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
-UCLASS()
+UCLASS(Abstract)
 class SURVIVOR_API ASVCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface, public ISVCameraAssistInterface
 {
 	GENERATED_BODY()
@@ -36,6 +36,9 @@ public:
 
 protected:
 	void InitAbilityActorInfo() const;
+
+	void StartOnDeathTimer();
+	virtual void OnDeath();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

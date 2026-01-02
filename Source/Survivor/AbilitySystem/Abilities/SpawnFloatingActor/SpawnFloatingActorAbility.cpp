@@ -61,7 +61,7 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 			if (bIsSpawning)
 			{
 				// 새로 스폰하는 경우 함수를 바인드하고 FinishSpawning을 호출합니다.
-				CurrentActor->OnFloatingActorActivateDelegate.BindUObject(this, &ThisClass::OnFloatingActorActivateDamage);
+				CurrentActor->OnFloatingActorActivateDelegate.BindUObject(this, &ThisClass::ApplyAllEffects);
 				CurrentActor->OnLifeEndDelegate.BindUObject(this, &ThisClass::OnLifeEnd);
 				CurrentActor->FinishSpawning(FTransform());
 			}
@@ -73,23 +73,15 @@ void USpawnFloatingActorAbility::SpawnFloatingActors()
 	}
 }
 
-void USpawnFloatingActorAbility::OnFloatingActorActivateDamage(const TArray<AActor*>& InActors)
+void USpawnFloatingActorAbility::OnLifeEnd(AFloatingActor* InFloatingActor) const
 {
-	// 스폰한 Actor와 Overlap된 Actor(Enemy)를 받아서 Effect를 부여합니다.
-	for (AActor* TargetActor : InActors)
-	{
-		ApplyAllEffects(TargetActor);
-	}
-}
-
-void USpawnFloatingActorAbility::OnLifeEnd(AActor* InActor) const
-{
-	// 스폰한 Actor의 LifeTime이 종료되면 다시 Pool에 반환합니다.
+	// 스폰한 Actor의 LifeTime이 종료되면 일부 데이터를 리셋하고 다시 Pool에 반환합니다.
+	InFloatingActor->ResetOverlapActors();
 	if (GetWorld())
 	{
 		if (UObjectPoolManagerSubsystem* ObjectPoolManager = GetWorld()->GetGameInstance()->GetSubsystem<UObjectPoolManagerSubsystem>())
 		{
-			ObjectPoolManager->ReturnToPool(InActor);
+			ObjectPoolManager->ReturnToPool(InFloatingActor);
 		}
 	}
 }
