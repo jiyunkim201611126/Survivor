@@ -111,7 +111,10 @@ void USVAttributeSet::ApplyIncomingDamage(const FEffectProperties& Props, const 
 		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)
 		{
-			// TODO: 사망 처리 및 XP Event 송신
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+			{
+				CombatInterface->Die();
+			}
 		}
 	}
 	else

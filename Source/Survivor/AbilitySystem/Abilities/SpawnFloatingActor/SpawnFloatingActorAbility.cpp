@@ -6,6 +6,7 @@
 #include "Survivor/AbilitySystem/SVAbilitySystemLibrary.h"
 #include "FloatingActor.h"
 #include "Survivor/Manager/ObjectPoolManagerSubsystem.h"
+#include "Survivor/Manager/SVGameplayTags.h"
 
 void USpawnFloatingActorAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -18,6 +19,11 @@ void USpawnFloatingActorAbility::ActivateAbility(const FGameplayAbilitySpecHandl
 
 void USpawnFloatingActorAbility::LoopAbility()
 {
+	if (!GetAbilitySystemComponentFromActorInfo() || GetAbilitySystemComponentFromActorInfo()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Dead))
+	{
+		return;
+	}
+	
 	SpawnFloatingActors();
 
 	const float NextCooldown = CooldownCurve.GetValueAtLevel(GetAbilityLevel());

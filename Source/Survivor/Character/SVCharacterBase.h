@@ -21,12 +21,18 @@ class SURVIVOR_API ASVCharacterBase : public ACharacter, public IAbilitySystemIn
 public:
 	ASVCharacterBase(const FObjectInitializer& ObjectInitializer);
 	
+	//~ Begin IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~ End of IAbilitySystemInterface
 	
 	//~ Begin ICombatInterface
-	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
 	virtual UCapsuleComponent* GetCombatCapsuleComponent() const override;
+	virtual void ApplyKnockback(const FVector& KnockbackForce) override;
+	virtual void Die() override;
 	//~ End of ICombatInterface
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastDeath();
 
 protected:
 	void InitAbilityActorInfo() const;

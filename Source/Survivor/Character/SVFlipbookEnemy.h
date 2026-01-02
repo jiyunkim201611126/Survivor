@@ -39,6 +39,8 @@ public:
 
 	virtual void OnSpawnFromPool() override;
 
+	virtual void MulticastDeath() override;
+
 private:
 	void SetLocalCameraComponent();
 	void UpdateFlipbookImage();
@@ -50,6 +52,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Sprite", meta = (AllowPrivateAccess = "true"))
 	TMap<EEnemyDirection, TObjectPtr<UPaperFlipbook>> Flipbooks;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Sprite", meta = (AllowPrivateAccess = "true"))
+	TMap<EEnemyDirection, TObjectPtr<UPaperFlipbook>> DeathFlipbooks;
 
 	UPROPERTY()
 	TWeakObjectPtr<UCameraComponent> CameraComponent;

@@ -48,6 +48,11 @@ public:
 	//~ Begin ACharacter Interface
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	//~ End of ACharacter Interface
+
+	//~ Begin ICombatInterface
+	virtual void RegisterPawn(APawn* InPawn) override;
+	virtual void UnregisterPawn(APawn* InPawn) override;
+	//~ End of ICombatInterface
 	
 private:
 	void UpdateMovement();

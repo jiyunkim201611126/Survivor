@@ -19,6 +19,10 @@ class SURVIVOR_API ICombatInterface
 	GENERATED_BODY()
 
 public:
-	virtual void ApplyKnockback(const FVector& KnockbackForce) = 0;
+	virtual void RegisterPawn(APawn* InPawn);
+	virtual void UnregisterPawn(APawn* InPawn);
+	
 	virtual UCapsuleComponent* GetCombatCapsuleComponent() const = 0;
+	virtual void ApplyKnockback(const FVector& KnockbackForce) = 0;
+	virtual void Die() = 0;
 };

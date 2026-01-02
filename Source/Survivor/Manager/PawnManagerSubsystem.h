@@ -16,13 +16,13 @@ class SURVIVOR_API UPawnManagerSubsystem : public UGameInstanceSubsystem
 
 public:
 	void RegisterPlayerPawn(APawn* InPawn);
-	void UnRegisterPlayerPawn(APawn* InPawn);
+	void UnregisterPlayerPawn(APawn* InPawn);
 
 	UFUNCTION(BlueprintCallable)
 	TArray<APawn*> GetAllPlayerPawns();
 	
 	void RegisterAIPawn(APawn* InPawn);
-	void UnRegisterAIPawn(APawn* InPawn);
+	void UnregisterAIPawn(APawn* InPawn);
 
 	UFUNCTION(BlueprintCallable)
 	TArray<APawn*> GetAllAIPawns();

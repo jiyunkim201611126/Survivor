@@ -13,7 +13,7 @@ void UPawnManagerSubsystem::RegisterPlayerPawn(APawn* InPawn)
 	}
 }
 
-void UPawnManagerSubsystem::UnRegisterPlayerPawn(APawn* InPawn)
+void UPawnManagerSubsystem::UnregisterPlayerPawn(APawn* InPawn)
 {
 	PlayerPawns.RemoveSingleSwap(InPawn);
 	CachedPlayerPawns.RemoveSingleSwap(InPawn);
@@ -46,7 +46,7 @@ void UPawnManagerSubsystem::RegisterAIPawn(APawn* InPawn)
 	}
 }
 
-void UPawnManagerSubsystem::UnRegisterAIPawn(APawn* InPawn)
+void UPawnManagerSubsystem::UnregisterAIPawn(APawn* InPawn)
 {
 	AIPawns.RemoveSingleSwap(InPawn);
 	CachedAIPawns.RemoveSingleSwap(InPawn);

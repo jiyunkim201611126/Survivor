@@ -51,10 +51,7 @@ void ASVEnemy::BeginPlay()
 
 void ASVEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterAIPawn(this);
-	}
+	UnregisterPawn(this);
 	
 	Super::EndPlay(EndPlayReason);
 }
@@ -63,8 +60,15 @@ void ASVEnemy::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!GetAbilitySystemComponent() || GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Knockback))
+	AAIController* AIController = Cast<AAIController>(GetController());
+	if (!GetAbilitySystemComponent() || !AIController)
 	{
+		return;
+	}
+
+	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Dead) || GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Knockback))
+	{
+		AIController->StopMovement();
 		return;
 	}
 
@@ -74,30 +78,37 @@ void ASVEnemy::Tick(float DeltaSeconds)
 		UpdateNearestTarget();
 	}
 
-	if (AAIController* AIController = Cast<AAIController>(GetController()))
-	{
-		AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
-	}
+	AIController->MoveToActor(MoveTargetActor.Get(), -1, false);
 }
 
 void ASVEnemy::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	RegisterPawn(this);
+}
+
+void ASVEnemy::UnPossessed()
+{
+	UnregisterPawn(this);
+	
+	Super::UnPossessed();
+}
+
+void ASVEnemy::RegisterPawn(APawn* InPawn)
+{
 	if (HasAuthority())
 	{
 		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterAIPawn(this);
 	}
 }
 
-void ASVEnemy::UnPossessed()
+void ASVEnemy::UnregisterPawn(APawn* InPawn)
 {
 	if (HasAuthority())
 	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterAIPawn(this);
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnregisterAIPawn(this);
 	}
-	
-	Super::UnPossessed();
 }
 
 void ASVEnemy::OnSpawnFromPool()
@@ -129,9 +140,4 @@ void ASVEnemy::UpdateNearestTarget()
 		}
 	}
 	MoveTargetActor = ClosestPlayerPawn;
-}
-
-UAbilitySystemComponent* ASVEnemy::GetAbilitySystemComponent() const
-{
-	return AbilitySystemComponent;
 }

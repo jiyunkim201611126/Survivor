@@ -2,6 +2,7 @@
 
 #pragma once
 
+/*
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "AbilitySystemInterface.h"
@@ -35,7 +36,7 @@ enum class EFlipbookDirection : uint8
  * 그러나 이동 로직을 구현하는 데에 있어 너무 많은 예외처리(공중 이동, 넉백 관련 처리, NavMesh 기반 움직임 등)가 필요했습니다.
  * 그로 인해 틱마다 라인 트레이스를 수행한다거나, 근처의 NavMesh를 탐색하는 등 생각보다 점점 무거워졌습니다.
  * 결론적으로 이후 또 다른 이동 예외처리(절벽에서 낙하한 캐릭터 추적 등)와 GAS 상호작용 등을 고려해 다시 Character 기반 클래스를 사용하기로 결정했습니다.
- */
+ *
 UCLASS()
 class SURVIVOR_API ASVFlipbookEnemy_NotUse_PawnBase : public APawn, public IAbilitySystemInterface, public ICombatInterface, public ISVCameraAssistInterface, public IEnemyInterface
 {
@@ -46,8 +47,12 @@ public:
 
 	//~ Begin IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	virtual UCapsuleComponent* GetCombatCapsuleComponent() const override;
 	//~ End IAbilitySystemInterface
+	
+	//~ Begin ICombatInterface
+	virtual UCapsuleComponent* GetCombatCapsuleComponent() const override;
+	virtual void ApplyKnockback(const FVector& KnockbackImpulse) override;
+	//~ End of ICombatInterface
 
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
@@ -62,8 +67,6 @@ public:
 
 	void ApplyGravity(const float DeltaTime);
 	void UpdateMovement() const;
-
-	virtual void ApplyKnockback(const FVector& KnockbackImpulse) override;
 	
 	virtual void OnSpawnFromPool() override;
 
@@ -102,3 +105,4 @@ private:
 	float VerticalVelocity = 0.f;
 	const float GravityForce = 2000.f;
 };
+*/

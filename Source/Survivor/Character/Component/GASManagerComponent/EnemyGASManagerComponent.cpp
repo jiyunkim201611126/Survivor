@@ -20,7 +20,7 @@ void UEnemyGASManagerComponent::InitAbilityActorInfo()
 	UCapsuleComponent* OwnerCapsuleComponent = CombatInterface->GetCombatCapsuleComponent();
 	OwnerCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnComponentBeginOverlap);
 
-	// Ability는 쿨다운이 끝나면 자동으로 재발동합니다.
+	// Ability는 쿨다운이 끝나면 자동으로 재발동해야 합니다.
 	// AbilitySystemComponent에 특정 태그가 부여/제거될 때 호출되는 델리게이트를 이용합니다.
 	const FSVGameplayTags& GameplayTags = FSVGameplayTags::Get();
 	for (const auto& CooldownToAbility : GameplayTags.EnemyCooldownTagToAbilityTag)

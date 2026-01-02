@@ -36,18 +36,12 @@ void ASVCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
-	}
+	RegisterPawn(this);
 }
 
 void ASVCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterPlayerPawn(this);
-	}
+	UnregisterPawn(this);
 	
 	Super::EndPlay(EndPlayReason);
 }
@@ -79,10 +73,7 @@ void ASVCharacter::PossessedBy(AController* NewController)
 		Subsystem->AddMappingContext(InputContext, 0);
 	}
 
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
-	}
+	RegisterPawn(this);
 }
 
 void ASVCharacter::OnRep_Controller()
@@ -97,10 +88,7 @@ void ASVCharacter::OnRep_Controller()
 
 void ASVCharacter::UnPossessed()
 {
-	if (HasAuthority())
-	{
-		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnRegisterPlayerPawn(this);
-	}
+	UnregisterPawn(this);
 	
 	Super::UnPossessed();
 }
@@ -190,6 +178,22 @@ void ASVCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ThisClass::Sprint);
 	EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Started, this, &ThisClass::Walk);
 	EnhancedInputComponent->BindAction(StrafeAction, ETriggerEvent::Started, this, &ThisClass::Strafe);
+}
+
+void ASVCharacter::RegisterPawn(APawn* InPawn)
+{
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->RegisterPlayerPawn(this);
+	}
+}
+
+void ASVCharacter::UnregisterPawn(APawn* InPawn)
+{
+	if (HasAuthority())
+	{
+		GetWorld()->GetGameInstance()->GetSubsystem<UPawnManagerSubsystem>()->UnregisterPlayerPawn(this);
+	}
 }
 
 void ASVCharacter::Move(const FInputActionValue& InputActionValue)

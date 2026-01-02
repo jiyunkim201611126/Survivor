@@ -2,10 +2,13 @@
 
 #include "SVFlipbookEnemy.h"
 
+#include "AbilitySystemComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "SVCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Survivor/Manager/PawnManagerSubsystem.h"
+#include "Survivor/Manager/SVGameplayTags.h"
 
 ASVFlipbookEnemy::ASVFlipbookEnemy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.DoNotCreateDefaultSubobject(MeshComponentName))
@@ -56,6 +59,11 @@ void ASVFlipbookEnemy::OnSpawnFromPool()
 	UpdateFlipbookComponentDirection();
 }
 
+void ASVFlipbookEnemy::MulticastDeath()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
 void ASVFlipbookEnemy::SetLocalCameraComponent()
 {
 	// 플레이어의 카메라를 가져와 캐싱합니다.
@@ -98,7 +106,8 @@ void ASVFlipbookEnemy::UpdateFlipbookImage()
 		CurrentDirection = Cross.Z > 0.f ? EEnemyDirection::Right : EEnemyDirection::Left;
 	}
 
-	UPaperFlipbook* CurrentFlipbook = Flipbooks.FindRef(CurrentDirection);
+	const bool bDead = GetAbilitySystemComponent()->HasMatchingGameplayTag(FSVGameplayTags::Get().CharacterState_Dead);
+	UPaperFlipbook* CurrentFlipbook = bDead ? DeathFlipbooks.FindRef(CurrentDirection) : Flipbooks.FindRef(CurrentDirection);
 	if (CurrentFlipbook)
 	{
 		PaperFlipbookComponent->SetFlipbook(CurrentFlipbook);

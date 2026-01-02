@@ -13,35 +13,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0f7763f-9291-4619-8b52-82b35ab4b0ff" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Interface/EnemyInterface.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Survivor/Interface/EnemyInterface.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Survivor/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Le_Enemy0.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/GameplayEffect/Enemy/GE_EnemyCharacterDefaultAttribute.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/GameplayEffect/Enemy/GE_EnemyCharacterDefaultAttribute.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AssetOrigin/Enemy0.clip" beforeDir="false" afterPath="$PROJECT_DIR$/AssetOrigin/Enemy0.clip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AssetOrigin/Enemy0.png" beforeDir="false" afterPath="$PROJECT_DIR$/AssetOrigin/Enemy0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_1.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_10.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_10.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_11.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_11.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_12.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_12.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_13.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_13.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_14.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_14.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_15.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_15.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_2.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_3.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_3.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_4.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_4.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_5.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_5.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_6.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_6.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_7.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_7.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_8.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_8.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_9.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/Enemy0_Sprite_9.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Front_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Front_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Right_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/FB_Right_Enemy0.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Enemy/M_Enemy0_Entity.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Enemy/M_Enemy0_Entity.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/Abilities/Player/FloatingActor/CV_FloatingActorCooldown.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AbilitySystem/Abilities/Player/FloatingActor/CV_FloatingActorCooldown.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_Enemy0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_Enemy0.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Enemy/BP_Enemy0_Entity.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Entity/BP_EntitySpawner.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Entity/BP_EntitySpawner.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/TestMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/2/WY/I5K1LU4F81N9CIJ3Z6XD85.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/9/DC/9PKQGPYCBKN6XYH0CQPIRS.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/A/WD/VHBL46EW4X40JCQNCGOMFP.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/D/ZQ/K2GW6YU0PU6PVO5E4MZT0E.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/E/0M/NM1L50VGSP16N26Z3TXFUY.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TestMap/E/0M/NM1L50VGSP16N26Z3TXFUY.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SpawnFloatingActor/SpawnFloatingActorAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/Abilities/SpawnFloatingActor/SpawnFloatingActorAbility.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/Component/GASManagerComponent/EnemyGASManagerComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVCharacterBase.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVEnemy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy_NotUse_PawnBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy_NotUse_PawnBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy_NotUse_PawnBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Character/SVFlipbookEnemy_NotUse_PawnBase.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Interface/CombatInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EnemyManagerSubsystem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/Entity/EntitySpawner.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/ObjectPoolManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/ObjectPoolManagerSubsystem.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/PawnManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/PawnManagerSubsystem.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Survivor/Manager/PawnManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Survivor/Manager/PawnManagerSubsystem.h" afterDir="false" />
     </list>
@@ -57,6 +67,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://1" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbook.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbookActor.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/2D/Paper2D/Source/Paper2D/Classes/PaperFlipbookComponent.h" root0="FORCE_HIGHLIGHTING" />
@@ -538,6 +549,7 @@
       <workItem from="1767176018895" duration="12701000" />
       <workItem from="1767188904410" duration="1961000" />
       <workItem from="1767191054393" duration="117000" />
+      <workItem from="1767326368631" duration="5424000" />
     </task>
     <servers />
   </component>
@@ -563,6 +575,11 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/Survivor/AbilitySystem/AttributeSet/SVAttributeSet.cpp</url>
+          <line>115</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

@@ -23,8 +23,6 @@ class SURVIVOR_API ASVEnemy : public ASVCharacterBase, public IEnemyInterface
 public:
 	ASVEnemy(const FObjectInitializer& ObjectInitializer);
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -35,6 +33,11 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void UnPossessed() override;
 	//~ End of APawn Interface
+
+	//~ Begin ICombatInterface
+	virtual void RegisterPawn(APawn* InPawn) override;
+	virtual void UnregisterPawn(APawn* InPawn) override;
+	//~ End of ICombatInterface
 
 	virtual void OnSpawnFromPool() override;
 

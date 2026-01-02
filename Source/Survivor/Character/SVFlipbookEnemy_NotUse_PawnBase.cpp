@@ -1,5 +1,5 @@
 // KJY
-
+/*
 #include "SVFlipbookEnemy_NotUse_PawnBase.h"
 
 #include "AbilitySystemComponent.h"
@@ -192,6 +192,10 @@ void ASVFlipbookEnemy_NotUse_PawnBase::ApplyKnockback(const FVector& KnockbackIm
 	}
 }
 
+void ASVFlipbookEnemy_NotUse_PawnBase::Die()
+{
+}
+
 void ASVFlipbookEnemy_NotUse_PawnBase::OnSpawnFromPool()
 {
 	GASManagerComponent->OnOwnerSpawnFromPool();
@@ -273,3 +277,4 @@ void ASVFlipbookEnemy_NotUse_PawnBase::UpdateFlipbookComponentDirection() const
 	
 	PaperFlipbookComponent->SetWorldRotation(LookAtRotation);
 }
+*/
